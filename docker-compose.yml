@@ -25,7 +25,7 @@ services:
       - visiobook-network
 
   mock-api:
-    image: json-server:latest
+    image: clue/json-server:latest
     container_name: mock-api
     command: [
       "--watch", "/data/db.json",
