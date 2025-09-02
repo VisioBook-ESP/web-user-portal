@@ -21,6 +21,7 @@
   "dependencies": {
     "@mdi/font": "^7.3.0",
     "axios": "^1.6.0",
+    "json-server": "^1.0.0-beta.3",
     "pinia": "^2.1.0",
     "vue": "^3.3.0",
     "vue-router": "^4.2.0",

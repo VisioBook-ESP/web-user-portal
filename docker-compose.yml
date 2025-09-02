@@ -7,15 +7,12 @@ services:
       dockerfile: docker/Dockerfile.dev
     container_name: web-user-portal
     ports:
-      - "3000:3000"
+      - "80:3000"
     environment:
-      VITE_API_BASE_URL: "http://mock-api:5170/api/v1"
+      VITE_API_BASE_URL: "http://localhost:3000/"
     volumes:
       - .:/app
       - /app/node_modules
-    depends_on:
-      mock-api:
-        condition: service_healthy
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000"]
       interval: 10s
@@ -24,26 +21,7 @@ services:
     networks:
       - visiobook-network
 
-  mock-api:
-    image: clue/json-server:latest
-    container_name: mock-api
-    command: [
-      "--watch", "/data/db.json",
-      "--port", "5170",
-      "--host", "0.0.0.0",
-      "--routes", "/data/routes.json"
-    ]
-    volumes:
-      - ./mocks:/data
-    ports:
-      - "5170:5170"
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5170"]
-      interval: 5s
-      timeout: 2s
-      retries: 10
-    networks:
-      - visiobook-network
+
 
 networks:
   visiobook-network:
