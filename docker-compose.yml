@@ -6,7 +6,7 @@ services:
       dockerfile: docker/Dockerfile.dev
     container_name: web-user-portal
     ports:
-      - "80:3000"
+      - "3000:3000"
     environment:
       VITE_API_BASE_URL: "http://localhost/"
     volumes:
