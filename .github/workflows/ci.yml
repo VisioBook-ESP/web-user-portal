@@ -16,6 +16,7 @@ jobs:
           node-version: 18
           cache: npm
       - run: npm ci
+      - run: NODE_ENV=production npm run lint:check
       - run: npm run lint:check
 
   type-check:
