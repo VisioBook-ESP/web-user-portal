@@ -16,7 +16,7 @@ jobs:
           node-version: 18
           cache: npm
       - run: npm ci
-      - run: NODE_ENV=production npm run lint:check
+      - run: NODE_ENV=production npx eslint "src/*/.{js,ts,vue}"
 
   type-check:
     runs-on: ubuntu-latest
