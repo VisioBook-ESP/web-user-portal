@@ -9,7 +9,7 @@ COPY tsconfig.json ./
 COPY vite.config.ts ./
 
 # Install dependencies
-RUN npm ci --only=production && npm cache clean --force
+RUN npm ci && npm cache clean --force
 
 
 # Copier le code source
@@ -23,9 +23,6 @@ RUN npm run build
 # Production stage - Use nginx for Vue.js SPA
 FROM nginx:alpine AS production
 
-# Create non-root user
-RUN addgroup -g 1001 -S nginx && \
-    adduser -S nginx -u 1001 -G nginx
 
 # Copy built application to nginx
 COPY --from=builder --chown=nginx:nginx /app/dist /usr/share/nginx/html
