@@ -13,7 +13,6 @@ const routes = [
     name: "Health",
     component: Health,
   },
-
 ];
 
 const router = createRouter({

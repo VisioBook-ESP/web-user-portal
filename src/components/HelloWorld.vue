@@ -7,14 +7,14 @@
 
 <script>
 export default {
-    name: "HelloWorld",
+  name: "HelloWorld",
 };
 </script>
 
 <style scoped>
 .hello {
-    text-align: center;
-    margin-top: 50px;
-    color: #42b983;
+  text-align: center;
+  margin-top: 50px;
+  color: #42b983;
 }
 </style>
