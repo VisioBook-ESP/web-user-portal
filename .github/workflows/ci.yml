@@ -29,7 +29,7 @@ jobs:
           node-version: 18
           cache: npm
       - run: npm ci
-      - run: NODE_ENV=production npx eslint "src/*/.{js,ts,vue,json,css,scss,md}"
+      - run: NODE_ENV=production npx eslint "src/**/*.{js,ts,vue,json,css,scss,md}"
 
   type-check:
     runs-on: ubuntu-latest
