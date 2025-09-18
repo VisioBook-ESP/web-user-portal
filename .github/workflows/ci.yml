@@ -106,7 +106,7 @@ jobs:
 
   docker-build-and-push:
     runs-on: ubuntu-latest
-    needs: prettier, lint, type-check, test, build, health-check-dev, build-docker-image-prod
+    needs: [ prettier, lint, type-check, test, build, health-check-dev, build-docker-image-prod ]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
