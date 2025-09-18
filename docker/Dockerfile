@@ -30,6 +30,12 @@ COPY --from=builder --chown=nginx:nginx /app/dist /usr/share/nginx/html
 # Copy nginx configuration
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 
+# Ensure cache directory exists and is owned by nginx
+RUN mkdir -p /var/cache/nginx/client_temp && chown -R nginx:nginx /var/cache/nginx
+
+# Ensure /run exists and is owned by nginx for nginx.pid
+RUN mkdir -p /run && chown -R nginx:nginx /run
+
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
     CMD wget --no-verbose --tries=1 --spider http://localhost:3000/health || exit 1
