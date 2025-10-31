@@ -14,7 +14,7 @@ const routes = [
     name: "Health",
     component: Health,
   },
-    {
+  {
     path: "/else",
     name: "Else",
     component: Else,
