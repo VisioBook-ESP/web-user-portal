@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  docker-build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUBTOKEN }}
+
+      - name: Build Docker images
+        run: |
+          docker build -f docker/Dockerfile.prod -t ghcr.io/visiobook-esp/web-user-portal-prod:latest ./
+
+      - name: Push Docker image
+        run: |
+          docker push ghcr.io/visiobook-esp/web-user-portal-prod:latest
+
+
