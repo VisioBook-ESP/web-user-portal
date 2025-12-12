@@ -1,0 +1,129 @@
+name: CI
+
+on:
+  push:
+    branches: [ "dev" ]
+  pull_request:
+    branches: [ "*" ]
+
+jobs:
+
+  prettier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+      - run: npm ci
+      - run: npm run format:check
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+      - run: npm ci
+      - run: NODE_ENV=production npx eslint "src/**/*.{js,ts,vue,json,css,scss,md}"
+
+  type-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+      - run: npm ci
+      - run: npm run type-check
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+      - run: npm ci
+      - run: npm run test:unit
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+
+  health-check-dev:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Start Docker Compose
+        run: docker compose up --build -d
+      - name: Wait for server to be healthy
+        run: |
+          for i in {1..20}; do
+            if curl -sf http://localhost:3000/health; then
+              echo "Server is healthy!" && exit 0
+            fi
+            echo "Waiting for server... ($i)"
+            sleep 3
+          done
+          echo "Server did not become healthy in time." && exit 1
+
+  build-docker-image-prod:  
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build production Docker image
+        run: docker build -t myapp:prod -f docker/Dockerfile.prod .
+      - name: Run production container
+        run: docker run -d --name myapp-prod -p 3000:3000 myapp:prod
+      - name: Health check in production
+        run: |
+          for i in {1..20}; do
+            if curl -sf http://localhost:3000/health; then
+              echo "Health check passed!"
+              exit 0
+            fi
+            echo "Waiting for health endpoint... ($i)"
+            sleep 3
+          done
+          echo "Health check failed!"
+          docker logs myapp-prod
+          exit 1
+      - name: Cleanup container
+        run: docker rm -f myapp-prod
+
+  docker-build-and-push:
+    runs-on: ubuntu-latest
+    needs: [ prettier, lint, type-check, test, build, health-check-dev, build-docker-image-prod ]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUBTOKEN }}
+
+      - name: Build Docker images
+        run: |
+          docker build -f docker/Dockerfile.prod -t ghcr.io/visiobook-esp/web-user-portal-dev:latest ./
+
+      - name: Push Docker image
+        run: |
+          docker push ghcr.io/visiobook-esp/web-user-portal-dev:latest
+
+
