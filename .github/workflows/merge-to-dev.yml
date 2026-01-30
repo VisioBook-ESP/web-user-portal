@@ -1,12 +1,13 @@
-name: CI Dev to Main
+name: CI
 
 on:
-  push:
-    branches: [ "main" ]
+  pull_request:
+    branches: [ "dev" ]
 
 jobs:
   docker-build-and-push:
     runs-on: ubuntu-latest
+    needs: [ prettier, lint, type-check, test, build, health-check-dev, build-docker-image-prod ]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -20,10 +21,10 @@ jobs:
 
       - name: Build Docker images
         run: |
-          docker build -f docker/Dockerfile.prod -t ghcr.io/visiobook-esp/web-user-portal-prod:latest ./
+          docker build -f docker/Dockerfile.prod -t ghcr.io/visiobook-esp/web-user-portal-dev:latest ./
 
       - name: Push Docker image
         run: |
-          docker push ghcr.io/visiobook-esp/web-user-portal-prod:latest
+          docker push ghcr.io/visiobook-esp/web-user-portal-dev:latest
 
 
