@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useGradientBackground } from '@/composables/useGradientBackground';
 import { useUIStore } from '@/store/ui';
+import { useAuthStore } from '@/store/auth';
 import Navbar from '@/components/layout/Navbar/Navbar.vue';
 import { 
   User, 
@@ -20,34 +21,34 @@ import {
 
 const router = useRouter();
 const uiStore = useUIStore();
+const authStore = useAuthStore();
 const { gradientStyle } = useGradientBackground();
 
 // Active section
 const activeSection = ref<'profile' | 'password' | 'premium' | 'notifications'>('profile');
 
-// User data (mock - will be replaced with API)
-const userData = ref({
-  id: 'user-1',
-  email: 'john.doe@example.com',
-  username: 'johndoe',
-  firstName: 'John',
-  lastName: 'Doe',
-  avatar: '',
-  isPremium: false,
-  createdAt: '2026-01-15T10:00:00Z',
-});
-
 // Form states
 const isEditing = ref(false);
 const isSaving = ref(false);
 
-// Profile form
+// Profile form — kept in sync with the store's user on mount / after save
 const profileForm = ref({
-  firstName: userData.value.firstName,
-  lastName: userData.value.lastName,
-  username: userData.value.username,
-  email: userData.value.email,
+  first_name: '',
+  last_name: '',
+  username: '',
 });
+
+const syncFormFromStore = () => {
+  const u = authStore.user;
+  if (!u) return;
+  profileForm.value = {
+    first_name: u.first_name ?? '',
+    last_name: u.last_name ?? '',
+    username: u.username,
+  };
+};
+
+onMounted(() => syncFormFromStore());
 
 // Password form
 const passwordForm = ref({
@@ -59,7 +60,7 @@ const showCurrentPassword = ref(false);
 const showNewPassword = ref(false);
 const showConfirmPassword = ref(false);
 
-// Notification settings
+// Notification settings (local only — no backend endpoint yet)
 const notificationSettings = ref({
   emailNotifications: true,
   projectUpdates: true,
@@ -68,15 +69,12 @@ const notificationSettings = ref({
 });
 
 // Computed
-const userInitials = computed(() => {
-  const first = userData.value.firstName?.[0] || '';
-  const last = userData.value.lastName?.[0] || '';
-  return (first + last).toUpperCase() || 'U';
-});
+const userInitials = computed(() => authStore.userInitials);
 
 const memberSince = computed(() => {
-  const date = new Date(userData.value.createdAt);
-  return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  const raw = authStore.user?.created_at;
+  if (!raw) return '';
+  return new Date(raw).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 });
 
 const isPasswordValid = computed(() => {
@@ -93,13 +91,8 @@ const goBack = () => {
 };
 
 const startEditing = () => {
+  syncFormFromStore();
   isEditing.value = true;
-  profileForm.value = {
-    firstName: userData.value.firstName || '',
-    lastName: userData.value.lastName || '',
-    username: userData.value.username,
-    email: userData.value.email,
-  };
 };
 
 const cancelEditing = () => {
@@ -108,19 +101,19 @@ const cancelEditing = () => {
 
 const saveProfile = async () => {
   isSaving.value = true;
-  
   try {
-    // TODO: Call API to update profile
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    userData.value = {
-      ...userData.value,
-      ...profileForm.value,
-    };
-    
+    await authStore.updateProfile({
+      username: profileForm.value.username || undefined,
+      first_name: profileForm.value.first_name || undefined,
+      last_name: profileForm.value.last_name || undefined,
+    });
+    // Fetch fresh profile data to ensure all fields including first_name and last_name are displayed
+    await authStore.fetchProfile();
+    // Sync form from the updated store
+    syncFormFromStore();
     isEditing.value = false;
     uiStore.showSuccess('Profile updated successfully!');
-  } catch (error) {
+  } catch {
     uiStore.showError('Failed to update profile');
   } finally {
     isSaving.value = false;
@@ -129,22 +122,12 @@ const saveProfile = async () => {
 
 const changePassword = async () => {
   if (!isPasswordValid.value) return;
-  
   isSaving.value = true;
-  
   try {
-    // TODO: Call API to change password
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    passwordForm.value = {
-      currentPassword: '',
-      newPassword: '',
-      confirmPassword: '',
-    };
-    
-    uiStore.showSuccess('Password changed successfully!');
-  } catch (error) {
-    uiStore.showError('Failed to change password');
+    // No dedicated change-password endpoint yet in core-user-service.
+    // Inform user and reset the form as a no-op for now.
+    uiStore.showInfo('Password change is not yet supported by the backend.');
+    passwordForm.value = { currentPassword: '', newPassword: '', confirmPassword: '' };
   } finally {
     isSaving.value = false;
   }
@@ -152,26 +135,20 @@ const changePassword = async () => {
 
 const upgradeToPremium = () => {
   uiStore.showInfo('Redirecting to payment...');
-  // TODO: Integrate with payment system
 };
 
 const saveNotifications = async () => {
   isSaving.value = true;
-  
   try {
-    // TODO: Call API to update notification settings
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 300));
     uiStore.showSuccess('Notification settings saved!');
-  } catch (error) {
-    uiStore.showError('Failed to save settings');
   } finally {
     isSaving.value = false;
   }
 };
 
 const logout = () => {
-  uiStore.showInfo('Logging out...');
-  // TODO: Call auth store logout
+  authStore.logout();
   router.push('/');
 };
 
@@ -202,10 +179,7 @@ const uploadAvatar = () => {
         <!-- User Avatar & Info -->
         <div class="user-header">
           <div class="avatar-container" @click="uploadAvatar">
-            <div v-if="userData.avatar" class="avatar-image">
-              <img :src="userData.avatar" alt="Avatar" />
-            </div>
-            <div v-else class="avatar-placeholder">
+            <div class="avatar-placeholder">
               {{ userInitials }}
             </div>
             <div class="avatar-overlay">
@@ -213,13 +187,13 @@ const uploadAvatar = () => {
             </div>
           </div>
           <div class="user-info">
-            <h2 class="user-name">{{ userData.firstName }} {{ userData.lastName }}</h2>
-            <p class="user-email">{{ userData.email }}</p>
+            <h2 class="user-name">{{ authStore.displayName || authStore.user?.username }}</h2>
+            <p class="user-email">{{ authStore.user?.email }}</p>
+            <p class="user-profile-details" v-if="authStore.user?.first_name || authStore.user?.last_name">
+              {{ authStore.user?.first_name }} {{ authStore.user?.last_name }}
+            </p>
             <div class="user-badges">
-              <span v-if="userData.isPremium" class="badge premium">
-                <Crown :size="12" /> Premium
-              </span>
-              <span v-else class="badge free">Free Plan</span>
+              <span class="badge free">Free Plan</span>
               <span class="badge member">Member since {{ memberSince }}</span>
             </div>
           </div>
@@ -266,7 +240,7 @@ const uploadAvatar = () => {
           <div class="form-group">
             <label class="form-label">First Name</label>
             <input 
-              v-model="profileForm.firstName" 
+              v-model="profileForm.first_name" 
               type="text" 
               class="form-input"
               :disabled="!isEditing"
@@ -277,7 +251,7 @@ const uploadAvatar = () => {
           <div class="form-group">
             <label class="form-label">Last Name</label>
             <input 
-              v-model="profileForm.lastName" 
+              v-model="profileForm.last_name" 
               type="text" 
               class="form-input"
               :disabled="!isEditing"
@@ -299,11 +273,11 @@ const uploadAvatar = () => {
           <div class="form-group">
             <label class="form-label">Email</label>
             <input 
-              v-model="profileForm.email" 
+              :value="authStore.user?.email" 
               type="email" 
               class="form-input"
-              :disabled="!isEditing"
-              placeholder="Enter email"
+              disabled
+              placeholder="Email cannot be changed here"
             />
           </div>
 
@@ -388,7 +362,7 @@ const uploadAvatar = () => {
 
         <!-- Premium Section -->
         <div v-if="activeSection === 'premium'" class="section-content">
-          <div v-if="userData.isPremium" class="premium-status active">
+          <div v-if="false" class="premium-status active">
             <Crown :size="32" color="#a6c3eb" />
             <h3>You're a Premium Member!</h3>
             <p>Enjoy unlimited VisioBooks, priority processing, and exclusive features.</p>

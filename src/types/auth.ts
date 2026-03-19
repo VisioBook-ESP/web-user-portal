@@ -1,6 +1,5 @@
 // src/types/auth.ts
-
-import type { User } from './user';
+// Matches the core-user-service API request/response shapes.
 
 export interface LoginCredentials {
   email: string;
@@ -8,17 +7,17 @@ export interface LoginCredentials {
   rememberMe?: boolean;
 }
 
+/** POST /api/v1/auth/register body */
 export interface RegisterData {
   email: string;
   username: string;
   password: string;
-  passwordConfirm: string;
-  firstName?: string;
-  lastName?: string;
+  first_name?: string;
+  last_name?: string;
 }
 
-export interface AuthResponse {
-  user: User;
-  accessToken: string;
-  refreshToken: string;
+/** Response from POST /api/v1/auth/login and /api/v1/auth/register */
+export interface AuthTokenResponse {
+  access_token: string;
+  token_type: string;
 }

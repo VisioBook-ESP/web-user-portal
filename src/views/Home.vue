@@ -25,6 +25,14 @@ const isDragging = ref(false);
 const hasUploadedFile = computed(() => uploadedFile.value !== null);
 
 // File upload methods
+const handleFileInputClick = (event: Event) => {
+  if (!authStore.isAuthenticated) {
+    event.preventDefault();
+    uiStore.openLoginModal();
+    return;
+  }
+};
+
 const handleFileSelect = (event: Event) => {
   const input = event.target as HTMLInputElement;
   if (input.files && input.files.length > 0) {
@@ -94,21 +102,25 @@ const handleModalClose = () => {
 
 // Scanner (disabled for now)
 const openScanner = () => {
+  if (!authStore.isAuthenticated) {
+    uiStore.openLoginModal();
+    return;
+  }
   uiStore.showInfo('Scanner feature coming soon!');
 };
 
 const features = [
   {
     title: 'Upload a text',
-    description: 'Writing for websites is both simple and complex. On the one hand, all you need to do is say what you mean and in your words.',
+    description: 'Upload a PDF file and let VisioBook do the rest. We\'ll extract the content, analyze it, and generate a beautiful visual book for you.',
   },
   {
     title: 'Or scan a text',
-    description: 'Are you thinking of keywords you should rank for? Are you including links in your text to additional information?',
+    description: 'Have a physical book or document? Use our scanning feature to capture it with your phone\'s camera. We\'ll process the images and turn them into a digital VisioBook.',
   },
   {
     title: 'Enjoy',
-    description: 'There\'s a theory that people read in an F-shape pattern, and that this should influence how you structure content on your website.',
+    description: ' Once your VisioBook is ready, you can view it online and share it with friends. It\'s the perfect way to bring your texts to life!',
   },
 ];
 </script>
@@ -139,6 +151,7 @@ const features = [
               id="home-file-upload"
               accept=".pdf"
               class="file-input"
+              @click="handleFileInputClick"
               @change="handleFileSelect"
             />
             <label for="home-file-upload" class="action-icon-label">

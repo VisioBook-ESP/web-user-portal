@@ -1,63 +1,48 @@
 // src/services/api/authApi.ts
+// Endpoints provided by core-user-service
+//   POST /api/v1/auth/login    → { access_token, token_type }
+//   POST /api/v1/auth/register → { access_token, token_type }
+//   GET  /api/v1/users/me      → User  (authenticated)
+
 import { api } from './baseApi';
-import type { LoginCredentials, RegisterData, AuthResponse, User } from '@/types';
+import type { LoginCredentials, RegisterData, AuthTokenResponse } from '@/types';
+import type { User } from '@/types';
 import { TokenService } from '@/services/auth/tokenService';
 
 export const authApi = {
   /**
-   * Login user
+   * Login — POST /api/v1/auth/login
+   * The backend expects { email, password } (OAuth2-style form OR JSON body accepted).
    */
-  async login(credentials: LoginCredentials): Promise<AuthResponse> {
-    const response = await api.post<AuthResponse>('/auth/login', credentials);
-    TokenService.setTokens(response.accessToken, response.refreshToken);
+  async login(credentials: LoginCredentials): Promise<AuthTokenResponse> {
+    const response = await api.post<AuthTokenResponse>('/auth/login', {
+      email: credentials.email,
+      password: credentials.password,
+    });
+    TokenService.setToken(response.access_token);
     return response;
   },
 
   /**
-   * Register new user
+   * Register — POST /api/v1/auth/register
    */
-  async register(data: RegisterData): Promise<AuthResponse> {
-    const response = await api.post<AuthResponse>('/auth/register', data);
-    TokenService.setTokens(response.accessToken, response.refreshToken);
+  async register(data: RegisterData): Promise<AuthTokenResponse> {
+    const response = await api.post<AuthTokenResponse>('/auth/register', data);
+    TokenService.setToken(response.access_token);
     return response;
   },
 
   /**
-   * Logout user
-   */
-  async logout(): Promise<void> {
-    try {
-      await api.post('/auth/logout');
-    } finally {
-      TokenService.clearTokens();
-    }
-  },
-
-  /**
-   * Get current user profile
+   * Get the authenticated user — GET /api/v1/users/me
    */
   async getCurrentUser(): Promise<User> {
-    return api.get<User>('/auth/me');
+    return api.get<User>('/users/me');
   },
 
   /**
-   * Request password reset
+   * Logout — no server endpoint; just discards the local token.
    */
-  async requestPasswordReset(email: string): Promise<void> {
-    return api.post('/auth/password-reset/request', { email });
-  },
-
-  /**
-   * Reset password with token
-   */
-  async resetPassword(token: string, newPassword: string): Promise<void> {
-    return api.post('/auth/password-reset/confirm', { token, newPassword });
-  },
-
-  /**
-   * Verify email with token
-   */
-  async verifyEmail(token: string): Promise<void> {
-    return api.post('/auth/verify-email', { token });
+  logout(): void {
+    TokenService.clearTokens();
   },
 };

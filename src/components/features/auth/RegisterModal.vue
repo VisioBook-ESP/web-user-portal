@@ -14,7 +14,10 @@ const { gradientStyle } = useGradientBackground();
 // Form state
 const form = ref({
   email: '',
+  username: '',
   password: '',
+  first_name: '',
+  last_name: '',
 });
 
 const isLoading = ref(false);
@@ -24,18 +27,25 @@ const errors = ref<Record<string, string>>({});
 // Validation schema
 const registerSchema = yup.object({
   email: yup.string().email('Invalid email address').required('Email is required'),
+  username: yup
+    .string()
+    .min(3, 'Username must be at least 3 characters')
+    .required('Username is required'),
   password: yup
     .string()
     .min(8, 'Password must be at least 8 characters')
-    .matches(/[a-z]/, 'Must contain lowercase letter')
-    .matches(/[A-Z]/, 'Must contain uppercase letter')
-    .matches(/[0-9]/, 'Must contain a number')
     .required('Password is required'),
 });
 
 // Computed
 const isFormValid = computed(() => {
-  return form.value.email && form.value.password && acceptTerms.value && Object.keys(errors.value).length === 0;
+  return (
+    form.value.email &&
+    form.value.username &&
+    form.value.password &&
+    acceptTerms.value &&
+    Object.keys(errors.value).length === 0
+  );
 });
 
 // Methods
@@ -72,9 +82,10 @@ const handleSubmit = async () => {
   try {
     await authStore.register({
       email: form.value.email,
-      username: form.value.email.split('@')[0],
+      username: form.value.username,
       password: form.value.password,
-      passwordConfirm: form.value.password,
+      first_name: form.value.first_name || undefined,
+      last_name: form.value.last_name || undefined,
     });
 
     uiStore.showSuccess('Account created successfully!');
@@ -119,6 +130,37 @@ const closeModal = () => {
             @blur="validateField('email')"
           />
           <span v-if="errors.email" class="error-message">{{ errors.email }}</span>
+        </div>
+
+        <div class="input-group">
+          <input
+            v-model="form.username"
+            type="text"
+            placeholder="Choose a username"
+            class="auth-input"
+            :class="{ 'has-error': errors.username }"
+            @blur="validateField('username')"
+          />
+          <span v-if="errors.username" class="error-message">{{ errors.username }}</span>
+        </div>
+
+        <div class="input-row">
+          <div class="input-group">
+            <input
+              v-model="form.first_name"
+              type="text"
+              placeholder="First name (optional)"
+              class="auth-input"
+            />
+          </div>
+          <div class="input-group">
+            <input
+              v-model="form.last_name"
+              type="text"
+              placeholder="Last name (optional)"
+              class="auth-input"
+            />
+          </div>
         </div>
 
         <div class="input-group">
@@ -243,6 +285,15 @@ const closeModal = () => {
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.input-row {
+  display: flex;
+  gap: 12px;
+
+  .input-group {
+    flex: 1;
+  }
 }
 
 .input-group {

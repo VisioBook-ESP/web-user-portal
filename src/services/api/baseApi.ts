@@ -1,11 +1,12 @@
 // src/services/api/baseApi.ts
+// core-user-service uses JWT RS256 with no refresh-token endpoint.
+// On 401 we simply clear the stored token and redirect to home.
 import axios, { AxiosInstance, AxiosError, InternalAxiosRequestConfig } from 'axios';
 import type { ApiError } from '@/types';
 import { TokenService } from '@/services/auth/tokenService';
 
 class ApiService {
   private instance: AxiosInstance;
-  private refreshTokenPromise: Promise<string> | null = null;
 
   constructor() {
     this.instance = axios.create({
@@ -20,7 +21,7 @@ class ApiService {
   }
 
   private setupInterceptors() {
-    // Request interceptor
+    // Attach Bearer token to every request when present
     this.instance.interceptors.request.use(
       (config: InternalAxiosRequestConfig) => {
         const token = TokenService.getAccessToken();
@@ -32,38 +33,24 @@ class ApiService {
       (error) => Promise.reject(error)
     );
 
-    // Response interceptor
+    // Normalise error shape; on 401 clear auth and go home
     this.instance.interceptors.response.use(
       (response) => response.data,
-      async (error: AxiosError<ApiError>) => {
-        const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
-
-        // Handle 401 errors (token expired)
-        if (error.response?.status === 401 && !originalRequest._retry) {
-          originalRequest._retry = true;
-
-          try {
-            // Refresh token
-            const newToken = await this.refreshToken();
-            
-            // Retry original request with new token
-            if (originalRequest.headers) {
-              originalRequest.headers.Authorization = `Bearer ${newToken}`;
-            }
-            return this.instance(originalRequest);
-          } catch (refreshError) {
-            // Refresh failed, logout user
-            TokenService.clearTokens();
-            window.location.href = '/login';
-            return Promise.reject(refreshError);
-          }
+      (error: AxiosError) => {
+        if (error.response?.status === 401) {
+          TokenService.clearTokens();
+          window.location.href = '/';
         }
 
-        // Handle other errors
+        const data = error.response?.data as any;
         const apiError: ApiError = {
           code: error.response?.status || 500,
-          message: error.response?.data?.message || 'An unexpected error occurred',
-          details: error.response?.data?.details,
+          // FastAPI validation errors surface as data.detail (string or array)
+          message:
+            (typeof data?.detail === 'string' ? data.detail : null) ||
+            data?.message ||
+            'An unexpected error occurred',
+          details: data?.detail,
         };
 
         return Promise.reject(apiError);
@@ -71,37 +58,6 @@ class ApiService {
     );
   }
 
-  private async refreshToken(): Promise<string> {
-    // Prevent multiple simultaneous refresh requests
-    if (this.refreshTokenPromise) {
-      return this.refreshTokenPromise;
-    }
-
-    this.refreshTokenPromise = (async () => {
-      try {
-        const refreshToken = TokenService.getRefreshToken();
-        if (!refreshToken) {
-          throw new Error('No refresh token available');
-        }
-
-        const response = await axios.post(
-          `${import.meta.env.VITE_API_URL}/auth/refresh`,
-          { refreshToken }
-        );
-
-        const { accessToken, refreshToken: newRefreshToken } = response.data;
-        TokenService.setTokens(accessToken, newRefreshToken);
-
-        return accessToken;
-      } finally {
-        this.refreshTokenPromise = null;
-      }
-    })();
-
-    return this.refreshTokenPromise;
-  }
-
-  // Public methods
   get<T = any>(url: string, config = {}) {
     return this.instance.get<T, T>(url, config);
   }
@@ -122,19 +78,15 @@ class ApiService {
     return this.instance.delete<T, T>(url, config);
   }
 
-  // Helper for file uploads
   upload<T = any>(url: string, file: File, onUploadProgress?: (progress: number) => void) {
     const formData = new FormData();
     formData.append('file', file);
 
     return this.instance.post<T, T>(url, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+      headers: { 'Content-Type': 'multipart/form-data' },
       onUploadProgress: (progressEvent) => {
         if (onUploadProgress && progressEvent.total) {
-          const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-          onUploadProgress(progress);
+          onUploadProgress(Math.round((progressEvent.loaded * 100) / progressEvent.total));
         }
       },
     });

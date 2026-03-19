@@ -21,15 +21,20 @@ const goHome = () => {
       </router-link>
 
       <nav class="nav-links">
-        <!-- Always show Login/Register for development testing -->
-        <button class="nav-btn" @click="uiStore.openLoginModal()">Login</button>
-        <button class="nav-btn" @click="uiStore.openRegisterModal()">Register</button>
+        <!-- Show Login/Register only when NOT authenticated -->
+        <template v-if="!authStore.isAuthenticated">
+          <button class="nav-btn" @click="uiStore.openLoginModal()">Login</button>
+          <button class="nav-btn" @click="uiStore.openRegisterModal()">Register</button>
+        </template>
         <!-- Authenticated user buttons -->
         <template v-if="authStore.isAuthenticated">
           <button class="nav-btn primary" @click="router.push('/dashboard')">Dashboard</button>
-          <button class="nav-btn profile-btn" @click="router.push('/profile')" title="Profile">
-            <User :size="20" />
-          </button>
+          <div class="profile-container">
+            <button class="nav-btn profile-btn" @click="router.push('/profile')" title="Profile">
+              <User :size="20" />
+            </button>
+            <span class="username-text">{{ authStore.user?.username }}</span>
+          </div>
         </template>
       </nav>
     </div>
@@ -44,7 +49,7 @@ const goHome = () => {
   right: 0;
   background: white;
   z-index: 100;
-  padding: 12px 0;
+  padding: 8px 0;
   border-bottom: 1px solid #f0f0f0;
 }
 
@@ -77,12 +82,16 @@ const goHome = () => {
 .nav-btn {
   background: none;
   border: none;
-  padding: 8px 16px;
+  padding: 6px 14px;
   font-size: 14px;
   color: #1a1a1a;
   cursor: pointer;
   font-weight: 500;
   transition: color 0.2s;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     color: #666;
@@ -102,12 +111,33 @@ const goHome = () => {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 8px;
+    padding: 0;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
+    flex-shrink: 0;
     
     &:hover {
       background: rgba(0, 0, 0, 0.05);
     }
+  }
+}
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+
+  .username-text {
+    font-size: 11px;
+    font-weight: 500;
+    color: #1a1a1a;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 60px;
+    line-height: 1;
   }
 }
 </style>

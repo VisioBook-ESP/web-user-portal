@@ -25,7 +25,7 @@ const routes: RouteRecordRaw[] = [
     path: '/dashboard',
     name: 'dashboard',
     component: () => import('@/views/DashboardView.vue'),
-    meta: { requiresAuth: false }, // TODO: Change to true when auth is implemented
+    meta: { requiresAuth: true },
   },
   {
     path: '/scanner',
@@ -49,13 +49,13 @@ const routes: RouteRecordRaw[] = [
     path: '/projects/:id/player',
     name: 'player',
     component: () => import('@/views/PlayerView.vue'),
-    meta: { requiresAuth: false }, // TODO: Change to true when auth is implemented
+    meta: { requiresAuth: true },
   },
   {
     path: '/projects/:id/edit',
     name: 'edit-project',
     component: () => import('@/views/EditProjectView.vue'),
-    meta: { requiresAuth: false }, // TODO: Change to true when auth is implemented
+    meta: { requiresAuth: true },
   },
   {
     path: '/history',

@@ -1,47 +1,33 @@
 // src/store/auth.ts
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import { authApi, userApi } from '@/services/api';
+import { authApi } from '@/services/api/authApi';
+import { userApi } from '@/services/api/userApi';
 import { TokenService } from '@/services/auth/tokenService';
-import type { User, LoginCredentials, RegisterData } from '@/types';
-
-// Mock user for development (remove when backend is connected)
-const MOCK_USER: User = {
-  id: '1',
-  email: 'user@visiobook.com',
-  firstName: 'John',
-  lastName: 'Doe',
-  createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString(),
-};
+import type { User, UpdateUserDto } from '@/types';
+import type { LoginCredentials, RegisterData } from '@/types';
+import { userInitials as calcInitials, userDisplayName } from '@/types/user';
 
 export const useAuthStore = defineStore('auth', () => {
-  // State - Initialize with mock user for development
-  const user = ref<User | null>(MOCK_USER);
+  // State
+  const user = ref<User | null>(null);
   const isLoading = ref(false);
   const error = ref<string | null>(null);
 
-  // Getters - Simplified for development (mock always authenticated)
-  const isAuthenticated = computed(() => !!user.value);
-  const userInitials = computed(() => {
-    if (!user.value) return '';
-    const first = user.value.firstName?.[0] || user.value.email[0];
-    const last = user.value.lastName?.[0] || user.value.email[1];
-    return (first + last).toUpperCase();
-  });
+  // Getters
+  const isAuthenticated = computed(() => !!user.value && TokenService.hasToken());
+  const userInitials = computed(() => (user.value ? calcInitials(user.value) : ''));
+  const displayName = computed(() => (user.value ? userDisplayName(user.value) : ''));
 
   // Actions
   async function login(credentials: LoginCredentials): Promise<void> {
     isLoading.value = true;
     error.value = null;
-
     try {
-      const response = await authApi.login(credentials);
-      user.value = response.user;
-
-      if (credentials.rememberMe) {
-        localStorage.setItem('rememberMe', 'true');
-      }
+      // Step 1: get JWT
+      await authApi.login(credentials);
+      // Step 2: fetch the user profile with the new token
+      user.value = await authApi.getCurrentUser();
     } catch (err: any) {
       error.value = err.message || 'Login failed';
       throw err;
@@ -53,10 +39,9 @@ export const useAuthStore = defineStore('auth', () => {
   async function register(data: RegisterData): Promise<void> {
     isLoading.value = true;
     error.value = null;
-
     try {
-      const response = await authApi.register(data);
-      user.value = response.user;
+      await authApi.register(data);
+      user.value = await authApi.getCurrentUser();
     } catch (err: any) {
       error.value = err.message || 'Registration failed';
       throw err;
@@ -65,51 +50,32 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function logout(): Promise<void> {
-    isLoading.value = true;
-
-    try {
-      await authApi.logout();
-    } catch (err) {
-      console.error('Logout error:', err);
-    } finally {
-      // Clear state
-      user.value = null;
-      error.value = null;
-
-      // Clear storage
-      localStorage.removeItem('rememberMe');
-
-      isLoading.value = false;
-    }
+  function logout(): void {
+    authApi.logout();
+    user.value = null;
+    error.value = null;
   }
 
   async function fetchProfile(): Promise<void> {
-    if (!TokenService.getAccessToken()) return;
-
+    if (!TokenService.hasToken()) return;
     isLoading.value = true;
     error.value = null;
-
     try {
-      const profile = await authApi.getCurrentUser();
-      user.value = profile;
+      user.value = await authApi.getCurrentUser();
     } catch (err: any) {
-      error.value = err.message || 'Failed to fetch profile';
-      throw err;
+      // Token is probably expired/invalid — clear it
+      logout();
     } finally {
       isLoading.value = false;
     }
   }
 
-  async function updateProfile(data: Partial<User>): Promise<void> {
+  async function updateProfile(data: UpdateUserDto): Promise<void> {
     if (!user.value) return;
-
     isLoading.value = true;
     error.value = null;
-
     try {
-      const updatedUser = await userApi.updateUser(user.value.id, data);
-      user.value = updatedUser;
+      user.value = await userApi.updateMe(data);
     } catch (err: any) {
       error.value = err.message || 'Failed to update profile';
       throw err;
@@ -118,9 +84,10 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  /** Call once on app start to restore session from stored token */
   function initializeAuth(): void {
-    if (TokenService.hasValidTokens()) {
-      fetchProfile().catch(() => logout());
+    if (TokenService.hasToken()) {
+      fetchProfile();
     }
   }
 
@@ -129,11 +96,10 @@ export const useAuthStore = defineStore('auth', () => {
     user,
     isLoading,
     error,
-    
     // Getters
     isAuthenticated,
     userInitials,
-    
+    displayName,
     // Actions
     login,
     register,
@@ -143,3 +109,4 @@ export const useAuthStore = defineStore('auth', () => {
     initializeAuth,
   };
 });
+
