@@ -1,26 +1,29 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useUIStore } from '@/stores/ui';
-import { useGradientBackground } from '@/composables/useGradientBackground';
-import api from '@/services/api';
-import * as yup from 'yup';
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { useUIStore } from "@/store/ui";
+import { useGradientBackground } from "@/composables/useGradientBackground";
+import api from "@/services/api";
+import * as yup from "yup";
 
 const router = useRouter();
 const uiStore = useUIStore();
 const { gradientStyle } = useGradientBackground();
 
-const email = ref('');
+const email = ref("");
 const isLoading = ref(false);
 const emailSent = ref(false);
-const error = ref('');
+const error = ref("");
 
-const emailSchema = yup.string().email('Invalid email address').required('Email is required');
+const emailSchema = yup
+  .string()
+  .email("Invalid email address")
+  .required("Email is required");
 
 const validateEmail = async () => {
   try {
     await emailSchema.validate(email.value);
-    error.value = '';
+    error.value = "";
     return true;
   } catch (err: any) {
     error.value = err.message;
@@ -35,11 +38,13 @@ const handleSubmit = async () => {
   isLoading.value = true;
 
   try {
-    await api.post('/auth/forgot-password', { email: email.value });
+    await api.post("/auth/forgot-password", { email: email.value });
     emailSent.value = true;
-    uiStore.showSuccess('Password reset email sent! Check your inbox.');
+    uiStore.showSuccess("Password reset email sent! Check your inbox.");
   } catch (err: any) {
-    uiStore.showError(err.message || 'Failed to send reset email. Please try again.');
+    uiStore.showError(
+      err.message || "Failed to send reset email. Please try again.",
+    );
   } finally {
     isLoading.value = false;
   }
@@ -60,13 +65,17 @@ const handleSubmit = async () => {
                   size="48"
                   class="mb-2"
                 >
-                  {{ emailSent ? 'mdi-email-check' : 'mdi-lock-reset' }}
+                  {{ emailSent ? "mdi-email-check" : "mdi-lock-reset" }}
                 </v-icon>
                 <h1 class="text-h4 font-weight-bold text-primary">
-                  {{ emailSent ? 'Check Your Email' : 'Forgot Password?' }}
+                  {{ emailSent ? "Check Your Email" : "Forgot Password?" }}
                 </h1>
                 <p class="text-subtitle-1 text-grey-darken-1 mt-2">
-                  {{ emailSent ? 'We sent you a reset link' : 'No worries, we\'ll send you reset instructions' }}
+                  {{
+                    emailSent
+                      ? "We sent you a reset link"
+                      : "No worries, we'll send you reset instructions"
+                  }}
                 </p>
               </div>
             </v-card-title>
@@ -110,12 +119,9 @@ const handleSubmit = async () => {
               </template>
 
               <template v-else>
-                <v-alert
-                  type="success"
-                  variant="tonal"
-                  class="mb-4"
-                >
-                  We've sent a password reset link to <strong>{{ email }}</strong>
+                <v-alert type="success" variant="tonal" class="mb-4">
+                  We've sent a password reset link to
+                  <strong>{{ email }}</strong>
                 </v-alert>
 
                 <p class="text-body-2 text-grey-darken-1 mb-4">

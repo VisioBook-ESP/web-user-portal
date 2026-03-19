@@ -2,7 +2,7 @@
 // core-user-service issues a single JWT (RS256) — no refresh token endpoint exists.
 
 export class TokenService {
-  private static readonly ACCESS_TOKEN_KEY = 'vb_access_token';
+  private static readonly ACCESS_TOKEN_KEY = "vb_access_token";
 
   static getAccessToken(): string | null {
     return localStorage.getItem(this.ACCESS_TOKEN_KEY);

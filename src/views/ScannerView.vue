@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useGradientBackground } from '@/composables/useGradientBackground';
+import { ref } from "vue";
+import { useGradientBackground } from "@/composables/useGradientBackground";
 
-const message = ref('Scanner View');
+const message = ref("Scanner View");
 const { gradientStyle } = useGradientBackground();
 </script>
 

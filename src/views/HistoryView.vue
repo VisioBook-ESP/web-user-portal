@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useGradientBackground } from '@/composables/useGradientBackground';
+import { ref } from "vue";
+import { useGradientBackground } from "@/composables/useGradientBackground";
 
-const title = ref('History');
+const title = ref("History");
 const { gradientStyle } = useGradientBackground();
 </script>
 

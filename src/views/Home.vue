@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
-import { useAuthStore } from '@/store/auth';
-import { useUIStore } from '@/store/ui';
-import Navbar from '@/components/layout/Navbar/Navbar.vue';
-import Footer from '@/components/layout/Footer/Footer.vue';
-import ProjectConfigModal from '@/components/features/dashboard/ProjectConfigModal.vue';
-import { Upload, ScanText } from 'lucide-vue-next';
-import { useGradientBackground } from '@/composables/useGradientBackground';
-import type { ProjectConfig } from '@/types/projects';
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "@/store/auth";
+import { useUIStore } from "@/store/ui";
+import Navbar from "@/components/layout/Navbar/Navbar.vue";
+import Footer from "@/components/layout/Footer/Footer.vue";
+import ProjectConfigModal from "@/components/features/dashboard/ProjectConfigModal.vue";
+import { Upload, ScanText } from "lucide-vue-next";
+import { useGradientBackground } from "@/composables/useGradientBackground";
+import type { ProjectConfig } from "@/types/projects";
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -17,7 +17,7 @@ const { gradientStyle } = useGradientBackground();
 
 // Upload state
 const uploadedFile = ref<File | null>(null);
-const projectTitle = ref('');
+const projectTitle = ref("");
 const showConfigModal = ref(false);
 const isDragging = ref(false);
 
@@ -52,7 +52,7 @@ const handleDragLeave = () => {
 const handleDrop = (event: DragEvent) => {
   event.preventDefault();
   isDragging.value = false;
-  
+
   const files = event.dataTransfer?.files;
   if (files && files.length > 0) {
     processFile(files[0]);
@@ -61,43 +61,43 @@ const handleDrop = (event: DragEvent) => {
 
 const processFile = (file: File) => {
   // Check if file is PDF
-  if (file.type !== 'application/pdf') {
-    uiStore.showError('Please upload a PDF file');
+  if (file.type !== "application/pdf") {
+    uiStore.showError("Please upload a PDF file");
     return;
   }
 
   // Check file size (max 50MB)
   const maxSize = 50 * 1024 * 1024;
   if (file.size > maxSize) {
-    uiStore.showError('File size must be less than 50MB');
+    uiStore.showError("File size must be less than 50MB");
     return;
   }
 
   uploadedFile.value = file;
   // Extract title from filename (remove extension)
-  projectTitle.value = file.name.replace(/\.pdf$/i, '');
+  projectTitle.value = file.name.replace(/\.pdf$/i, "");
   uiStore.showSuccess(`File "${file.name}" uploaded successfully`);
-  
+
   // Automatically open the config modal
   showConfigModal.value = true;
 };
 
 const handleGenerate = (config: ProjectConfig, ocrText: string) => {
   showConfigModal.value = false;
-  uiStore.showInfo('Starting VisioBook generation...');
-  
+  uiStore.showInfo("Starting VisioBook generation...");
+
   // TODO: Call API to create project and start workflow
-  console.log('Config:', config);
-  console.log('OCR Text:', ocrText);
-  
+  console.log("Config:", config);
+  console.log("OCR Text:", ocrText);
+
   // Redirect to dashboard or project detail
-  router.push('/dashboard');
+  router.push("/dashboard");
 };
 
 const handleModalClose = () => {
   showConfigModal.value = false;
   uploadedFile.value = null;
-  projectTitle.value = '';
+  projectTitle.value = "";
 };
 
 // Scanner (disabled for now)
@@ -106,21 +106,24 @@ const openScanner = () => {
     uiStore.openLoginModal();
     return;
   }
-  uiStore.showInfo('Scanner feature coming soon!');
+  uiStore.showInfo("Scanner feature coming soon!");
 };
 
 const features = [
   {
-    title: 'Upload a text',
-    description: 'Upload a PDF file and let VisioBook do the rest. We\'ll extract the content, analyze it, and generate a beautiful visual book for you.',
+    title: "Upload a text",
+    description:
+      "Upload a PDF file and let VisioBook do the rest. We'll extract the content, analyze it, and generate a beautiful visual book for you.",
   },
   {
-    title: 'Or scan a text',
-    description: 'Have a physical book or document? Use our scanning feature to capture it with your phone\'s camera. We\'ll process the images and turn them into a digital VisioBook.',
+    title: "Or scan a text",
+    description:
+      "Have a physical book or document? Use our scanning feature to capture it with your phone's camera. We'll process the images and turn them into a digital VisioBook.",
   },
   {
-    title: 'Enjoy',
-    description: ' Once your VisioBook is ready, you can view it online and share it with friends. It\'s the perfect way to bring your texts to life!',
+    title: "Enjoy",
+    description:
+      " Once your VisioBook is ready, you can view it online and share it with friends. It's the perfect way to bring your texts to life!",
   },
 ];
 </script>
@@ -134,14 +137,18 @@ const features = [
     <main class="main-content">
       <section class="hero-section">
         <div class="brand-logo">
-          <img src="/assets/images/logo.png" alt="VISIOBOOK" class="hero-logo" />
+          <img
+            src="/assets/images/logo.png"
+            alt="VISIOBOOK"
+            class="hero-logo"
+          />
         </div>
 
         <!-- Action Icons -->
         <div class="action-icons">
-          <div 
+          <div
             class="action-icon"
-            :class="{ 'dragging': isDragging }"
+            :class="{ dragging: isDragging }"
             @dragover="handleDragOver"
             @dragleave="handleDragLeave"
             @drop="handleDrop"
@@ -167,9 +174,9 @@ const features = [
       <!-- Features Section -->
       <section class="features-section">
         <div class="features-container">
-          <div 
-            v-for="(feature, index) in features" 
-            :key="index" 
+          <div
+            v-for="(feature, index) in features"
+            :key="index"
             class="feature-card"
           >
             <h3 class="feature-title">{{ feature.title }}</h3>
@@ -247,9 +254,9 @@ const features = [
 
   &.dragging {
     transform: scale(1.15);
-    
+
     svg {
-      color: #4CAF50 !important;
+      color: #4caf50 !important;
     }
   }
 

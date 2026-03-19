@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useUIStore } from '@/store/ui';
-import { useGradientBackground } from '@/composables/useGradientBackground';
-import Navbar from '@/components/layout/Navbar/Navbar.vue';
-import ProjectConfigModal from '@/components/features/dashboard/ProjectConfigModal.vue';
-import { ChevronLeft } from 'lucide-vue-next';
-import type { ProjectConfig } from '@/types/projects';
+import { ref, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useUIStore } from "@/store/ui";
+import { useGradientBackground } from "@/composables/useGradientBackground";
+import Navbar from "@/components/layout/Navbar/Navbar.vue";
+import ProjectConfigModal from "@/components/features/dashboard/ProjectConfigModal.vue";
+import { ChevronLeft } from "lucide-vue-next";
+import type { ProjectConfig } from "@/types/projects";
 
 const route = useRoute();
 const router = useRouter();
@@ -20,27 +20,27 @@ const showConfigModal = ref(false);
 
 // Mock project data (will be replaced with API call)
 const project = ref({
-  id: '',
-  title: '',
-  ocrText: '',
+  id: "",
+  title: "",
+  ocrText: "",
   config: {
-    style: 'realistic' as const,
-    audioVoice: 'female' as const,
-    quality: 'high' as const,
+    style: "realistic" as const,
+    audioVoice: "female" as const,
+    quality: "high" as const,
   },
-  thumbnailUrl: '/assets/images/Projectimage.png',
+  thumbnailUrl: "/assets/images/Projectimage.png",
 });
 
 // Load project data
 onMounted(async () => {
   try {
     // TODO: Replace with actual API call
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
     // Mock data
     project.value = {
       id: projectId.value,
-      title: 'The Little Prince',
+      title: "The Little Prince",
       ocrText: `Chapter 1: The Beginning
 
 Once upon a time, in a land far away, there lived a young prince who dreamed of adventures beyond the stars. Every night, he would gaze at the sky and wonder about the mysteries of the universe.
@@ -51,33 +51,33 @@ Chapter 2: The Journey
 
 Letting himself be carried by the migratory birds, the little prince began his journey through the cosmos. He visited many strange planets, each inhabited by a single grown-up.`,
       config: {
-        style: 'realistic',
-        audioVoice: 'female',
-        quality: 'high',
+        style: "realistic",
+        audioVoice: "female",
+        quality: "high",
       },
-      thumbnailUrl: '/assets/images/Projectimage.png',
+      thumbnailUrl: "/assets/images/Projectimage.png",
     };
-    
+
     isLoading.value = false;
     showConfigModal.value = true;
   } catch (error: any) {
-    uiStore.showError('Failed to load project');
-    router.push('/dashboard');
+    uiStore.showError("Failed to load project");
+    router.push("/dashboard");
   }
 });
 
 // Handle save
 const handleSave = (config: ProjectConfig, ocrText: string) => {
   showConfigModal.value = false;
-  uiStore.showInfo('Saving changes...');
-  
+  uiStore.showInfo("Saving changes...");
+
   // TODO: Call API to update project
-  console.log('Saving project with config:', config);
-  console.log('OCR text:', ocrText);
-  
+  console.log("Saving project with config:", config);
+  console.log("OCR text:", ocrText);
+
   // Redirect back to player
   setTimeout(() => {
-    uiStore.showSuccess('Project updated successfully!');
+    uiStore.showSuccess("Project updated successfully!");
     router.push(`/projects/${projectId.value}/player`);
   }, 1000);
 };
@@ -153,6 +153,8 @@ const goBack = () => {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>

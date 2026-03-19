@@ -7,23 +7,23 @@
 //   PUT    /api/v1/users/{id}       → User  (own profile or admin)
 //   DELETE /api/v1/users/{id}       → 204   (admin only)
 
-import { api } from './baseApi';
-import type { User, UpdateUserDto } from '@/types';
+import { api } from "./baseApi";
+import type { User, UpdateUserDto } from "@/types";
 
 export const userApi = {
   /** Get the authenticated user's own profile */
   async getMe(): Promise<User> {
-    return api.get<User>('/users/me');
+    return api.get<User>("/users/me");
   },
 
   /** Update the authenticated user's own profile */
   async updateMe(data: UpdateUserDto): Promise<User> {
-    return api.put<User>('/users/me', data);
+    return api.put<User>("/users/me", data);
   },
 
   /** Delete the authenticated user's own account */
   async deleteMe(): Promise<void> {
-    return api.delete('/users/me');
+    return api.delete("/users/me");
   },
 
   /** Get any user by ID (own profile or admin) */

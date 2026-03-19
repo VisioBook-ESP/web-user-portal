@@ -8,6 +8,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: "latest",
     sourceType: "module",
+    parser: "@typescript-eslint/parser",
   },
   extends: [
     "eslint:recommended",
@@ -20,8 +21,17 @@ module.exports = {
     "vue/multi-word-component-names": "off",
     "vue/no-unused-vars": "warn",
     "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-explicit-any": "warn",
     "no-console": process.env.NODE_ENV === "production" ? "error" : "warn",
     "no-debugger": process.env.NODE_ENV === "production" ? "error" : "warn",
   },
   ignorePatterns: ["dist/**", "node_modules/**", "coverage/**", "*.min.js"],
+  overrides: [
+    {
+      files: ["tests/**/*.ts", "tests/**/*.tsx"],
+      rules: {
+        "@typescript-eslint/no-explicit-any": "off",
+      },
+    },
+  ],
 }

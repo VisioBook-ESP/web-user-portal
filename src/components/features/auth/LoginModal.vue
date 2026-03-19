@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
-import { useAuthStore } from '@/store/auth';
-import { useUIStore } from '@/store/ui';
-import { useGradientBackground } from '@/composables/useGradientBackground';
-import * as yup from 'yup';
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "@/store/auth";
+import { useUIStore } from "@/store/ui";
+import { useGradientBackground } from "@/composables/useGradientBackground";
+import * as yup from "yup";
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -13,8 +13,8 @@ const { gradientStyle } = useGradientBackground();
 
 // Form state
 const form = ref({
-  email: '',
-  password: '',
+  email: "",
+  password: "",
 });
 
 const isLoading = ref(false);
@@ -23,13 +23,24 @@ const errors = ref<Record<string, string>>({});
 
 // Validation schema
 const loginSchema = yup.object({
-  email: yup.string().email('Invalid email address').required('Email is required'),
-  password: yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
+  email: yup
+    .string()
+    .email("Invalid email address")
+    .required("Email is required"),
+  password: yup
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .required("Password is required"),
 });
 
 // Computed
 const isFormValid = computed(() => {
-  return form.value.email && form.value.password && acceptTerms.value && Object.keys(errors.value).length === 0;
+  return (
+    form.value.email &&
+    form.value.password &&
+    acceptTerms.value &&
+    Object.keys(errors.value).length === 0
+  );
 });
 
 // Methods
@@ -70,11 +81,11 @@ const handleSubmit = async () => {
       rememberMe: true,
     });
 
-    uiStore.showSuccess('Welcome back!');
+    uiStore.showSuccess("Welcome back!");
     uiStore.closeAuthModal();
-    router.push('/dashboard');
+    router.push("/dashboard");
   } catch (error: any) {
-    uiStore.showError(error.message || 'Login failed. Please try again.');
+    uiStore.showError(error.message || "Login failed. Please try again.");
   } finally {
     isLoading.value = false;
   }
@@ -90,11 +101,19 @@ const closeModal = () => {
 </script>
 
 <template>
-  <div class="auth-modal-overlay" :style="gradientStyle" @click.self="closeModal">
+  <div
+    class="auth-modal-overlay"
+    :style="gradientStyle"
+    @click.self="closeModal"
+  >
     <div class="auth-modal">
       <!-- Logo -->
       <div class="modal-logo">
-        <img src="/assets/images/short_logo.png" alt="VisioBook" class="logo-image" />
+        <img
+          src="/assets/images/short_logo.png"
+          alt="VisioBook"
+          class="logo-image"
+        />
       </div>
 
       <!-- Title -->
@@ -111,7 +130,9 @@ const closeModal = () => {
             :class="{ 'has-error': errors.email }"
             @blur="validateField('email')"
           />
-          <span v-if="errors.email" class="error-message">{{ errors.email }}</span>
+          <span v-if="errors.email" class="error-message">{{
+            errors.email
+          }}</span>
         </div>
 
         <div class="input-group">
@@ -123,7 +144,9 @@ const closeModal = () => {
             :class="{ 'has-error': errors.password }"
             @blur="validateField('password')"
           />
-          <span v-if="errors.password" class="error-message">{{ errors.password }}</span>
+          <span v-if="errors.password" class="error-message">{{
+            errors.password
+          }}</span>
         </div>
 
         <button
@@ -142,7 +165,8 @@ const closeModal = () => {
             <span class="checkmark"></span>
           </label>
           <span class="terms-text">
-            I Agree to the <a href="#" class="terms-link">Privacy Policy</a> and <a href="#" class="terms-link">Terms of Service</a>
+            I Agree to the <a href="#" class="terms-link">Privacy Policy</a> and
+            <a href="#" class="terms-link">Terms of Service</a>
           </span>
         </div>
       </form>
@@ -150,7 +174,9 @@ const closeModal = () => {
       <!-- Switch to Register -->
       <div class="switch-auth">
         <span>You do not have an account?</span>
-        <a href="#" @click.prevent="switchToRegister" class="switch-link">Create an account</a>
+        <a href="#" @click.prevent="switchToRegister" class="switch-link"
+          >Create an account</a
+        >
       </div>
     </div>
   </div>
@@ -178,7 +204,7 @@ const closeModal = () => {
   width: 100%;
   max-width: 380px;
   border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.8),
     inset 0 -1px 0 rgba(255, 255, 255, 0.3);
@@ -187,7 +213,7 @@ const closeModal = () => {
   overflow: hidden;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -334,8 +360,8 @@ const closeModal = () => {
   }
 
   input:checked ~ .checkmark {
-    background-color: #4CAF50;
-    border-color: #4CAF50;
+    background-color: #4caf50;
+    border-color: #4caf50;
   }
 
   .checkmark:after {

@@ -5,7 +5,7 @@ export interface Project {
   userId: string;
   title: string;
   description?: string;
-  status: 'draft' | 'processing' | 'completed' | 'failed';
+  status: "draft" | "processing" | "completed" | "failed";
   sourceText?: string;
   sourceFile?: string;
   config?: ProjectConfig;
@@ -15,10 +15,10 @@ export interface Project {
 }
 
 export interface ProjectConfig {
-  style: 'realistic' | 'cartoon' | 'anime' | 'comic';
-  audioVoice: 'male' | 'female' | 'neutral';
+  style: "realistic" | "cartoon" | "anime" | "comic";
+  audioVoice: "male" | "female" | "neutral";
   duration?: number;
-  quality: 'low' | 'medium' | 'high' | 'ultra';
+  quality: "low" | "medium" | "high" | "ultra";
   effects: string[];
 }
 
@@ -31,17 +31,17 @@ export interface CreateProjectData {
 }
 
 export interface ProjectFilters {
-  status?: Project['status'];
+  status?: Project["status"];
   search?: string;
-  sortBy?: 'createdAt' | 'updatedAt' | 'title';
-  sortOrder?: 'asc' | 'desc';
+  sortBy?: "createdAt" | "updatedAt" | "title";
+  sortOrder?: "asc" | "desc";
   page?: number;
   limit?: number;
 }
 
 export interface WorkflowStatus {
   projectId: string;
-  status: 'queued' | 'processing' | 'completed' | 'failed';
+  status: "queued" | "processing" | "completed" | "failed";
   currentStep: string;
   progress: number;
   steps: WorkflowStep[];
@@ -51,7 +51,7 @@ export interface WorkflowStatus {
 
 export interface WorkflowStep {
   name: string;
-  status: 'pending' | 'processing' | 'completed' | 'failed';
+  status: "pending" | "processing" | "completed" | "failed";
   progress: number;
   startedAt?: string;
   completedAt?: string;

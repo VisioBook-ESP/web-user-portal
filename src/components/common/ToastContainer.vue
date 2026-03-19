@@ -1,37 +1,37 @@
 <!-- src/components/common/ToastContainer.vue -->
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useUIStore } from '@/store/ui';
+import { computed } from "vue";
+import { useUIStore } from "@/store/ui";
 
 const uiStore = useUIStore();
 
 const toastIcon = computed(() => (type: string) => {
   switch (type) {
-    case 'success':
-      return 'mdi-check-circle';
-    case 'error':
-      return 'mdi-alert-circle';
-    case 'warning':
-      return 'mdi-alert';
-    case 'info':
-      return 'mdi-information';
+    case "success":
+      return "mdi-check-circle";
+    case "error":
+      return "mdi-alert-circle";
+    case "warning":
+      return "mdi-alert";
+    case "info":
+      return "mdi-information";
     default:
-      return 'mdi-information';
+      return "mdi-information";
   }
 });
 
 const toastColor = computed(() => (type: string) => {
   switch (type) {
-    case 'success':
-      return 'success';
-    case 'error':
-      return 'error';
-    case 'warning':
-      return 'warning';
-    case 'info':
-      return 'info';
+    case "success":
+      return "success";
+    case "error":
+      return "error";
+    case "warning":
+      return "warning";
+    case "info":
+      return "info";
     default:
-      return 'info';
+      return "info";
   }
 });
 </script>

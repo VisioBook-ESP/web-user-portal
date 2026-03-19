@@ -6,7 +6,7 @@ export interface User {
   id: number;
   email: string;
   username: string;
-  role: 'user' | 'admin';
+  role: "user" | "admin";
   first_name: string | null;
   last_name: string | null;
   created_at: string;
@@ -16,15 +16,15 @@ export interface User {
 // Convenience helpers so the rest of the UI can still use camelCase names.
 export function userDisplayName(user: User): string {
   if (user.first_name || user.last_name) {
-    return [user.first_name, user.last_name].filter(Boolean).join(' ');
+    return [user.first_name, user.last_name].filter(Boolean).join(" ");
   }
   return user.username;
 }
 
 export function userInitials(user: User): string {
   const first = user.first_name?.[0] ?? user.username[0];
-  const last  = user.last_name?.[0]  ?? user.username[1];
-  return (first + (last ?? '')).toUpperCase();
+  const last = user.last_name?.[0] ?? user.username[1];
+  return (first + (last ?? "")).toUpperCase();
 }
 
 /** DTO sent to PUT /api/v1/users/me */

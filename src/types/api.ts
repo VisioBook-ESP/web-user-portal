@@ -4,7 +4,7 @@ export interface Upload {
   id: string;
   filename: string;
   progress: number;
-  status: 'uploading' | 'processing' | 'completed' | 'failed';
+  status: "uploading" | "processing" | "completed" | "failed";
   error?: string;
 }
 
@@ -18,7 +18,7 @@ export interface UploadResult {
 
 export interface Toast {
   id: string;
-  type: 'success' | 'error' | 'warning' | 'info';
+  type: "success" | "error" | "warning" | "info";
   message: string;
   duration?: number;
 }

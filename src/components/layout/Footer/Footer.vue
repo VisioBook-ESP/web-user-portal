@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const footerLinks = ['Features', 'Learn more', 'Support'];
+const footerLinks = ["Features", "Learn more", "Support"];
 </script>
 
 <template>
@@ -7,40 +7,51 @@ const footerLinks = ['Features', 'Learn more', 'Support'];
     <div class="footer-container">
       <div class="footer-brand">
         <router-link to="/">
-          <img src="/assets/images/logo.png" alt="VisioBook" class="footer-logo-img" />
+          <img
+            src="/assets/images/logo.png"
+            alt="VisioBook"
+            class="footer-logo-img"
+          />
         </router-link>
       </div>
 
       <nav class="footer-nav">
-        <a 
-          v-for="link in footerLinks" 
-          :key="link" 
-          href="#" 
-          class="footer-link"
-        >
+        <a v-for="link in footerLinks" :key="link" href="#" class="footer-link">
           {{ link }}
         </a>
       </nav>
 
       <div class="footer-social">
         <a href="#" class="social-icon" aria-label="Instagram">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="2" y="2" width="20" height="20" rx="5"/>
-            <circle cx="12" cy="12" r="4"/>
-            <circle cx="18" cy="6" r="1" fill="currentColor"/>
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect x="2" y="2" width="20" height="20" rx="5" />
+            <circle cx="12" cy="12" r="4" />
+            <circle cx="18" cy="6" r="1" fill="currentColor" />
           </svg>
         </a>
         <a href="#" class="social-icon" aria-label="LinkedIn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="2" y="2" width="20" height="20" rx="2"/>
-            <line x1="8" y1="11" x2="8" y2="16"/>
-            <line x1="8" y1="8" x2="8" y2="8.01"/>
-            <path d="M12 16v-5a2 2 0 0 1 4 0v5"/>
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect x="2" y="2" width="20" height="20" rx="2" />
+            <line x1="8" y1="11" x2="8" y2="16" />
+            <line x1="8" y1="8" x2="8" y2="8.01" />
+            <path d="M12 16v-5a2 2 0 0 1 4 0v5" />
           </svg>
         </a>
         <a href="#" class="social-icon" aria-label="X (Twitter)">
           <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            <path
+              d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+            />
           </svg>
         </a>
       </div>

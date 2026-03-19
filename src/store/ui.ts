@@ -1,25 +1,25 @@
 // src/store/ui.ts
-import { defineStore } from 'pinia';
-import { ref } from 'vue';
-import type { Toast } from '@/types';
+import { defineStore } from "pinia";
+import { ref } from "vue";
+import type { Toast } from "@/types";
 
-export type AuthModalType = 'login' | 'register' | null;
+export type AuthModalType = "login" | "register" | null;
 
-export const useUIStore = defineStore('ui', () => {
+export const useUIStore = defineStore("ui", () => {
   // State
   const isLoading = ref(false);
   const toasts = ref<Toast[]>([]);
   const sidebarOpen = ref(true);
-  const theme = ref<'visiobookLight' | 'visiobookDark'>('visiobookLight');
+  const theme = ref<"visiobookLight" | "visiobookDark">("visiobookLight");
   const authModal = ref<AuthModalType>(null);
 
   // Auth Modal Actions
   function openLoginModal(): void {
-    authModal.value = 'login';
+    authModal.value = "login";
   }
 
   function openRegisterModal(): void {
-    authModal.value = 'register';
+    authModal.value = "register";
   }
 
   function closeAuthModal(): void {
@@ -27,14 +27,14 @@ export const useUIStore = defineStore('ui', () => {
   }
 
   function switchAuthModal(): void {
-    authModal.value = authModal.value === 'login' ? 'register' : 'login';
+    authModal.value = authModal.value === "login" ? "register" : "login";
   }
 
   // Actions
   function showToast(
     message: string,
-    type: Toast['type'] = 'info',
-    duration = 5000
+    type: Toast["type"] = "info",
+    duration = 5000,
   ): void {
     const id = `toast-${Date.now()}-${Math.random()}`;
     const toast: Toast = {
@@ -65,32 +65,33 @@ export const useUIStore = defineStore('ui', () => {
   }
 
   function toggleTheme(): void {
-    theme.value = theme.value === 'visiobookLight' ? 'visiobookDark' : 'visiobookLight';
-    localStorage.setItem('theme', theme.value);
+    theme.value =
+      theme.value === "visiobookLight" ? "visiobookDark" : "visiobookLight";
+    localStorage.setItem("theme", theme.value);
   }
 
   function initializeTheme(): void {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'visiobookLight' || savedTheme === 'visiobookDark') {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "visiobookLight" || savedTheme === "visiobookDark") {
       theme.value = savedTheme;
     }
   }
 
   // Toast shortcuts
   function showSuccess(message: string, duration = 5000): void {
-    showToast(message, 'success', duration);
+    showToast(message, "success", duration);
   }
 
   function showError(message: string, duration = 5000): void {
-    showToast(message, 'error', duration);
+    showToast(message, "error", duration);
   }
 
   function showWarning(message: string, duration = 5000): void {
-    showToast(message, 'warning', duration);
+    showToast(message, "warning", duration);
   }
 
   function showInfo(message: string, duration = 5000): void {
-    showToast(message, 'info', duration);
+    showToast(message, "info", duration);
   }
 
   return {
@@ -113,7 +114,7 @@ export const useUIStore = defineStore('ui', () => {
     toggleSidebar,
     toggleTheme,
     initializeTheme,
-    
+
     // Toast shortcuts
     showSuccess,
     showError,

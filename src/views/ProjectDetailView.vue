@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRoute } from 'vue-router';
-import { useGradientBackground } from '@/composables/useGradientBackground';
+import { ref } from "vue";
+import { useRoute } from "vue-router";
+import { useGradientBackground } from "@/composables/useGradientBackground";
 
 const route = useRoute();
 const projectId = ref(route.params.id);

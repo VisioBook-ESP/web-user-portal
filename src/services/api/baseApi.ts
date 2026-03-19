@@ -1,19 +1,23 @@
 // src/services/api/baseApi.ts
 // core-user-service uses JWT RS256 with no refresh-token endpoint.
 // On 401 we simply clear the stored token and redirect to home.
-import axios, { AxiosInstance, AxiosError, InternalAxiosRequestConfig } from 'axios';
-import type { ApiError } from '@/types';
-import { TokenService } from '@/services/auth/tokenService';
+import axios, {
+  AxiosInstance,
+  AxiosError,
+  InternalAxiosRequestConfig,
+} from "axios";
+import type { ApiError } from "@/types";
+import { TokenService } from "@/services/auth/tokenService";
 
 class ApiService {
   private instance: AxiosInstance;
 
   constructor() {
     this.instance = axios.create({
-      baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1',
+      baseURL: import.meta.env.VITE_API_URL || "http://localhost:8080/api/v1",
       timeout: 30000,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
 
@@ -30,7 +34,7 @@ class ApiService {
         }
         return config;
       },
-      (error) => Promise.reject(error)
+      (error) => Promise.reject(error),
     );
 
     // Normalise error shape; on 401 clear auth and go home
@@ -39,7 +43,7 @@ class ApiService {
       (error: AxiosError) => {
         if (error.response?.status === 401) {
           TokenService.clearTokens();
-          window.location.href = '/';
+          window.location.href = "/";
         }
 
         const data = error.response?.data as any;
@@ -47,14 +51,14 @@ class ApiService {
           code: error.response?.status || 500,
           // FastAPI validation errors surface as data.detail (string or array)
           message:
-            (typeof data?.detail === 'string' ? data.detail : null) ||
+            (typeof data?.detail === "string" ? data.detail : null) ||
             data?.message ||
-            'An unexpected error occurred',
+            "An unexpected error occurred",
           details: data?.detail,
         };
 
         return Promise.reject(apiError);
-      }
+      },
     );
   }
 
@@ -78,15 +82,21 @@ class ApiService {
     return this.instance.delete<T, T>(url, config);
   }
 
-  upload<T = any>(url: string, file: File, onUploadProgress?: (progress: number) => void) {
+  upload<T = any>(
+    url: string,
+    file: File,
+    onUploadProgress?: (progress: number) => void,
+  ) {
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append("file", file);
 
     return this.instance.post<T, T>(url, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
+      headers: { "Content-Type": "multipart/form-data" },
       onUploadProgress: (progressEvent) => {
         if (onUploadProgress && progressEvent.total) {
-          onUploadProgress(Math.round((progressEvent.loaded * 100) / progressEvent.total));
+          onUploadProgress(
+            Math.round((progressEvent.loaded * 100) / progressEvent.total),
+          );
         }
       },
     });

@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useUIStore } from '@/store/ui';
-import LoginModal from './LoginModal.vue';
-import RegisterModal from './RegisterModal.vue';
+import { computed } from "vue";
+import { useUIStore } from "@/store/ui";
+import LoginModal from "./LoginModal.vue";
+import RegisterModal from "./RegisterModal.vue";
 
 const uiStore = useUIStore();
 
-const showLoginModal = computed(() => uiStore.authModal === 'login');
-const showRegisterModal = computed(() => uiStore.authModal === 'register');
+const showLoginModal = computed(() => uiStore.authModal === "login");
+const showRegisterModal = computed(() => uiStore.authModal === "register");
 </script>
 
 <template>

@@ -1,12 +1,12 @@
 // src/services/api/projectsApi.ts
-import { api } from './baseApi';
+import { api } from "./baseApi";
 import type {
   Project,
   CreateProjectData,
   ProjectFilters,
   WorkflowStatus,
   VisioBook,
-} from '@/types';
+} from "@/types";
 
 interface PaginatedResponse<T> {
   data: T[];
@@ -20,8 +20,12 @@ export const projectsApi = {
   /**
    * Get all projects with filters
    */
-  async getProjects(filters?: ProjectFilters): Promise<PaginatedResponse<Project>> {
-    return api.get<PaginatedResponse<Project>>('/projects', { params: filters });
+  async getProjects(
+    filters?: ProjectFilters,
+  ): Promise<PaginatedResponse<Project>> {
+    return api.get<PaginatedResponse<Project>>("/projects", {
+      params: filters,
+    });
   },
 
   /**
@@ -38,23 +42,26 @@ export const projectsApi = {
     if (data.sourceFile) {
       // If there's a file, use upload endpoint
       const formData = new FormData();
-      formData.append('title', data.title);
-      if (data.description) formData.append('description', data.description);
-      if (data.config) formData.append('config', JSON.stringify(data.config));
-      formData.append('sourceFile', data.sourceFile);
+      formData.append("title", data.title);
+      if (data.description) formData.append("description", data.description);
+      if (data.config) formData.append("config", JSON.stringify(data.config));
+      formData.append("sourceFile", data.sourceFile);
 
-      return api.post<Project>('/projects', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+      return api.post<Project>("/projects", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
     }
 
-    return api.post<Project>('/projects', data);
+    return api.post<Project>("/projects", data);
   },
 
   /**
    * Update project
    */
-  async updateProject(projectId: string, data: Partial<Project>): Promise<Project> {
+  async updateProject(
+    projectId: string,
+    data: Partial<Project>,
+  ): Promise<Project> {
     return api.patch<Project>(`/projects/${projectId}`, data);
   },
 
@@ -98,7 +105,7 @@ export const projectsApi = {
    */
   async downloadVisioBook(projectId: string): Promise<Blob> {
     return api.get(`/projects/${projectId}/visiobook/download`, {
-      responseType: 'blob',
+      responseType: "blob",
     });
   },
 

@@ -34,7 +34,6 @@ export default defineConfig({
         manualChunks: {
           'vue-vendor': ['vue', 'vue-router', 'pinia'],
           'vuetify': ['vuetify'],
-          'video': ['hls.js'],
         },
       },
     },

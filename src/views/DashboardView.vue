@@ -1,20 +1,27 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
-import { useUIStore } from '@/store/ui';
-import { useGradientBackground } from '@/composables/useGradientBackground';
-import Navbar from '@/components/layout/Navbar/Navbar.vue';
-import Footer from '@/components/layout/Footer/Footer.vue';
-import ProjectConfigModal from '@/components/features/dashboard/ProjectConfigModal.vue';
-import { Upload, ScanText, Play, Pencil, Trash2, Share2 } from 'lucide-vue-next';
-import type { ProjectConfig } from '@/types/projects';
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
+import { useUIStore } from "@/store/ui";
+import { useGradientBackground } from "@/composables/useGradientBackground";
+import Navbar from "@/components/layout/Navbar/Navbar.vue";
+import Footer from "@/components/layout/Footer/Footer.vue";
+import ProjectConfigModal from "@/components/features/dashboard/ProjectConfigModal.vue";
+import {
+  Upload,
+  ScanText,
+  Play,
+  Pencil,
+  Trash2,
+  Share2,
+} from "lucide-vue-next";
+import type { ProjectConfig } from "@/types/projects";
 
 // Extended project type with scene images for mosaic display
 interface ProjectWithScenes {
   id: string;
   userId: string;
   title: string;
-  status: 'draft' | 'processing' | 'completed' | 'failed';
+  status: "draft" | "processing" | "completed" | "failed";
   sceneImages: string[]; // 4 images for mosaic
   createdAt: string;
 }
@@ -25,76 +32,76 @@ const { gradientStyle } = useGradientBackground();
 
 // State
 const uploadedFile = ref<File | null>(null);
-const projectTitle = ref('');
+const projectTitle = ref("");
 const showConfigModal = ref(false);
 const isDragging = ref(false);
 
 // Mock projects with scene images for mosaic display (will be replaced with API call)
 const myProjects = ref<ProjectWithScenes[]>([
   {
-    id: '1',
-    userId: 'user-1',
-    title: 'The Little Prince',
-    status: 'completed',
+    id: "1",
+    userId: "user-1",
+    title: "The Little Prince",
+    status: "completed",
     sceneImages: [
-      '/assets/images/Projectimage.png',
-      '/assets/images/Projectimage.png',
-      '/assets/images/Projectimage.png',
-      '/assets/images/Projectimage.png',
+      "/assets/images/Projectimage.png",
+      "/assets/images/Projectimage.png",
+      "/assets/images/Projectimage.png",
+      "/assets/images/Projectimage.png",
     ],
-    createdAt: '2026-03-01T10:00:00Z',
+    createdAt: "2026-03-01T10:00:00Z",
   },
   {
-    id: '2',
-    userId: 'user-1',
-    title: 'Adventure Story',
-    status: 'completed',
+    id: "2",
+    userId: "user-1",
+    title: "Adventure Story",
+    status: "completed",
     sceneImages: [
-      '/assets/images/Projectimage.png',
-      '/assets/images/Projectimage.png',
-      '/assets/images/Projectimage.png',
-      '/assets/images/Projectimage.png',
+      "/assets/images/Projectimage.png",
+      "/assets/images/Projectimage.png",
+      "/assets/images/Projectimage.png",
+      "/assets/images/Projectimage.png",
     ],
-    createdAt: '2026-02-28T10:00:00Z',
+    createdAt: "2026-02-28T10:00:00Z",
   },
   {
-    id: '3',
-    userId: 'user-1',
-    title: 'Fairy Tale',
-    status: 'completed',
+    id: "3",
+    userId: "user-1",
+    title: "Fairy Tale",
+    status: "completed",
     sceneImages: [
-      '/assets/images/Projectimage.png',
-      '/assets/images/Projectimage.png',
-      '/assets/images/Projectimage.png',
-      '/assets/images/Projectimage.png',
+      "/assets/images/Projectimage.png",
+      "/assets/images/Projectimage.png",
+      "/assets/images/Projectimage.png",
+      "/assets/images/Projectimage.png",
     ],
-    createdAt: '2026-02-27T10:00:00Z',
+    createdAt: "2026-02-27T10:00:00Z",
   },
   {
-    id: '4',
-    userId: 'user-1',
-    title: 'Science Fiction',
-    status: 'completed',
+    id: "4",
+    userId: "user-1",
+    title: "Science Fiction",
+    status: "completed",
     sceneImages: [
-      '/assets/images/Projectimage.png',
-      '/assets/images/Projectimage.png',
-      '/assets/images/Projectimage.png',
-      '/assets/images/Projectimage.png',
+      "/assets/images/Projectimage.png",
+      "/assets/images/Projectimage.png",
+      "/assets/images/Projectimage.png",
+      "/assets/images/Projectimage.png",
     ],
-    createdAt: '2026-02-26T10:00:00Z',
+    createdAt: "2026-02-26T10:00:00Z",
   },
   {
-    id: '5',
-    userId: 'user-1',
-    title: 'Mystery Novel',
-    status: 'completed',
+    id: "5",
+    userId: "user-1",
+    title: "Mystery Novel",
+    status: "completed",
     sceneImages: [
-      '/assets/images/Projectimage.png',
-      '/assets/images/Projectimage.png',
-      '/assets/images/Projectimage.png',
-      '/assets/images/Projectimage.png',
+      "/assets/images/Projectimage.png",
+      "/assets/images/Projectimage.png",
+      "/assets/images/Projectimage.png",
+      "/assets/images/Projectimage.png",
     ],
-    createdAt: '2026-02-25T10:00:00Z',
+    createdAt: "2026-02-25T10:00:00Z",
   },
 ]);
 
@@ -121,7 +128,7 @@ const handleDragLeave = () => {
 const handleDrop = (event: DragEvent) => {
   event.preventDefault();
   isDragging.value = false;
-  
+
   const files = event.dataTransfer?.files;
   if (files && files.length > 0) {
     processFile(files[0]);
@@ -130,27 +137,27 @@ const handleDrop = (event: DragEvent) => {
 
 const processFile = (file: File) => {
   // Check if file is PDF
-  if (file.type !== 'application/pdf') {
-    uiStore.showError('Please upload a PDF file');
+  if (file.type !== "application/pdf") {
+    uiStore.showError("Please upload a PDF file");
     return;
   }
 
   // Check file size (max 50MB)
   const maxSize = 50 * 1024 * 1024;
   if (file.size > maxSize) {
-    uiStore.showError('File size must be less than 50MB');
+    uiStore.showError("File size must be less than 50MB");
     return;
   }
 
   uploadedFile.value = file;
   // Extract title from filename (remove extension)
-  projectTitle.value = file.name.replace(/\.pdf$/i, '');
+  projectTitle.value = file.name.replace(/\.pdf$/i, "");
   uiStore.showSuccess(`File "${file.name}" uploaded successfully`);
 };
 
 const clearUpload = () => {
   uploadedFile.value = null;
-  projectTitle.value = '';
+  projectTitle.value = "";
 };
 
 const openConfigModal = () => {
@@ -160,19 +167,19 @@ const openConfigModal = () => {
 
 const handleGenerate = (config: ProjectConfig, ocrText: string) => {
   showConfigModal.value = false;
-  uiStore.showInfo('Starting VisioBook generation...');
-  
+  uiStore.showInfo("Starting VisioBook generation...");
+
   // TODO: Call API to create project and start workflow
-  console.log('Config:', config);
-  console.log('OCR Text:', ocrText);
-  
+  console.log("Config:", config);
+  console.log("OCR Text:", ocrText);
+
   // For now, redirect to a mock project detail
-  router.push('/projects/new');
+  router.push("/projects/new");
 };
 
 // Scanner (disabled for now)
 const openScanner = () => {
-  uiStore.showInfo('Scanner feature coming soon!');
+  uiStore.showInfo("Scanner feature coming soon!");
 };
 
 // Project actions
@@ -205,7 +212,7 @@ const shareProject = (projectId: string) => {
       <aside class="sidebar">
         <div class="sidebar-section">
           <!-- Upload Action -->
-          <div 
+          <div
             class="sidebar-action"
             @dragover="handleDragOver"
             @dragleave="handleDragLeave"
@@ -218,12 +225,16 @@ const shareProject = (projectId: string) => {
               class="file-input"
               @change="handleFileSelect"
             />
-            <label 
-              for="file-upload" 
+            <label
+              for="file-upload"
               class="sidebar-action-btn"
-              :class="{ 'dragging': isDragging, 'has-file': hasUploadedFile }"
+              :class="{ dragging: isDragging, 'has-file': hasUploadedFile }"
             >
-              <Upload :size="48" :color="hasUploadedFile ? '#4CAF50' : '#1a1a1a'" :stroke-width="1.5" />
+              <Upload
+                :size="48"
+                :color="hasUploadedFile ? '#4CAF50' : '#1a1a1a'"
+                :stroke-width="1.5"
+              />
               <span class="action-label">Upload PDF</span>
             </label>
           </div>
@@ -254,22 +265,25 @@ const shareProject = (projectId: string) => {
         <!-- My VisioBooks Section -->
         <section class="content-section">
           <div class="projects-row">
-            <div 
-              v-for="project in myProjects" 
-              :key="project.id" 
+            <div
+              v-for="project in myProjects"
+              :key="project.id"
               class="project-card"
               @click="openProject(project.id)"
             >
               <!-- Project Image -->
               <div class="project-image-container">
-                <img 
-                  :src="project.sceneImages[0]" 
+                <img
+                  :src="project.sceneImages[0]"
                   :alt="project.title"
                   class="project-image"
                 />
                 <!-- Play Button Overlay -->
                 <div class="card-overlay">
-                  <div class="play-button" @click.stop="openProject(project.id)">
+                  <div
+                    class="play-button"
+                    @click.stop="openProject(project.id)"
+                  >
                     <Play :size="24" color="#a6c3eb" fill="#a6c3eb" />
                   </div>
                 </div>
@@ -278,13 +292,25 @@ const shareProject = (projectId: string) => {
                 <div class="project-info-header">
                   <h3 class="project-title">{{ project.title }}</h3>
                   <div class="action-icons">
-                    <button class="action-icon-btn" @click.stop="editProject(project.id)" title="Edit">
+                    <button
+                      class="action-icon-btn"
+                      @click.stop="editProject(project.id)"
+                      title="Edit"
+                    >
                       <Pencil :size="16" color="#a6c3eb" />
                     </button>
-                    <button class="action-icon-btn" @click.stop="deleteProject(project.id)" title="Delete">
+                    <button
+                      class="action-icon-btn"
+                      @click.stop="deleteProject(project.id)"
+                      title="Delete"
+                    >
                       <Trash2 :size="16" color="#a6c3eb" />
                     </button>
-                    <button class="action-icon-btn" @click.stop="shareProject(project.id)" title="Share">
+                    <button
+                      class="action-icon-btn"
+                      @click.stop="shareProject(project.id)"
+                      title="Share"
+                    >
                       <Share2 :size="16" color="#a6c3eb" />
                     </button>
                   </div>
@@ -383,12 +409,12 @@ const shareProject = (projectId: string) => {
 
   &.dragging {
     background: rgba(76, 175, 80, 0.1);
-    border: 2px dashed #4CAF50;
+    border: 2px dashed #4caf50;
   }
 
   &.has-file {
     background: rgba(76, 175, 80, 0.1);
-    border-color: #4CAF50;
+    border-color: #4caf50;
   }
 }
 
@@ -609,7 +635,7 @@ const shareProject = (projectId: string) => {
     rgb(255, 237, 250),
     rgb(255, 237, 250)
   );
-  box-shadow: 
+  box-shadow:
     0 4px 16px rgba(0, 0, 0, 0.15),
     inset 0 1px 2px rgba(255, 255, 255, 0.6),
     inset 0 -1px 2px rgba(0, 0, 0, 0.05);

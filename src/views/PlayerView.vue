@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useGradientBackground } from '@/composables/useGradientBackground';
-import Navbar from '@/components/layout/Navbar/Navbar.vue';
-import { 
-  Play, 
-  Pause, 
-  SkipBack, 
-  SkipForward, 
-  Repeat, 
-  Volume2, 
+import { ref, computed, onMounted, onUnmounted, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useGradientBackground } from "@/composables/useGradientBackground";
+import Navbar from "@/components/layout/Navbar/Navbar.vue";
+import {
+  Play,
+  Pause,
+  SkipBack,
+  SkipForward,
+  Repeat,
+  Volume2,
   VolumeX,
   Maximize,
   Minimize,
   ChevronLeft,
   Pencil,
   Trash2,
-  Share2
-} from 'lucide-vue-next';
+  Share2,
+} from "lucide-vue-next";
 
 const route = useRoute();
 const router = useRouter();
@@ -32,7 +32,7 @@ const currentTime = ref(0);
 const duration = ref(0);
 const volume = ref(1);
 const isMuted = ref(false);
-const repeatMode = ref<'none' | 'all' | 'one'>('none');
+const repeatMode = ref<"none" | "all" | "one">("none");
 const isFullscreen = ref(false);
 const showControls = ref(true);
 const isDraggingProgress = ref(false);
@@ -40,9 +40,9 @@ const isDraggingProgress = ref(false);
 // Mock project data (will be replaced with API call)
 const project = ref({
   id: route.params.id as string,
-  title: 'The Little Prince',
-  videoUrl: '/assets/videos/sample.mp4', // Mock video URL
-  thumbnailUrl: '/assets/images/Projectimage.png',
+  title: "The Little Prince",
+  videoUrl: "/assets/videos/sample.mp4", // Mock video URL
+  thumbnailUrl: "/assets/images/Projectimage.png",
 });
 
 // Computed
@@ -55,19 +55,19 @@ const formattedCurrentTime = computed(() => formatTime(currentTime.value));
 const formattedDuration = computed(() => formatTime(duration.value));
 
 const repeatIcon = computed(() => {
-  return repeatMode.value === 'one' ? '1' : '';
+  return repeatMode.value === "one" ? "1" : "";
 });
 
 // Methods
 const formatTime = (seconds: number): string => {
   const mins = Math.floor(seconds / 60);
   const secs = Math.floor(seconds % 60);
-  return `${mins}:${secs.toString().padStart(2, '0')}`;
+  return `${mins}:${secs.toString().padStart(2, "0")}`;
 };
 
 const togglePlay = () => {
   if (!videoRef.value) return;
-  
+
   if (isPlaying.value) {
     videoRef.value.pause();
   } else {
@@ -88,13 +88,13 @@ const handleLoadedMetadata = () => {
 
 const handleEnded = () => {
   isPlaying.value = false;
-  if (repeatMode.value === 'one') {
+  if (repeatMode.value === "one") {
     if (videoRef.value) {
       videoRef.value.currentTime = 0;
       videoRef.value.play();
       isPlaying.value = true;
     }
-  } else if (repeatMode.value === 'all') {
+  } else if (repeatMode.value === "all") {
     // In a playlist context, this would go to next video
     if (videoRef.value) {
       videoRef.value.currentTime = 0;
@@ -109,7 +109,7 @@ const seekTo = (event: MouseEvent) => {
   const rect = progressBar.getBoundingClientRect();
   const percent = (event.clientX - rect.left) / rect.width;
   const newTime = percent * duration.value;
-  
+
   if (videoRef.value) {
     videoRef.value.currentTime = newTime;
     currentTime.value = newTime;
@@ -131,16 +131,19 @@ const skipBackward = () => {
 
 const skipForward = () => {
   if (!videoRef.value) return;
-  videoRef.value.currentTime = Math.min(duration.value, videoRef.value.currentTime + 10);
+  videoRef.value.currentTime = Math.min(
+    duration.value,
+    videoRef.value.currentTime + 10,
+  );
 };
 
 const toggleRepeat = () => {
-  if (repeatMode.value === 'none') {
-    repeatMode.value = 'all';
-  } else if (repeatMode.value === 'all') {
-    repeatMode.value = 'one';
+  if (repeatMode.value === "none") {
+    repeatMode.value = "all";
+  } else if (repeatMode.value === "all") {
+    repeatMode.value = "one";
   } else {
-    repeatMode.value = 'none';
+    repeatMode.value = "none";
   }
 };
 
@@ -155,7 +158,7 @@ const setVolume = (event: MouseEvent) => {
   const rect = volumeBar.getBoundingClientRect();
   const percent = (event.clientX - rect.left) / rect.width;
   volume.value = Math.max(0, Math.min(1, percent));
-  
+
   if (videoRef.value) {
     videoRef.value.volume = volume.value;
     isMuted.value = volume.value === 0;
@@ -163,9 +166,9 @@ const setVolume = (event: MouseEvent) => {
 };
 
 const toggleFullscreen = async () => {
-  const container = document.querySelector('.player-container');
+  const container = document.querySelector(".player-container");
   if (!container) return;
-  
+
   if (!document.fullscreenElement) {
     await container.requestFullscreen();
     isFullscreen.value = true;
@@ -184,32 +187,32 @@ const editProject = () => {
 };
 
 const deleteProject = () => {
-  console.log('Delete project:', project.value.id);
+  console.log("Delete project:", project.value.id);
   // TODO: Show confirmation and delete
 };
 
 const shareProject = () => {
-  console.log('Share project:', project.value.id);
+  console.log("Share project:", project.value.id);
   // TODO: Open share modal
 };
 
 // Keyboard shortcuts
 const handleKeydown = (event: KeyboardEvent) => {
   switch (event.code) {
-    case 'Space':
+    case "Space":
       event.preventDefault();
       togglePlay();
       break;
-    case 'ArrowLeft':
+    case "ArrowLeft":
       skipBackward();
       break;
-    case 'ArrowRight':
+    case "ArrowRight":
       skipForward();
       break;
-    case 'KeyM':
+    case "KeyM":
       toggleMute();
       break;
-    case 'KeyF':
+    case "KeyF":
       toggleFullscreen();
       break;
   }
@@ -217,11 +220,11 @@ const handleKeydown = (event: KeyboardEvent) => {
 
 // Lifecycle
 onMounted(() => {
-  window.addEventListener('keydown', handleKeydown);
+  window.addEventListener("keydown", handleKeydown);
 });
 
 onUnmounted(() => {
-  window.removeEventListener('keydown', handleKeydown);
+  window.removeEventListener("keydown", handleKeydown);
 });
 </script>
 
@@ -242,32 +245,36 @@ onUnmounted(() => {
       <div class="video-wrapper">
         <div class="video-area">
           <div class="video-container" @click="togglePlay">
-          <video
-            ref="videoRef"
-            class="video-player"
-            :poster="project.thumbnailUrl"
-            @timeupdate="handleTimeUpdate"
-            @loadedmetadata="handleLoadedMetadata"
-            @ended="handleEnded"
-          >
-            <source :src="project.videoUrl" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-          
-          <!-- Play overlay when paused -->
-          <div v-if="!isPlaying" class="play-overlay">
-            <div class="play-overlay-button">
-              <Play :size="44" color="#a6c3eb" fill="#a6c3eb" />
+            <video
+              ref="videoRef"
+              class="video-player"
+              :poster="project.thumbnailUrl"
+              @timeupdate="handleTimeUpdate"
+              @loadedmetadata="handleLoadedMetadata"
+              @ended="handleEnded"
+            >
+              <source :src="project.videoUrl" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+
+            <!-- Play overlay when paused -->
+            <div v-if="!isPlaying" class="play-overlay">
+              <div class="play-overlay-button">
+                <Play :size="44" color="#a6c3eb" fill="#a6c3eb" />
+              </div>
             </div>
           </div>
-        </div>
 
           <!-- Action Icons (Vertical Bar) -->
           <div class="video-actions">
             <button class="action-icon-btn" @click="editProject" title="Edit">
               <Pencil :size="20" color="#b3b3b3" />
             </button>
-            <button class="action-icon-btn" @click="deleteProject" title="Delete">
+            <button
+              class="action-icon-btn"
+              @click="deleteProject"
+              title="Delete"
+            >
               <Trash2 :size="20" color="#b3b3b3" />
             </button>
             <button class="action-icon-btn" @click="shareProject" title="Share">
@@ -284,7 +291,11 @@ onUnmounted(() => {
       <div class="controls-bar">
         <!-- Left: Now Playing Info (optional) -->
         <div class="controls-left">
-          <img :src="project.thumbnailUrl" :alt="project.title" class="now-playing-thumb" />
+          <img
+            :src="project.thumbnailUrl"
+            :alt="project.title"
+            class="now-playing-thumb"
+          />
           <div class="now-playing-info">
             <span class="now-playing-title">{{ project.title }}</span>
             <span class="now-playing-subtitle">VisioBook</span>
@@ -295,42 +306,76 @@ onUnmounted(() => {
         <div class="controls-center">
           <!-- Control Buttons -->
           <div class="control-buttons">
-            <button class="control-btn secondary" @click="skipBackward" title="Previous">
+            <button
+              class="control-btn secondary"
+              @click="skipBackward"
+              title="Previous"
+            >
               <SkipBack :size="20" color="#b3b3b3" fill="#b3b3b3" />
             </button>
-            
-            <button class="control-btn primary" @click="togglePlay" title="Play/Pause">
-              <Pause v-if="isPlaying" :size="24" color="#b3b3b3" fill="#b3b3b3" />
-              <Play v-else :size="24" color="#b3b3b3" fill="#b3b3b3" style="margin-left: 2px" />
+
+            <button
+              class="control-btn primary"
+              @click="togglePlay"
+              title="Play/Pause"
+            >
+              <Pause
+                v-if="isPlaying"
+                :size="24"
+                color="#b3b3b3"
+                fill="#b3b3b3"
+              />
+              <Play
+                v-else
+                :size="24"
+                color="#b3b3b3"
+                fill="#b3b3b3"
+                style="margin-left: 2px"
+              />
             </button>
-            
-            <button class="control-btn secondary" @click="skipForward" title="Next">
+
+            <button
+              class="control-btn secondary"
+              @click="skipForward"
+              title="Next"
+            >
               <SkipForward :size="20" color="#b3b3b3" fill="#b3b3b3" />
             </button>
-            
-            <button 
-              class="control-btn secondary" 
+
+            <button
+              class="control-btn secondary"
               :class="{ active: repeatMode !== 'none' }"
               @click="toggleRepeat"
               title="Repeat"
             >
-              <Repeat :size="20" :color="repeatMode !== 'none' ? '#a6c3eb' : '#b3b3b3'" />
-              <span v-if="repeatMode === 'one'" class="repeat-indicator">1</span>
+              <Repeat
+                :size="20"
+                :color="repeatMode !== 'none' ? '#a6c3eb' : '#b3b3b3'"
+              />
+              <span v-if="repeatMode === 'one'" class="repeat-indicator"
+                >1</span
+              >
             </button>
           </div>
 
           <!-- Progress Bar -->
           <div class="progress-container">
             <span class="time-display">{{ formattedCurrentTime }}</span>
-            <div 
+            <div
               class="progress-bar"
               @click="seekTo"
               @mousedown="startDrag"
               @mouseup="endDrag"
             >
               <div class="progress-track">
-                <div class="progress-fill" :style="{ width: `${progress}%` }"></div>
-                <div class="progress-handle" :style="{ left: `${progress}%` }"></div>
+                <div
+                  class="progress-fill"
+                  :style="{ width: `${progress}%` }"
+                ></div>
+                <div
+                  class="progress-handle"
+                  :style="{ left: `${progress}%` }"
+                ></div>
               </div>
             </div>
             <span class="time-display">{{ formattedDuration }}</span>
@@ -339,19 +384,37 @@ onUnmounted(() => {
 
         <!-- Right: Volume & Other Controls -->
         <div class="controls-right">
-          <button class="control-btn secondary" @click="toggleMute" title="Volume">
-            <VolumeX v-if="isMuted || volume === 0" :size="20" color="#b3b3b3" />
+          <button
+            class="control-btn secondary"
+            @click="toggleMute"
+            title="Volume"
+          >
+            <VolumeX
+              v-if="isMuted || volume === 0"
+              :size="20"
+              color="#b3b3b3"
+            />
             <Volume2 v-else :size="20" color="#b3b3b3" />
           </button>
-          
+
           <div class="volume-bar" @click="setVolume">
             <div class="volume-track">
-              <div class="volume-fill" :style="{ width: `${isMuted ? 0 : volume * 100}%` }"></div>
-              <div class="volume-handle" :style="{ left: `${isMuted ? 0 : volume * 100}%` }"></div>
+              <div
+                class="volume-fill"
+                :style="{ width: `${isMuted ? 0 : volume * 100}%` }"
+              ></div>
+              <div
+                class="volume-handle"
+                :style="{ left: `${isMuted ? 0 : volume * 100}%` }"
+              ></div>
             </div>
           </div>
 
-          <button class="control-btn secondary" @click="toggleFullscreen" title="Fullscreen">
+          <button
+            class="control-btn secondary"
+            @click="toggleFullscreen"
+            title="Fullscreen"
+          >
             <Minimize v-if="isFullscreen" :size="20" color="#b3b3b3" />
             <Maximize v-else :size="20" color="#b3b3b3" />
           </button>
@@ -433,7 +496,7 @@ onUnmounted(() => {
   &:active {
     background: rgba(193, 213, 237, 0.2);
     transform: scale(1.1);
-    
+
     svg {
       color: #a6c3eb !important;
       stroke: #a6c3eb !important;
@@ -611,7 +674,7 @@ onUnmounted(() => {
 
     &.active {
       &::after {
-        content: '';
+        content: "";
         position: absolute;
         bottom: -4px;
         left: 50%;
@@ -666,7 +729,7 @@ onUnmounted(() => {
   color: #666;
   min-width: 40px;
   text-align: center;
-  font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+  font-family: "SF Mono", "Monaco", "Inconsolata", monospace;
 }
 
 .progress-bar {

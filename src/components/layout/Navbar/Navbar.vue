@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
-import { useAuthStore } from '@/store/auth';
-import { useUIStore } from '@/store/ui';
-import { User } from 'lucide-vue-next';
+import { useRouter } from "vue-router";
+import { useAuthStore } from "@/store/auth";
+import { useUIStore } from "@/store/ui";
+import { User } from "lucide-vue-next";
 
 const router = useRouter();
 const authStore = useAuthStore();
 const uiStore = useUIStore();
 
 const goHome = () => {
-  router.push('/');
+  router.push("/");
 };
 </script>
 
@@ -17,20 +17,34 @@ const goHome = () => {
   <header class="navbar">
     <div class="navbar-container">
       <router-link to="/" class="logo">
-        <img src="/assets/images/short_logo.png" alt="VisioBook" class="logo-icon" />
+        <img
+          src="/assets/images/short_logo.png"
+          alt="VisioBook"
+          class="logo-icon"
+        />
       </router-link>
 
       <nav class="nav-links">
         <!-- Show Login/Register only when NOT authenticated -->
         <template v-if="!authStore.isAuthenticated">
-          <button class="nav-btn" @click="uiStore.openLoginModal()">Login</button>
-          <button class="nav-btn" @click="uiStore.openRegisterModal()">Register</button>
+          <button class="nav-btn" @click="uiStore.openLoginModal()">
+            Login
+          </button>
+          <button class="nav-btn" @click="uiStore.openRegisterModal()">
+            Register
+          </button>
         </template>
         <!-- Authenticated user buttons -->
         <template v-if="authStore.isAuthenticated">
-          <button class="nav-btn primary" @click="router.push('/dashboard')">Dashboard</button>
+          <button class="nav-btn primary" @click="router.push('/dashboard')">
+            Dashboard
+          </button>
           <div class="profile-container">
-            <button class="nav-btn profile-btn" @click="router.push('/profile')" title="Profile">
+            <button
+              class="nav-btn profile-btn"
+              @click="router.push('/profile')"
+              title="Profile"
+            >
               <User :size="20" />
             </button>
             <span class="username-text">{{ authStore.user?.username }}</span>
@@ -116,7 +130,7 @@ const goHome = () => {
     height: 36px;
     border-radius: 50%;
     flex-shrink: 0;
-    
+
     &:hover {
       background: rgba(0, 0, 0, 0.05);
     }
