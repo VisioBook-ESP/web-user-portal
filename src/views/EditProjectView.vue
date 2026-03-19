@@ -72,8 +72,7 @@ const handleSave = (config: ProjectConfig, ocrText: string) => {
   uiStore.showInfo("Saving changes...");
 
   // TODO: Call API to update project
-  console.log("Saving project with config:", config);
-  console.log("OCR text:", ocrText);
+  // Debug info available in config and ocrText
 
   // Redirect back to player
   setTimeout(() => {

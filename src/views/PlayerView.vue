@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, watch } from "vue";
+import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useGradientBackground } from "@/composables/useGradientBackground";
 import Navbar from "@/components/layout/Navbar/Navbar.vue";
@@ -34,7 +34,6 @@ const volume = ref(1);
 const isMuted = ref(false);
 const repeatMode = ref<"none" | "all" | "one">("none");
 const isFullscreen = ref(false);
-const showControls = ref(true);
 const isDraggingProgress = ref(false);
 
 // Mock project data (will be replaced with API call)
@@ -53,10 +52,6 @@ const progress = computed(() => {
 
 const formattedCurrentTime = computed(() => formatTime(currentTime.value));
 const formattedDuration = computed(() => formatTime(duration.value));
-
-const repeatIcon = computed(() => {
-  return repeatMode.value === "one" ? "1" : "";
-});
 
 // Methods
 const formatTime = (seconds: number): string => {
@@ -187,12 +182,10 @@ const editProject = () => {
 };
 
 const deleteProject = () => {
-  console.log("Delete project:", project.value.id);
   // TODO: Show confirmation and delete
 };
 
 const shareProject = () => {
-  console.log("Share project:", project.value.id);
   // TODO: Open share modal
 };
 

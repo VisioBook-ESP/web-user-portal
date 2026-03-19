@@ -87,8 +87,7 @@ const handleGenerate = (config: ProjectConfig, ocrText: string) => {
   uiStore.showInfo("Starting VisioBook generation...");
 
   // TODO: Call API to create project and start workflow
-  console.log("Config:", config);
-  console.log("OCR Text:", ocrText);
+  // Debug info available in config and ocrText
 
   // Redirect to dashboard or project detail
   router.push("/dashboard");
