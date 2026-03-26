@@ -1,8 +1,8 @@
-name: CI Dev to Main
+name: CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "dev" ]
 
 jobs:
   docker-build-and-push:
@@ -20,10 +20,10 @@ jobs:
 
       - name: Build Docker images
         run: |
-          docker build -f docker/Dockerfile.prod -t ghcr.io/visiobook-esp/web-user-portal-prod:latest ./
+          docker build -f docker/Dockerfile.prod -t ghcr.io/visiobook-esp/web-user-portal-dev:latest ./
 
       - name: Push Docker image
         run: |
-          docker push ghcr.io/visiobook-esp/web-user-portal-prod:latest
+          docker push ghcr.io/visiobook-esp/web-user-portal-dev:latest
 
 
