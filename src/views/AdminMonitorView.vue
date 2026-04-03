@@ -60,7 +60,8 @@ const avgResponseTime = computed(() => {
 const avgErrorRate = computed(() => {
   if (metrics.value.length === 0) return 0;
   const avg =
-    metrics.value.reduce((sum, m) => sum + m.errorRate, 0) / metrics.value.length;
+    metrics.value.reduce((sum, m) => sum + m.errorRate, 0) /
+    metrics.value.length;
   return avg.toFixed(2);
 });
 
@@ -92,17 +93,11 @@ const loadData = async () => {
     ]);
     console.log("Admin stats:", statsData);
     console.log("Metrics data:", metricsData);
-    
+
     stats.value = statsData;
-    
-    // Handle both direct metrics array and nested response
-    if (Array.isArray(metricsData)) {
-      metrics.value = metricsData;
-    } else if (metricsData?.data && Array.isArray(metricsData.data)) {
-      metrics.value = metricsData.data;
-    } else {
-      metrics.value = [];
-    }
+
+    // metricsData is already an array from the API
+    metrics.value = Array.isArray(metricsData) ? metricsData : [];
   } catch (err: any) {
     console.error("Failed to load monitoring data:", err);
     error.value = err.message || "Failed to load monitoring data";
@@ -156,12 +151,18 @@ onMounted(() => {
         <div class="admin-header">
           <div class="header-top">
             <h1>System Monitor</h1>
-            <button @click="refreshData" class="refresh-btn" :disabled="isLoading">
+            <button
+              @click="refreshData"
+              class="refresh-btn"
+              :disabled="isLoading"
+            >
               <RefreshCw :size="18" />
               Refresh
             </button>
           </div>
-          <p class="text-gray-600">Monitor application performance and health metrics</p>
+          <p class="text-gray-600">
+            Monitor application performance and health metrics
+          </p>
         </div>
 
         <!-- Time Range Selector -->
@@ -171,7 +172,10 @@ onMounted(() => {
             <button
               v-for="range in ['1h', '24h', '7d', '30d']"
               :key="range"
-              @click="timeRange = range as any; handleTimeRangeChange()"
+              @click="
+                timeRange = range as any;
+                handleTimeRangeChange();
+              "
               :class="['range-btn', { active: timeRange === range }]"
             >
               {{ range }}
@@ -200,7 +204,9 @@ onMounted(() => {
                 <span class="stat-label">Total Users</span>
               </div>
               <div class="stat-value">{{ stats?.totalUsers || 0 }}</div>
-              <div class="stat-subtext">{{ stats?.activeUsers || 0 }} active</div>
+              <div class="stat-subtext">
+                {{ stats?.activeUsers || 0 }} active
+              </div>
             </div>
 
             <div class="stat-card">
@@ -209,7 +215,9 @@ onMounted(() => {
                 <span class="stat-label">Projects</span>
               </div>
               <div class="stat-value">{{ stats?.totalProjects || 0 }}</div>
-              <div class="stat-subtext">{{ stats?.totalVisioBooks || 0 }} VisioBooks</div>
+              <div class="stat-subtext">
+                {{ stats?.totalVisioBooks || 0 }} VisioBooks
+              </div>
             </div>
 
             <div class="stat-card">
@@ -245,7 +253,11 @@ onMounted(() => {
                 <div class="metric-col">Uptime</div>
               </div>
 
-              <div v-for="(metric, index) in metrics.slice(-10)" :key="index" class="metrics-row">
+              <div
+                v-for="(metric, index) in metrics.slice(-10)"
+                :key="index"
+                class="metrics-row"
+              >
                 <div class="metric-col timestamp">
                   {{ new Date(metric.timestamp).toLocaleTimeString() }}
                 </div>
@@ -254,14 +266,18 @@ onMounted(() => {
                     <div
                       class="metric-bar"
                       :style="{
-                        width: getMetricBarWidth(metric.averageResponseTime, 1000) + '%',
+                        width:
+                          getMetricBarWidth(metric.averageResponseTime, 1000) +
+                          '%',
                         backgroundColor: getMetricColor(
                           metric.averageResponseTime,
                           'response',
                         ),
                       }"
                     />
-                    <span class="metric-value">{{ metric.averageResponseTime }}ms</span>
+                    <span class="metric-value"
+                      >{{ metric.averageResponseTime }}ms</span
+                    >
                   </div>
                 </div>
                 <div class="metric-col">
@@ -270,17 +286,26 @@ onMounted(() => {
                       class="metric-bar"
                       :style="{
                         width: Math.min(metric.errorRate * 10, 100) + '%',
-                        backgroundColor: getMetricColor(metric.errorRate, 'error'),
+                        backgroundColor: getMetricColor(
+                          metric.errorRate,
+                          'error',
+                        ),
                       }"
                     />
-                    <span class="metric-value">{{ metric.errorRate.toFixed(2) }}%</span>
+                    <span class="metric-value"
+                      >{{ metric.errorRate.toFixed(2) }}%</span
+                    >
                   </div>
                 </div>
-                <div class="metric-col">{{ metric.requestsPerSecond.toFixed(2) }}</div>
+                <div class="metric-col">
+                  {{ metric.requestsPerSecond.toFixed(2) }}
+                </div>
                 <div class="metric-col">{{ metric.uptime.toFixed(2) }}%</div>
               </div>
             </div>
-            <div v-else class="no-metrics">No metrics available for this time range</div>
+            <div v-else class="no-metrics">
+              No metrics available for this time range
+            </div>
           </div>
 
           <!-- Storage Stats -->

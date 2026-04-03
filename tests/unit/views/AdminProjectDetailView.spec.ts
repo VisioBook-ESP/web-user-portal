@@ -2,7 +2,6 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import { mount, flushPromises } from "@vue/test-utils";
 import { createPinia, setActivePinia } from "pinia";
 import { useAuthStore } from "@/store/auth";
-import { useRouter, useRoute } from "vue-router";
 import AdminProjectDetailView from "@/views/AdminProjectDetailView.vue";
 
 vi.mock("vue-router", () => ({

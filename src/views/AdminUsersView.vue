@@ -55,9 +55,13 @@ const loadUsers = async () => {
   isLoading.value = true;
   error.value = null;
   try {
-    const response = await adminApi.getAllUsers(1, 100, searchQuery.value || undefined);
+    const response = await adminApi.getAllUsers(
+      1,
+      100,
+      searchQuery.value || undefined,
+    );
     console.log("Users response:", response);
-    
+
     // Handle both paginated and direct array responses
     if (Array.isArray(response)) {
       users.value = response;
@@ -160,7 +164,11 @@ onMounted(() => {
           </div>
 
           <div class="filter-controls">
-            <select v-model="roleFilter" @change="applyFilters" class="role-filter">
+            <select
+              v-model="roleFilter"
+              @change="applyFilters"
+              class="role-filter"
+            >
               <option value="all">All Roles</option>
               <option value="user">User</option>
               <option value="admin">Admin</option>
@@ -179,9 +187,7 @@ onMounted(() => {
         </div>
 
         <!-- Loading State -->
-        <div v-if="isLoading" class="loading-spinner">
-          Loading users...
-        </div>
+        <div v-if="isLoading" class="loading-spinner">Loading users...</div>
 
         <!-- Users Table -->
         <div v-else class="users-table-wrapper">
@@ -234,9 +240,7 @@ onMounted(() => {
                 </td>
               </tr>
               <tr v-if="paginatedUsers.length === 0">
-                <td colspan="6" class="no-data">
-                  No users found
-                </td>
+                <td colspan="6" class="no-data">No users found</td>
               </tr>
             </tbody>
           </table>

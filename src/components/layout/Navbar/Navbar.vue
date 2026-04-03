@@ -59,7 +59,10 @@ const navigateAdmin = (path: string) => {
         </template>
         <!-- Authenticated user buttons -->
         <template v-if="authStore.isAuthenticated">
-          <button class="nav-btn dashboard-btn" @click="router.push('/dashboard')">
+          <button
+            class="nav-btn dashboard-btn"
+            @click="router.push('/dashboard')"
+          >
             My VisioBooks
           </button>
           <!-- Admin Menu -->

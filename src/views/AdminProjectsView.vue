@@ -25,7 +25,9 @@ const { gradientStyle } = useGradientBackground();
 const projects = ref<AdminProject[]>([]);
 const filteredProjects = ref<AdminProject[]>([]);
 const searchQuery = ref("");
-const statusFilter = ref<"all" | "draft" | "processing" | "completed" | "failed">("all");
+const statusFilter = ref<
+  "all" | "draft" | "processing" | "completed" | "failed"
+>("all");
 const isLoading = ref(false);
 const error = ref<string | null>(null);
 const currentPage = ref(1);
@@ -74,7 +76,7 @@ const loadProjects = async () => {
       statusFilter.value === "all" ? undefined : statusFilter.value,
     );
     console.log("Projects response:", response);
-    
+
     // Handle both paginated and direct array responses
     if (Array.isArray(response)) {
       projects.value = response;
@@ -172,7 +174,11 @@ onMounted(() => {
           </div>
 
           <div class="filter-controls">
-            <select v-model="statusFilter" @change="applyFilters" class="status-filter">
+            <select
+              v-model="statusFilter"
+              @change="applyFilters"
+              class="status-filter"
+            >
               <option value="all">All Statuses</option>
               <option value="draft">Draft</option>
               <option value="processing">Processing</option>
@@ -193,9 +199,7 @@ onMounted(() => {
         </div>
 
         <!-- Loading State -->
-        <div v-if="isLoading" class="loading-spinner">
-          Loading projects...
-        </div>
+        <div v-if="isLoading" class="loading-spinner">Loading projects...</div>
 
         <!-- Projects Table -->
         <div v-else class="projects-table-wrapper">
@@ -255,9 +259,7 @@ onMounted(() => {
                 </td>
               </tr>
               <tr v-if="paginatedProjects.length === 0">
-                <td colspan="6" class="no-data">
-                  No projects found
-                </td>
+                <td colspan="6" class="no-data">No projects found</td>
               </tr>
             </tbody>
           </table>

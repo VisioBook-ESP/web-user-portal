@@ -69,9 +69,9 @@ export const adminApi = {
   /**
    * Get user projects count
    */
-  async getUserProjects(
-    userId: number,
-  ): Promise<PaginatedResponse<Project>> {
-    return api.get<PaginatedResponse<Project>>(`/admin/users/${userId}/projects`);
+  async getUserProjects(userId: number): Promise<PaginatedResponse<Project>> {
+    return api.get<PaginatedResponse<Project>>(
+      `/admin/users/${userId}/projects`,
+    );
   },
 };

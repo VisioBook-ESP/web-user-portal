@@ -137,7 +137,10 @@ onMounted(() => {
                 <Pencil :size="18" />
                 Edit
               </button>
-              <button @click="showDeleteConfirm = true" class="action-btn delete-btn">
+              <button
+                @click="showDeleteConfirm = true"
+                class="action-btn delete-btn"
+              >
                 <Trash2 :size="18" />
                 Delete
               </button>
@@ -200,7 +203,10 @@ onMounted(() => {
           </div>
 
           <!-- Source Section -->
-          <div v-if="project.sourceText || project.sourceFile" class="source-section">
+          <div
+            v-if="project.sourceText || project.sourceFile"
+            class="source-section"
+          >
             <h2>Source Information</h2>
             <div v-if="project.sourceText" class="source-item">
               <label>Source Text</label>

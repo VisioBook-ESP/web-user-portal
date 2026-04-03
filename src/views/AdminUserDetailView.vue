@@ -44,14 +44,14 @@ const loadUser = async () => {
   try {
     const userId = parseInt(route.params.id as string, 10);
     user.value = await userApi.getUser(userId);
-    
+
     // Initialize edit form
     editForm.value = {
       username: user.value.username,
       first_name: user.value.first_name || "",
       last_name: user.value.last_name || "",
     };
-    
+
     console.log("User loaded:", user.value);
     await loadUserProjects();
   } catch (err: any) {
@@ -64,12 +64,12 @@ const loadUser = async () => {
 
 const loadUserProjects = async () => {
   if (!user.value) return;
-  
+
   isLoadingProjects.value = true;
   try {
     const response = await adminApi.getUserProjects(user.value.id);
     console.log("User projects response:", response);
-    
+
     // Handle both direct array and paginated response
     if (Array.isArray(response)) {
       userProjects.value = response;
@@ -103,7 +103,7 @@ const cancelEdit = () => {
 
 const saveEdit = async () => {
   if (!user.value) return;
-  
+
   try {
     const updated = await userApi.updateUser(user.value.id, editForm.value);
     user.value = updated;
@@ -116,7 +116,7 @@ const saveEdit = async () => {
 
 const handleDelete = async () => {
   if (!user.value) return;
-  
+
   try {
     await userApi.deleteUser(user.value.id);
     router.push("/admin/users");
@@ -315,7 +315,7 @@ onMounted(() => {
           <!-- User Projects Section -->
           <div class="projects-section">
             <h2>User Projects ({{ userProjects.length }})</h2>
-            
+
             <div v-if="isLoadingProjects" class="loading-spinner">
               Loading projects...
             </div>
@@ -353,7 +353,11 @@ onMounted(() => {
     </main>
 
     <!-- Delete Confirmation Modal -->
-    <div v-if="showDeleteConfirm" class="modal-overlay" @click="showDeleteConfirm = false">
+    <div
+      v-if="showDeleteConfirm"
+      class="modal-overlay"
+      @click="showDeleteConfirm = false"
+    >
       <div class="modal-content" @click.stop>
         <div class="modal-header">
           <h2>Delete User?</h2>
