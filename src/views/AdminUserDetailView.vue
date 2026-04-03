@@ -52,10 +52,10 @@ const loadUser = async () => {
       last_name: user.value.last_name || "",
     };
 
-    console.log("User loaded:", user.value);
+
     await loadUserProjects();
   } catch (err: any) {
-    console.error("Failed to load user:", err);
+
     error.value = err.message || "Failed to load user";
   } finally {
     isLoading.value = false;
@@ -68,7 +68,7 @@ const loadUserProjects = async () => {
   isLoadingProjects.value = true;
   try {
     const response = await adminApi.getUserProjects(user.value.id);
-    console.log("User projects response:", response);
+
 
     // Handle both direct array and paginated response
     if (Array.isArray(response)) {
@@ -79,7 +79,7 @@ const loadUserProjects = async () => {
       userProjects.value = [];
     }
   } catch (err: any) {
-    console.error("Failed to load user projects:", err);
+
     // Don't show error for projects - just empty list
   } finally {
     isLoadingProjects.value = false;
@@ -109,7 +109,7 @@ const saveEdit = async () => {
     user.value = updated;
     isEditMode.value = false;
   } catch (err: any) {
-    console.error("Failed to update user:", err);
+
     error.value = err.message || "Failed to update user";
   }
 };
@@ -121,7 +121,7 @@ const handleDelete = async () => {
     await userApi.deleteUser(user.value.id);
     router.push("/admin/users");
   } catch (err: any) {
-    console.error("Failed to delete user:", err);
+
     error.value = err.message || "Failed to delete user";
   }
 };
@@ -169,49 +169,66 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="admin-user-detail-view" :style="gradientStyle">
+  <div
+    class="admin-user-detail-view"
+    :style="gradientStyle"
+  >
     <Navbar />
     <main class="admin-content">
       <div class="admin-container">
         <!-- Breadcrumb -->
         <div class="breadcrumb">
-          <button @click="goBack" class="back-btn">
+          <button
+            class="back-btn"
+            @click="goBack"
+          >
             <ArrowLeft :size="18" />
             Back to Users
           </button>
         </div>
 
         <!-- Loading State -->
-        <div v-if="isLoading" class="loading-spinner">
+        <div
+          v-if="isLoading"
+          class="loading-spinner"
+        >
           Loading user information...
         </div>
 
         <!-- Error State -->
-        <div v-else-if="error" class="error-banner">
+        <div
+          v-else-if="error"
+          class="error-banner"
+        >
           <X :size="18" />
           {{ error }}
         </div>
 
         <!-- User Detail -->
-        <div v-else-if="user" class="user-detail">
+        <div
+          v-else-if="user"
+          class="user-detail"
+        >
           <div class="detail-header">
             <div class="header-content">
               <h1>{{ user.username }}</h1>
-              <p class="text-gray-600">User Profile</p>
+              <p class="text-gray-600">
+                User Profile
+              </p>
             </div>
             <div class="header-actions">
               <button
                 v-if="!isEditMode"
-                @click="startEdit"
                 class="action-btn edit-user-btn"
+                @click="startEdit"
               >
                 <Edit2 :size="18" />
                 Edit
               </button>
               <button
                 v-if="user.id !== authStore.user?.id"
-                @click="showDeleteConfirm = true"
                 class="action-btn delete-btn"
+                @click="showDeleteConfirm = true"
               >
                 <Trash2 :size="18" />
                 Delete User
@@ -220,7 +237,10 @@ onMounted(() => {
           </div>
 
           <!-- Edit Form -->
-          <div v-if="isEditMode" class="edit-form-section">
+          <div
+            v-if="isEditMode"
+            class="edit-form-section"
+          >
             <h2>Edit User Information</h2>
             <div class="form-grid">
               <div class="form-group">
@@ -231,7 +251,7 @@ onMounted(() => {
                   type="text"
                   class="form-input"
                   placeholder="Enter username"
-                />
+                >
               </div>
               <div class="form-group">
                 <label for="first_name">First Name</label>
@@ -241,7 +261,7 @@ onMounted(() => {
                   type="text"
                   class="form-input"
                   placeholder="Enter first name"
-                />
+                >
               </div>
               <div class="form-group">
                 <label for="last_name">Last Name</label>
@@ -251,14 +271,20 @@ onMounted(() => {
                   type="text"
                   class="form-input"
                   placeholder="Enter last name"
-                />
+                >
               </div>
             </div>
             <div class="form-actions">
-              <button @click="cancelEdit" class="form-btn cancel-btn">
+              <button
+                class="form-btn cancel-btn"
+                @click="cancelEdit"
+              >
                 Cancel
               </button>
-              <button @click="saveEdit" class="form-btn save-btn">
+              <button
+                class="form-btn save-btn"
+                @click="saveEdit"
+              >
                 <Check :size="18" />
                 Save Changes
               </button>
@@ -266,7 +292,10 @@ onMounted(() => {
           </div>
 
           <!-- User Info Grid -->
-          <div v-else class="info-grid">
+          <div
+            v-else
+            class="info-grid"
+          >
             <div class="info-card">
               <label>Email</label>
               <p>{{ user.email }}</p>
@@ -308,7 +337,9 @@ onMounted(() => {
 
             <div class="info-card">
               <label>User ID</label>
-              <p class="font-mono text-sm">{{ user.id }}</p>
+              <p class="font-mono text-sm">
+                {{ user.id }}
+              </p>
             </div>
           </div>
 
@@ -316,11 +347,17 @@ onMounted(() => {
           <div class="projects-section">
             <h2>User Projects ({{ userProjects.length }})</h2>
 
-            <div v-if="isLoadingProjects" class="loading-spinner">
+            <div
+              v-if="isLoadingProjects"
+              class="loading-spinner"
+            >
               Loading projects...
             </div>
 
-            <div v-else-if="userProjects.length > 0" class="projects-list">
+            <div
+              v-else-if="userProjects.length > 0"
+              class="projects-list"
+            >
               <div
                 v-for="project in userProjects"
                 :key="project.id"
@@ -339,14 +376,20 @@ onMounted(() => {
               </div>
             </div>
 
-            <div v-else class="no-projects">
+            <div
+              v-else
+              class="no-projects"
+            >
               <p>No projects found for this user</p>
             </div>
           </div>
         </div>
 
         <!-- No User Found -->
-        <div v-else class="no-user">
+        <div
+          v-else
+          class="no-user"
+        >
           <p>User not found</p>
         </div>
       </div>
@@ -358,7 +401,10 @@ onMounted(() => {
       class="modal-overlay"
       @click="showDeleteConfirm = false"
     >
-      <div class="modal-content" @click.stop>
+      <div
+        class="modal-content"
+        @click.stop
+      >
         <div class="modal-header">
           <h2>Delete User?</h2>
         </div>
@@ -370,10 +416,16 @@ onMounted(() => {
           </p>
         </div>
         <div class="modal-footer">
-          <button @click="showDeleteConfirm = false" class="cancel-btn">
+          <button
+            class="cancel-btn"
+            @click="showDeleteConfirm = false"
+          >
             Cancel
           </button>
-          <button @click="handleDelete" class="delete-confirm-btn">
+          <button
+            class="delete-confirm-btn"
+            @click="handleDelete"
+          >
             Delete
           </button>
         </div>

@@ -52,11 +52,29 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <div class="forgot-password-view" :style="gradientStyle">
-    <v-container fluid class="fill-height">
-      <v-row align="center" justify="center">
-        <v-col cols="12" sm="8" md="6" lg="4">
-          <v-card elevation="8" rounded="xl" class="forgot-password-card">
+  <div
+    class="forgot-password-view"
+    :style="gradientStyle"
+  >
+    <v-container
+      fluid
+      class="fill-height"
+    >
+      <v-row
+        align="center"
+        justify="center"
+      >
+        <v-col
+          cols="12"
+          sm="8"
+          md="6"
+          lg="4"
+        >
+          <v-card
+            elevation="8"
+            rounded="xl"
+            class="forgot-password-card"
+          >
             <!-- Logo and Title -->
             <v-card-title class="text-center py-6">
               <div class="d-flex flex-column align-center">
@@ -89,9 +107,9 @@ const handleSubmit = async () => {
                     type="email"
                     prepend-inner-icon="mdi-email"
                     :error-messages="error"
+                    class="mb-4"
                     @blur="validateEmail"
                     @input="validateEmail"
-                    class="mb-4"
                   />
 
                   <v-btn
@@ -111,7 +129,9 @@ const handleSubmit = async () => {
                       color="primary"
                       @click="router.push('/login')"
                     >
-                      <v-icon start>mdi-arrow-left</v-icon>
+                      <v-icon start>
+                        mdi-arrow-left
+                      </v-icon>
                       Back to Login
                     </v-btn>
                   </div>
@@ -119,7 +139,11 @@ const handleSubmit = async () => {
               </template>
 
               <template v-else>
-                <v-alert type="success" variant="tonal" class="mb-4">
+                <v-alert
+                  type="success"
+                  variant="tonal"
+                  class="mb-4"
+                >
                   We've sent a password reset link to
                   <strong>{{ email }}</strong>
                 </v-alert>
@@ -132,8 +156,8 @@ const handleSubmit = async () => {
                   variant="outlined"
                   color="primary"
                   block
-                  @click="emailSent = false"
                   class="mb-4"
+                  @click="emailSent = false"
                 >
                   Try Another Email
                 </v-btn>
@@ -144,7 +168,9 @@ const handleSubmit = async () => {
                     color="primary"
                     @click="router.push('/login')"
                   >
-                    <v-icon start>mdi-arrow-left</v-icon>
+                    <v-icon start>
+                      mdi-arrow-left
+                    </v-icon>
                     Back to Login
                   </v-btn>
                 </div>

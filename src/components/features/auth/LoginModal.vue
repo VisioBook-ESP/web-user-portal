@@ -113,14 +113,19 @@ const closeModal = () => {
           src="/assets/images/short_logo.png"
           alt="VisioBook"
           class="logo-image"
-        />
+        >
       </div>
 
       <!-- Title -->
-      <h1 class="modal-title">Login</h1>
+      <h1 class="modal-title">
+        Login
+      </h1>
 
       <!-- Form -->
-      <form @submit.prevent="handleSubmit" class="auth-form">
+      <form
+        class="auth-form"
+        @submit.prevent="handleSubmit"
+      >
         <div class="input-group">
           <input
             v-model="form.email"
@@ -129,8 +134,11 @@ const closeModal = () => {
             class="auth-input"
             :class="{ 'has-error': errors.email }"
             @blur="validateField('email')"
-          />
-          <span v-if="errors.email" class="error-message">{{
+          >
+          <span
+            v-if="errors.email"
+            class="error-message"
+          >{{
             errors.email
           }}</span>
         </div>
@@ -143,8 +151,11 @@ const closeModal = () => {
             class="auth-input"
             :class="{ 'has-error': errors.password }"
             @blur="validateField('password')"
-          />
-          <span v-if="errors.password" class="error-message">{{
+          >
+          <span
+            v-if="errors.password"
+            class="error-message"
+          >{{
             errors.password
           }}</span>
         </div>
@@ -161,12 +172,21 @@ const closeModal = () => {
         <!-- Terms Agreement -->
         <div class="terms-agreement">
           <label class="checkbox-container">
-            <input type="checkbox" v-model="acceptTerms" />
-            <span class="checkmark"></span>
+            <input
+              v-model="acceptTerms"
+              type="checkbox"
+            >
+            <span class="checkmark" />
           </label>
           <span class="terms-text">
-            I Agree to the <a href="#" class="terms-link">Privacy Policy</a> and
-            <a href="#" class="terms-link">Terms of Service</a>
+            I Agree to the <a
+              href="#"
+              class="terms-link"
+            >Privacy Policy</a> and
+            <a
+              href="#"
+              class="terms-link"
+            >Terms of Service</a>
           </span>
         </div>
       </form>
@@ -174,9 +194,11 @@ const closeModal = () => {
       <!-- Switch to Register -->
       <div class="switch-auth">
         <span>You do not have an account?</span>
-        <a href="#" @click.prevent="switchToRegister" class="switch-link"
-          >Create an account</a
-        >
+        <a
+          href="#"
+          class="switch-link"
+          @click.prevent="switchToRegister"
+        >Create an account</a>
       </div>
     </div>
   </div>

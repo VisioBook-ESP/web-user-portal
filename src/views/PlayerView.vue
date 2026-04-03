@@ -222,22 +222,34 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="player-view" :style="gradientStyle">
+  <div
+    class="player-view"
+    :style="gradientStyle"
+  >
     <!-- Navigation Bar -->
     <Navbar />
 
     <!-- Main Player Area -->
     <div class="player-container">
       <!-- Back Button -->
-      <button class="back-button" @click="goBack">
-        <ChevronLeft :size="24" color="#1a1a1a" />
+      <button
+        class="back-button"
+        @click="goBack"
+      >
+        <ChevronLeft
+          :size="24"
+          color="#1a1a1a"
+        />
         <span>Back</span>
       </button>
 
       <!-- Video Display -->
       <div class="video-wrapper">
         <div class="video-area">
-          <div class="video-container" @click="togglePlay">
+          <div
+            class="video-container"
+            @click="togglePlay"
+          >
             <video
               ref="videoRef"
               class="video-player"
@@ -246,38 +258,67 @@ onUnmounted(() => {
               @loadedmetadata="handleLoadedMetadata"
               @ended="handleEnded"
             >
-              <source :src="project.videoUrl" type="video/mp4" />
+              <source
+                :src="project.videoUrl"
+                type="video/mp4"
+              >
               Your browser does not support the video tag.
             </video>
 
             <!-- Play overlay when paused -->
-            <div v-if="!isPlaying" class="play-overlay">
+            <div
+              v-if="!isPlaying"
+              class="play-overlay"
+            >
               <div class="play-overlay-button">
-                <Play :size="44" color="#a6c3eb" fill="#a6c3eb" />
+                <Play
+                  :size="44"
+                  color="#a6c3eb"
+                  fill="#a6c3eb"
+                />
               </div>
             </div>
           </div>
 
           <!-- Action Icons (Vertical Bar) -->
           <div class="video-actions">
-            <button class="action-icon-btn" @click="editProject" title="Edit">
-              <Pencil :size="20" color="#b3b3b3" />
+            <button
+              class="action-icon-btn"
+              title="Edit"
+              @click="editProject"
+            >
+              <Pencil
+                :size="20"
+                color="#b3b3b3"
+              />
             </button>
             <button
               class="action-icon-btn"
-              @click="deleteProject"
               title="Delete"
+              @click="deleteProject"
             >
-              <Trash2 :size="20" color="#b3b3b3" />
+              <Trash2
+                :size="20"
+                color="#b3b3b3"
+              />
             </button>
-            <button class="action-icon-btn" @click="shareProject" title="Share">
-              <Share2 :size="20" color="#b3b3b3" />
+            <button
+              class="action-icon-btn"
+              title="Share"
+              @click="shareProject"
+            >
+              <Share2
+                :size="20"
+                color="#b3b3b3"
+              />
             </button>
           </div>
         </div>
 
         <!-- Project Title -->
-        <h1 class="project-title">{{ project.title }}</h1>
+        <h1 class="project-title">
+          {{ project.title }}
+        </h1>
       </div>
 
       <!-- Bottom Controls Bar (Spotify Style) -->
@@ -288,7 +329,7 @@ onUnmounted(() => {
             :src="project.thumbnailUrl"
             :alt="project.title"
             class="now-playing-thumb"
-          />
+          >
           <div class="now-playing-info">
             <span class="now-playing-title">{{ project.title }}</span>
             <span class="now-playing-subtitle">VisioBook</span>
@@ -301,16 +342,20 @@ onUnmounted(() => {
           <div class="control-buttons">
             <button
               class="control-btn secondary"
-              @click="skipBackward"
               title="Previous"
+              @click="skipBackward"
             >
-              <SkipBack :size="20" color="#b3b3b3" fill="#b3b3b3" />
+              <SkipBack
+                :size="20"
+                color="#b3b3b3"
+                fill="#b3b3b3"
+              />
             </button>
 
             <button
               class="control-btn primary"
-              @click="togglePlay"
               title="Play/Pause"
+              @click="togglePlay"
             >
               <Pause
                 v-if="isPlaying"
@@ -329,25 +374,30 @@ onUnmounted(() => {
 
             <button
               class="control-btn secondary"
-              @click="skipForward"
               title="Next"
+              @click="skipForward"
             >
-              <SkipForward :size="20" color="#b3b3b3" fill="#b3b3b3" />
+              <SkipForward
+                :size="20"
+                color="#b3b3b3"
+                fill="#b3b3b3"
+              />
             </button>
 
             <button
               class="control-btn secondary"
               :class="{ active: repeatMode !== 'none' }"
-              @click="toggleRepeat"
               title="Repeat"
+              @click="toggleRepeat"
             >
               <Repeat
                 :size="20"
                 :color="repeatMode !== 'none' ? '#a6c3eb' : '#b3b3b3'"
               />
-              <span v-if="repeatMode === 'one'" class="repeat-indicator"
-                >1</span
-              >
+              <span
+                v-if="repeatMode === 'one'"
+                class="repeat-indicator"
+              >1</span>
             </button>
           </div>
 
@@ -364,11 +414,11 @@ onUnmounted(() => {
                 <div
                   class="progress-fill"
                   :style="{ width: `${progress}%` }"
-                ></div>
+                />
                 <div
                   class="progress-handle"
                   :style="{ left: `${progress}%` }"
-                ></div>
+                />
               </div>
             </div>
             <span class="time-display">{{ formattedDuration }}</span>
@@ -379,37 +429,52 @@ onUnmounted(() => {
         <div class="controls-right">
           <button
             class="control-btn secondary"
-            @click="toggleMute"
             title="Volume"
+            @click="toggleMute"
           >
             <VolumeX
               v-if="isMuted || volume === 0"
               :size="20"
               color="#b3b3b3"
             />
-            <Volume2 v-else :size="20" color="#b3b3b3" />
+            <Volume2
+              v-else
+              :size="20"
+              color="#b3b3b3"
+            />
           </button>
 
-          <div class="volume-bar" @click="setVolume">
+          <div
+            class="volume-bar"
+            @click="setVolume"
+          >
             <div class="volume-track">
               <div
                 class="volume-fill"
                 :style="{ width: `${isMuted ? 0 : volume * 100}%` }"
-              ></div>
+              />
               <div
                 class="volume-handle"
                 :style="{ left: `${isMuted ? 0 : volume * 100}%` }"
-              ></div>
+              />
             </div>
           </div>
 
           <button
             class="control-btn secondary"
-            @click="toggleFullscreen"
             title="Fullscreen"
+            @click="toggleFullscreen"
           >
-            <Minimize v-if="isFullscreen" :size="20" color="#b3b3b3" />
-            <Maximize v-else :size="20" color="#b3b3b3" />
+            <Minimize
+              v-if="isFullscreen"
+              :size="20"
+              color="#b3b3b3"
+            />
+            <Maximize
+              v-else
+              :size="20"
+              color="#b3b3b3"
+            />
           </button>
         </div>
       </div>

@@ -128,7 +128,10 @@ const features = [
 </script>
 
 <template>
-  <div class="home-view" :style="gradientStyle">
+  <div
+    class="home-view"
+    :style="gradientStyle"
+  >
     <!-- Navigation Bar -->
     <Navbar />
 
@@ -140,7 +143,7 @@ const features = [
             src="/assets/images/logo.png"
             alt="VISIOBOOK"
             class="hero-logo"
-          />
+          >
         </div>
 
         <!-- Action Icons -->
@@ -153,19 +156,33 @@ const features = [
             @drop="handleDrop"
           >
             <input
-              type="file"
               id="home-file-upload"
+              type="file"
               accept=".pdf"
               class="file-input"
               @click="handleFileInputClick"
               @change="handleFileSelect"
-            />
-            <label for="home-file-upload" class="action-icon-label">
-              <Upload :size="128" color="#1a1a1a" :stroke-width="1.5" />
+            >
+            <label
+              for="home-file-upload"
+              class="action-icon-label"
+            >
+              <Upload
+                :size="128"
+                color="#1a1a1a"
+                :stroke-width="1.5"
+              />
             </label>
           </div>
-          <div class="action-icon" @click="openScanner">
-            <ScanText :size="128" color="#1a1a1a" :stroke-width="1.5" />
+          <div
+            class="action-icon"
+            @click="openScanner"
+          >
+            <ScanText
+              :size="128"
+              color="#1a1a1a"
+              :stroke-width="1.5"
+            />
           </div>
         </div>
       </section>
@@ -178,8 +195,12 @@ const features = [
             :key="index"
             class="feature-card"
           >
-            <h3 class="feature-title">{{ feature.title }}</h3>
-            <p class="feature-description">{{ feature.description }}</p>
+            <h3 class="feature-title">
+              {{ feature.title }}
+            </h3>
+            <p class="feature-description">
+              {{ feature.description }}
+            </p>
           </div>
         </div>
       </section>

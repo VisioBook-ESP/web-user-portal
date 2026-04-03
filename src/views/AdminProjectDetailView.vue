@@ -32,9 +32,9 @@ const loadProject = async () => {
   try {
     const projectId = route.params.id as string;
     project.value = await projectsApi.getProject(projectId);
-    console.log("Project loaded:", project.value);
+
   } catch (err: any) {
-    console.error("Failed to load project:", err);
+
     error.value = err.message || "Failed to load project";
   } finally {
     isLoading.value = false;
@@ -48,7 +48,7 @@ const handleDelete = async () => {
     await projectsApi.deleteProject(project.value.id);
     router.push("/admin/projects");
   } catch (err: any) {
-    console.error("Failed to delete project:", err);
+
     error.value = err.message || "Failed to delete project";
   }
 };
@@ -98,48 +98,71 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="admin-project-detail-view" :style="gradientStyle">
+  <div
+    class="admin-project-detail-view"
+    :style="gradientStyle"
+  >
     <Navbar />
     <main class="admin-content">
       <div class="admin-container">
         <!-- Breadcrumb -->
         <div class="breadcrumb">
-          <button @click="goBack" class="back-btn">
+          <button
+            class="back-btn"
+            @click="goBack"
+          >
             <ArrowLeft :size="18" />
             Back to Projects
           </button>
         </div>
 
         <!-- Loading State -->
-        <div v-if="isLoading" class="loading-spinner">
+        <div
+          v-if="isLoading"
+          class="loading-spinner"
+        >
           Loading project information...
         </div>
 
         <!-- Error State -->
-        <div v-else-if="error" class="error-banner">
+        <div
+          v-else-if="error"
+          class="error-banner"
+        >
           <X :size="18" />
           {{ error }}
         </div>
 
         <!-- Project Detail -->
-        <div v-else-if="project" class="project-detail">
+        <div
+          v-else-if="project"
+          class="project-detail"
+        >
           <div class="detail-header">
             <div class="header-content">
               <h1>{{ project.title }}</h1>
-              <p class="text-gray-600">Project Details</p>
+              <p class="text-gray-600">
+                Project Details
+              </p>
             </div>
             <div class="header-actions">
-              <button @click="goToPlayer" class="action-btn player-btn">
+              <button
+                class="action-btn player-btn"
+                @click="goToPlayer"
+              >
                 <Play :size="18" />
                 View Player
               </button>
-              <button @click="goToEdit" class="action-btn edit-btn">
+              <button
+                class="action-btn edit-btn"
+                @click="goToEdit"
+              >
                 <Pencil :size="18" />
                 Edit
               </button>
               <button
-                @click="showDeleteConfirm = true"
                 class="action-btn delete-btn"
+                @click="showDeleteConfirm = true"
               >
                 <Trash2 :size="18" />
                 Delete
@@ -160,12 +183,16 @@ onMounted(() => {
 
             <div class="info-card">
               <label>Project ID</label>
-              <p class="font-mono text-sm">{{ project.id }}</p>
+              <p class="font-mono text-sm">
+                {{ project.id }}
+              </p>
             </div>
 
             <div class="info-card">
               <label>User ID</label>
-              <p class="font-mono text-sm">{{ project.userId }}</p>
+              <p class="font-mono text-sm">
+                {{ project.userId }}
+              </p>
             </div>
 
             <div class="info-card">
@@ -178,24 +205,36 @@ onMounted(() => {
               <p>{{ formatDate(project.updatedAt) }}</p>
             </div>
 
-            <div v-if="project.config" class="info-card">
+            <div
+              v-if="project.config"
+              class="info-card"
+            >
               <label>Quality</label>
               <p>{{ project.config.quality }}</p>
             </div>
 
-            <div v-if="project.config" class="info-card">
+            <div
+              v-if="project.config"
+              class="info-card"
+            >
               <label>Style</label>
               <p>{{ project.config.style }}</p>
             </div>
 
-            <div v-if="project.config" class="info-card">
+            <div
+              v-if="project.config"
+              class="info-card"
+            >
               <label>Audio Voice</label>
               <p>{{ project.config.audioVoice }}</p>
             </div>
           </div>
 
           <!-- Description Section -->
-          <div v-if="project.description" class="description-section">
+          <div
+            v-if="project.description"
+            class="description-section"
+          >
             <h2>Description</h2>
             <div class="description-content">
               {{ project.description }}
@@ -208,11 +247,19 @@ onMounted(() => {
             class="source-section"
           >
             <h2>Source Information</h2>
-            <div v-if="project.sourceText" class="source-item">
+            <div
+              v-if="project.sourceText"
+              class="source-item"
+            >
               <label>Source Text</label>
-              <div class="source-text">{{ project.sourceText }}</div>
+              <div class="source-text">
+                {{ project.sourceText }}
+              </div>
             </div>
-            <div v-if="project.sourceFile" class="source-item">
+            <div
+              v-if="project.sourceFile"
+              class="source-item"
+            >
               <label>Source File</label>
               <p>{{ project.sourceFile }}</p>
             </div>
@@ -220,7 +267,10 @@ onMounted(() => {
         </div>
 
         <!-- No Project Found -->
-        <div v-else class="no-project">
+        <div
+          v-else
+          class="no-project"
+        >
           <p>Project not found</p>
         </div>
       </div>
@@ -232,7 +282,10 @@ onMounted(() => {
       class="modal-overlay"
       @click="showDeleteConfirm = false"
     >
-      <div class="modal-content" @click.stop>
+      <div
+        class="modal-content"
+        @click.stop
+      >
         <div class="modal-header">
           <h2>Delete Project?</h2>
         </div>
@@ -244,10 +297,16 @@ onMounted(() => {
           </p>
         </div>
         <div class="modal-footer">
-          <button @click="showDeleteConfirm = false" class="cancel-btn">
+          <button
+            class="cancel-btn"
+            @click="showDeleteConfirm = false"
+          >
             Cancel
           </button>
-          <button @click="handleDelete" class="delete-confirm-btn">
+          <button
+            class="delete-confirm-btn"
+            @click="handleDelete"
+          >
             Delete
           </button>
         </div>

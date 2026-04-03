@@ -181,61 +181,82 @@ const closeModal = () => {
           src="/assets/images/short_logo.png"
           alt="VisioBook"
           class="logo-image"
-        />
+        >
       </div>
 
       <!-- Title -->
       <h1 class="modal-title">
         {{ isEditMode ? "Edit Your VisioBook" : "Configure Your VisioBook" }}
       </h1>
-      <p class="modal-subtitle">{{ projectTitle }}</p>
+      <p class="modal-subtitle">
+        {{ projectTitle }}
+      </p>
 
       <!-- OCR Processing / Text Display -->
       <div class="ocr-section">
         <div class="ocr-header">
-          <FileText :size="18" color="#666" />
-          <h3 class="section-title">Extracted Text</h3>
+          <FileText
+            :size="18"
+            color="#666"
+          />
+          <h3 class="section-title">
+            Extracted Text
+          </h3>
         </div>
 
         <!-- Processing State -->
-        <div v-if="isProcessingOcr" class="ocr-processing">
+        <div
+          v-if="isProcessingOcr"
+          class="ocr-processing"
+        >
           <div class="processing-content">
-            <Loader2 :size="24" color="#a6c3eb" class="spinner" />
-            <span class="processing-text"
-              >Extracting text from document...</span
-            >
+            <Loader2
+              :size="24"
+              color="#a6c3eb"
+              class="spinner"
+            />
+            <span class="processing-text">Extracting text from document...</span>
           </div>
           <div class="progress-bar-container">
             <div
               class="progress-bar-fill"
               :style="{ width: `${ocrProgress}%` }"
-            ></div>
+            />
           </div>
           <span class="progress-percent">{{ Math.round(ocrProgress) }}%</span>
         </div>
 
         <!-- OCR Result -->
-        <div v-else class="ocr-result">
+        <div
+          v-else
+          class="ocr-result"
+        >
           <textarea
             v-model="ocrText"
             class="ocr-textarea"
             placeholder="Extracted text will appear here..."
             :readonly="!isOcrComplete"
-          ></textarea>
+          />
           <div class="ocr-info">
             <span class="char-count">{{ ocrText.length }} characters</span>
-            <span v-if="isOcrComplete" class="edit-hint"
-              >You can edit the text if needed</span
-            >
+            <span
+              v-if="isOcrComplete"
+              class="edit-hint"
+            >You can edit the text if needed</span>
           </div>
         </div>
       </div>
 
       <!-- Configuration Form -->
-      <div class="config-form" :class="{ disabled: !isOcrComplete }">
+      <div
+        class="config-form"
+        :class="{ disabled: !isOcrComplete }"
+      >
         <!-- Style Selection -->
         <div class="config-section">
-          <h3 class="section-title">Visual Style</h3>
+          <h3 class="section-title">
+            Visual Style
+          </h3>
           <div class="style-grid">
             <div
               v-for="style in styleOptions"
@@ -245,7 +266,10 @@ const closeModal = () => {
               @click="config.style = style.value as ProjectConfig['style']"
             >
               <div class="style-preview">
-                <div class="style-icon" :class="style.value"></div>
+                <div
+                  class="style-icon"
+                  :class="style.value"
+                />
               </div>
               <span class="style-label">{{ style.label }}</span>
             </div>
@@ -254,7 +278,9 @@ const closeModal = () => {
 
         <!-- Language/Voice Selection -->
         <div class="config-section">
-          <h3 class="section-title">Audio Language</h3>
+          <h3 class="section-title">
+            Audio Language
+          </h3>
           <div class="voice-options">
             <div
               v-for="voice in voiceOptions"
@@ -273,7 +299,9 @@ const closeModal = () => {
 
         <!-- Duration Selection -->
         <div class="config-section">
-          <h3 class="section-title">Animation Duration</h3>
+          <h3 class="section-title">
+            Animation Duration
+          </h3>
           <div class="duration-options">
             <div
               v-for="duration in durationOptions"
@@ -304,7 +332,11 @@ const closeModal = () => {
 
         <!-- Cancel Link -->
         <div class="cancel-section">
-          <a href="#" @click.prevent="closeModal" class="cancel-link">Cancel</a>
+          <a
+            href="#"
+            class="cancel-link"
+            @click.prevent="closeModal"
+          >Cancel</a>
         </div>
       </div>
     </div>

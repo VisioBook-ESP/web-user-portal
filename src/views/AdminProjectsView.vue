@@ -75,7 +75,7 @@ const loadProjects = async () => {
       searchQuery.value || undefined,
       statusFilter.value === "all" ? undefined : statusFilter.value,
     );
-    console.log("Projects response:", response);
+
 
     // Handle both paginated and direct array responses
     if (Array.isArray(response)) {
@@ -90,7 +90,7 @@ const loadProjects = async () => {
     }
     applyFilters();
   } catch (err: any) {
-    console.error("Failed to load projects:", err);
+
     error.value = err.message || "Failed to load projects";
   } finally {
     isLoading.value = false;
@@ -151,13 +151,18 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="admin-projects-view" :style="gradientStyle">
+  <div
+    class="admin-projects-view"
+    :style="gradientStyle"
+  >
     <Navbar />
     <main class="admin-content">
       <div class="admin-container">
         <div class="admin-header">
           <h1>Admin - Projects Management</h1>
-          <p class="text-gray-600">Manage all user projects</p>
+          <p class="text-gray-600">
+            Manage all user projects
+          </p>
         </div>
 
         <!-- Search and Filter Section -->
@@ -168,41 +173,70 @@ onMounted(() => {
               v-model="searchQuery"
               type="text"
               placeholder="Search by project name, username, or email..."
-              @keyup.enter="handleSearch"
               class="search-input"
-            />
+              @keyup.enter="handleSearch"
+            >
           </div>
 
           <div class="filter-controls">
             <select
               v-model="statusFilter"
-              @change="applyFilters"
               class="status-filter"
+              @change="applyFilters"
             >
-              <option value="all">All Statuses</option>
-              <option value="draft">Draft</option>
-              <option value="processing">Processing</option>
-              <option value="completed">Completed</option>
-              <option value="failed">Failed</option>
+              <option value="all">
+                All Statuses
+              </option>
+              <option value="draft">
+                Draft
+              </option>
+              <option value="processing">
+                Processing
+              </option>
+              <option value="completed">
+                Completed
+              </option>
+              <option value="failed">
+                Failed
+              </option>
             </select>
-            <button @click="handleSearch" class="search-btn">Search</button>
+            <button
+              class="search-btn"
+              @click="handleSearch"
+            >
+              Search
+            </button>
           </div>
         </div>
 
         <!-- Error Message -->
-        <div v-if="error" class="error-banner">
+        <div
+          v-if="error"
+          class="error-banner"
+        >
           <X :size="18" />
           {{ error }}
-          <button @click="error = null" class="close-error">
+          <button
+            class="close-error"
+            @click="error = null"
+          >
             <X :size="16" />
           </button>
         </div>
 
         <!-- Loading State -->
-        <div v-if="isLoading" class="loading-spinner">Loading projects...</div>
+        <div
+          v-if="isLoading"
+          class="loading-spinner"
+        >
+          Loading projects...
+        </div>
 
         <!-- Projects Table -->
-        <div v-else class="projects-table-wrapper">
+        <div
+          v-else
+          class="projects-table-wrapper"
+        >
           <table class="projects-table">
             <thead>
               <tr>
@@ -215,10 +249,19 @@ onMounted(() => {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="project in paginatedProjects" :key="project.id">
-                <td class="project-title">{{ project.title }}</td>
-                <td class="user-name">{{ project.username }}</td>
-                <td class="user-email">{{ project.userEmail }}</td>
+              <tr
+                v-for="project in paginatedProjects"
+                :key="project.id"
+              >
+                <td class="project-title">
+                  {{ project.title }}
+                </td>
+                <td class="user-name">
+                  {{ project.username }}
+                </td>
+                <td class="user-email">
+                  {{ project.userEmail }}
+                </td>
                 <td class="status-cell">
                   <span :class="['status-badge', statusColor(project.status)]">
                     {{ project.status }}
@@ -229,48 +272,56 @@ onMounted(() => {
                 </td>
                 <td class="actions-cell">
                   <button
-                    @click="goToPlayerView(project.id)"
                     class="action-btn view-btn"
                     title="View Player"
+                    @click="goToPlayerView(project.id)"
                   >
                     <Play :size="16" />
                   </button>
                   <button
-                    @click="goToProjectDetail(project.id)"
                     class="action-btn edit-btn"
                     title="Edit Project"
+                    @click="goToProjectDetail(project.id)"
                   >
                     <Pencil :size="16" />
                   </button>
                   <button
-                    @click="goToUserProjects(project.userId)"
                     class="action-btn view-user-btn"
                     title="View User Profile"
+                    @click="goToUserProjects(project.userId)"
                   >
                     <Eye :size="16" />
                   </button>
                   <button
-                    @click="handleDeleteProject(project.id)"
                     class="action-btn delete-btn"
                     title="Delete Project"
+                    @click="handleDeleteProject(project.id)"
                   >
                     <Trash2 :size="16" />
                   </button>
                 </td>
               </tr>
               <tr v-if="paginatedProjects.length === 0">
-                <td colspan="6" class="no-data">No projects found</td>
+                <td
+                  colspan="6"
+                  class="no-data"
+                >
+                  No projects found
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
 
         <!-- Pagination -->
-        <div v-if="totalPages > 1" class="pagination">
+        <div
+          v-if="totalPages > 1"
+          class="pagination"
+        >
           <button
-            @click="currentPage--"
             :disabled="currentPage === 1"
             class="pagination-btn"
+            @click="currentPage--"
           >
             Previous
           </button>
@@ -278,9 +329,9 @@ onMounted(() => {
             Page {{ currentPage }} of {{ totalPages }}
           </span>
           <button
-            @click="currentPage++"
             :disabled="currentPage === totalPages"
             class="pagination-btn"
+            @click="currentPage++"
           >
             Next
           </button>

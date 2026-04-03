@@ -125,14 +125,19 @@ const closeModal = () => {
           src="/assets/images/short_logo.png"
           alt="VisioBook"
           class="logo-image"
-        />
+        >
       </div>
 
       <!-- Title -->
-      <h1 class="modal-title">Create an Account</h1>
+      <h1 class="modal-title">
+        Create an Account
+      </h1>
 
       <!-- Form -->
-      <form @submit.prevent="handleSubmit" class="auth-form">
+      <form
+        class="auth-form"
+        @submit.prevent="handleSubmit"
+      >
         <div class="input-group">
           <input
             v-model="form.email"
@@ -141,8 +146,11 @@ const closeModal = () => {
             class="auth-input"
             :class="{ 'has-error': errors.email }"
             @blur="validateField('email')"
-          />
-          <span v-if="errors.email" class="error-message">{{
+          >
+          <span
+            v-if="errors.email"
+            class="error-message"
+          >{{
             errors.email
           }}</span>
         </div>
@@ -155,8 +163,11 @@ const closeModal = () => {
             class="auth-input"
             :class="{ 'has-error': errors.username }"
             @blur="validateField('username')"
-          />
-          <span v-if="errors.username" class="error-message">{{
+          >
+          <span
+            v-if="errors.username"
+            class="error-message"
+          >{{
             errors.username
           }}</span>
         </div>
@@ -168,7 +179,7 @@ const closeModal = () => {
               type="text"
               placeholder="First name (optional)"
               class="auth-input"
-            />
+            >
           </div>
           <div class="input-group">
             <input
@@ -176,7 +187,7 @@ const closeModal = () => {
               type="text"
               placeholder="Last name (optional)"
               class="auth-input"
-            />
+            >
           </div>
         </div>
 
@@ -188,8 +199,11 @@ const closeModal = () => {
             class="auth-input"
             :class="{ 'has-error': errors.password }"
             @blur="validateField('password')"
-          />
-          <span v-if="errors.password" class="error-message">{{
+          >
+          <span
+            v-if="errors.password"
+            class="error-message"
+          >{{
             errors.password
           }}</span>
         </div>
@@ -206,12 +220,21 @@ const closeModal = () => {
         <!-- Terms Agreement -->
         <div class="terms-agreement">
           <label class="checkbox-container">
-            <input type="checkbox" v-model="acceptTerms" />
-            <span class="checkmark"></span>
+            <input
+              v-model="acceptTerms"
+              type="checkbox"
+            >
+            <span class="checkmark" />
           </label>
           <span class="terms-text">
-            I Agree to the <a href="#" class="terms-link">Privacy Policy</a> and
-            <a href="#" class="terms-link">Terms of Service</a>
+            I Agree to the <a
+              href="#"
+              class="terms-link"
+            >Privacy Policy</a> and
+            <a
+              href="#"
+              class="terms-link"
+            >Terms of Service</a>
           </span>
         </div>
       </form>
@@ -219,9 +242,11 @@ const closeModal = () => {
       <!-- Switch to Login -->
       <div class="switch-auth">
         <span>Already have an account?</span>
-        <a href="#" @click.prevent="switchToLogin" class="switch-link"
-          >Log in</a
-        >
+        <a
+          href="#"
+          class="switch-link"
+          @click.prevent="switchToLogin"
+        >Log in</a>
       </div>
     </div>
   </div>
