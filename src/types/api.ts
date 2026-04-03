@@ -35,3 +35,20 @@ export interface ApiError {
   message: string;
   details?: any;
 }
+
+// Admin-specific types
+export interface AdminStats {
+  totalUsers: number;
+  totalProjects: number;
+  totalVisioBooks: number;
+  activeUsers: number;
+  storageUsed: number;
+}
+
+export interface ApplicationMetrics {
+  uptime: number;
+  averageResponseTime: number;
+  errorRate: number;
+  requestsPerSecond: number;
+  timestamp: string;
+}

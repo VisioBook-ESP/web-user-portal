@@ -45,6 +45,17 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./src/setupTests.ts'],
+    alias: {
+      '~vuetify': 'vuetify',
+    },
+    deps: {
+      inline: ['vuetify'],
+      optimizer: {
+        web: {
+          include: ['vuetify'],
+        }
+      }
+    },
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],

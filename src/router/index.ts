@@ -75,6 +75,37 @@ const routes: RouteRecordRaw[] = [
     component: () => import("@/views/SettingsView.vue"),
     meta: { requiresAuth: true },
   },
+  // Admin routes
+  {
+    path: "/admin/projects",
+    name: "admin-projects",
+    component: () => import("@/views/AdminProjectsView.vue"),
+    meta: { requiresAuth: true, requiresAdmin: true },
+  },
+  {
+    path: "/admin/projects/:id",
+    name: "admin-project-detail",
+    component: () => import("@/views/AdminProjectDetailView.vue"),
+    meta: { requiresAuth: true, requiresAdmin: true },
+  },
+  {
+    path: "/admin/users",
+    name: "admin-users",
+    component: () => import("@/views/AdminUsersView.vue"),
+    meta: { requiresAuth: true, requiresAdmin: true },
+  },
+  {
+    path: "/admin/users/:id",
+    name: "admin-user-detail",
+    component: () => import("@/views/AdminUserDetailView.vue"),
+    meta: { requiresAuth: true, requiresAdmin: true },
+  },
+  {
+    path: "/admin/monitor",
+    name: "admin-monitor",
+    component: () => import("@/views/AdminMonitorView.vue"),
+    meta: { requiresAuth: true, requiresAdmin: true },
+  },
   {
     path: "/:pathMatch(.*)*",
     name: "not-found",
@@ -98,6 +129,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+  const requiresAdmin = to.matched.some((record) => record.meta.requiresAdmin);
   const redirectIfAuth = to.matched.some(
     (record) => record.meta.redirectIfAuth,
   );
@@ -108,6 +140,9 @@ router.beforeEach((to, from, next) => {
       name: "home",
       query: { redirect: to.fullPath },
     });
+  } else if (requiresAdmin && !authStore.isAdmin) {
+    // Redirect to dashboard if route requires admin and user is not admin
+    next({ name: "dashboard" });
   } else if (redirectIfAuth && authStore.isAuthenticated) {
     // Redirect to dashboard if user is already authenticated
     next({ name: "dashboard" });
