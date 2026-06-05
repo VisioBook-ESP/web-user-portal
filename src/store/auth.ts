@@ -18,6 +18,7 @@ export const useAuthStore = defineStore("auth", () => {
   const isAuthenticated = computed(
     () => !!user.value && TokenService.hasToken(),
   );
+  const isAdmin = computed(() => user.value?.role === "admin");
   const userInitials = computed(() =>
     user.value ? calcInitials(user.value) : "",
   );
@@ -104,6 +105,7 @@ export const useAuthStore = defineStore("auth", () => {
     error,
     // Getters
     isAuthenticated,
+    isAdmin,
     userInitials,
     displayName,
     // Actions

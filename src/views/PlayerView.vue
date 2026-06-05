@@ -260,24 +260,26 @@ onUnmounted(() => {
 
           <!-- Action Icons (Vertical Bar) -->
           <div class="video-actions">
-            <button class="action-icon-btn" @click="editProject" title="Edit">
+            <button class="action-icon-btn" title="Edit" @click="editProject">
               <Pencil :size="20" color="#b3b3b3" />
             </button>
             <button
               class="action-icon-btn"
-              @click="deleteProject"
               title="Delete"
+              @click="deleteProject"
             >
               <Trash2 :size="20" color="#b3b3b3" />
             </button>
-            <button class="action-icon-btn" @click="shareProject" title="Share">
+            <button class="action-icon-btn" title="Share" @click="shareProject">
               <Share2 :size="20" color="#b3b3b3" />
             </button>
           </div>
         </div>
 
         <!-- Project Title -->
-        <h1 class="project-title">{{ project.title }}</h1>
+        <h1 class="project-title">
+          {{ project.title }}
+        </h1>
       </div>
 
       <!-- Bottom Controls Bar (Spotify Style) -->
@@ -301,16 +303,16 @@ onUnmounted(() => {
           <div class="control-buttons">
             <button
               class="control-btn secondary"
-              @click="skipBackward"
               title="Previous"
+              @click="skipBackward"
             >
               <SkipBack :size="20" color="#b3b3b3" fill="#b3b3b3" />
             </button>
 
             <button
               class="control-btn primary"
-              @click="togglePlay"
               title="Play/Pause"
+              @click="togglePlay"
             >
               <Pause
                 v-if="isPlaying"
@@ -329,8 +331,8 @@ onUnmounted(() => {
 
             <button
               class="control-btn secondary"
-              @click="skipForward"
               title="Next"
+              @click="skipForward"
             >
               <SkipForward :size="20" color="#b3b3b3" fill="#b3b3b3" />
             </button>
@@ -338,8 +340,8 @@ onUnmounted(() => {
             <button
               class="control-btn secondary"
               :class="{ active: repeatMode !== 'none' }"
-              @click="toggleRepeat"
               title="Repeat"
+              @click="toggleRepeat"
             >
               <Repeat
                 :size="20"
@@ -361,14 +363,11 @@ onUnmounted(() => {
               @mouseup="endDrag"
             >
               <div class="progress-track">
-                <div
-                  class="progress-fill"
-                  :style="{ width: `${progress}%` }"
-                ></div>
+                <div class="progress-fill" :style="{ width: `${progress}%` }" />
                 <div
                   class="progress-handle"
                   :style="{ left: `${progress}%` }"
-                ></div>
+                />
               </div>
             </div>
             <span class="time-display">{{ formattedDuration }}</span>
@@ -379,8 +378,8 @@ onUnmounted(() => {
         <div class="controls-right">
           <button
             class="control-btn secondary"
-            @click="toggleMute"
             title="Volume"
+            @click="toggleMute"
           >
             <VolumeX
               v-if="isMuted || volume === 0"
@@ -395,18 +394,18 @@ onUnmounted(() => {
               <div
                 class="volume-fill"
                 :style="{ width: `${isMuted ? 0 : volume * 100}%` }"
-              ></div>
+              />
               <div
                 class="volume-handle"
                 :style="{ left: `${isMuted ? 0 : volume * 100}%` }"
-              ></div>
+              />
             </div>
           </div>
 
           <button
             class="control-btn secondary"
-            @click="toggleFullscreen"
             title="Fullscreen"
+            @click="toggleFullscreen"
           >
             <Minimize v-if="isFullscreen" :size="20" color="#b3b3b3" />
             <Maximize v-else :size="20" color="#b3b3b3" />

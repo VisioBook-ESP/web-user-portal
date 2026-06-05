@@ -1,7 +1,7 @@
 import { vi } from "vitest";
 import { config } from "@vue/test-utils";
 
-// Mock global objects
+// Mock window.matchMedia
 Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: vi.fn().mockImplementation((query) => ({

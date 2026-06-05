@@ -218,8 +218,8 @@ const shareProject = (projectId: string) => {
             @drop="handleDrop"
           >
             <input
-              type="file"
               id="file-upload"
+              type="file"
               accept=".pdf"
               class="file-input"
               @change="handleFileSelect"
@@ -289,32 +289,36 @@ const shareProject = (projectId: string) => {
               </div>
               <div class="project-info">
                 <div class="project-info-header">
-                  <h3 class="project-title">{{ project.title }}</h3>
+                  <h3 class="project-title">
+                    {{ project.title }}
+                  </h3>
                   <div class="action-icons">
                     <button
                       class="action-icon-btn"
-                      @click.stop="editProject(project.id)"
                       title="Edit"
+                      @click.stop="editProject(project.id)"
                     >
                       <Pencil :size="16" color="#a6c3eb" />
                     </button>
                     <button
                       class="action-icon-btn"
-                      @click.stop="deleteProject(project.id)"
                       title="Delete"
+                      @click.stop="deleteProject(project.id)"
                     >
                       <Trash2 :size="16" color="#a6c3eb" />
                     </button>
                     <button
                       class="action-icon-btn"
-                      @click.stop="shareProject(project.id)"
                       title="Share"
+                      @click.stop="shareProject(project.id)"
                     >
                       <Share2 :size="16" color="#a6c3eb" />
                     </button>
                   </div>
                 </div>
-                <p class="project-meta">{{ project.status }}</p>
+                <p class="project-meta">
+                  {{ project.status }}
+                </p>
               </div>
             </div>
           </div>

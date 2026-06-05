@@ -188,7 +188,9 @@ const closeModal = () => {
       <h1 class="modal-title">
         {{ isEditMode ? "Edit Your VisioBook" : "Configure Your VisioBook" }}
       </h1>
-      <p class="modal-subtitle">{{ projectTitle }}</p>
+      <p class="modal-subtitle">
+        {{ projectTitle }}
+      </p>
 
       <!-- OCR Processing / Text Display -->
       <div class="ocr-section">
@@ -209,7 +211,7 @@ const closeModal = () => {
             <div
               class="progress-bar-fill"
               :style="{ width: `${ocrProgress}%` }"
-            ></div>
+            />
           </div>
           <span class="progress-percent">{{ Math.round(ocrProgress) }}%</span>
         </div>
@@ -221,7 +223,7 @@ const closeModal = () => {
             class="ocr-textarea"
             placeholder="Extracted text will appear here..."
             :readonly="!isOcrComplete"
-          ></textarea>
+          />
           <div class="ocr-info">
             <span class="char-count">{{ ocrText.length }} characters</span>
             <span v-if="isOcrComplete" class="edit-hint"
@@ -245,7 +247,7 @@ const closeModal = () => {
               @click="config.style = style.value as ProjectConfig['style']"
             >
               <div class="style-preview">
-                <div class="style-icon" :class="style.value"></div>
+                <div class="style-icon" :class="style.value" />
               </div>
               <span class="style-label">{{ style.label }}</span>
             </div>
@@ -304,7 +306,7 @@ const closeModal = () => {
 
         <!-- Cancel Link -->
         <div class="cancel-section">
-          <a href="#" @click.prevent="closeModal" class="cancel-link">Cancel</a>
+          <a href="#" class="cancel-link" @click.prevent="closeModal">Cancel</a>
         </div>
       </div>
     </div>

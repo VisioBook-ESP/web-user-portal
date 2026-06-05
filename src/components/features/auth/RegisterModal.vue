@@ -132,7 +132,7 @@ const closeModal = () => {
       <h1 class="modal-title">Create an Account</h1>
 
       <!-- Form -->
-      <form @submit.prevent="handleSubmit" class="auth-form">
+      <form class="auth-form" @submit.prevent="handleSubmit">
         <div class="input-group">
           <input
             v-model="form.email"
@@ -206,8 +206,8 @@ const closeModal = () => {
         <!-- Terms Agreement -->
         <div class="terms-agreement">
           <label class="checkbox-container">
-            <input type="checkbox" v-model="acceptTerms" />
-            <span class="checkmark"></span>
+            <input v-model="acceptTerms" type="checkbox" />
+            <span class="checkmark" />
           </label>
           <span class="terms-text">
             I Agree to the <a href="#" class="terms-link">Privacy Policy</a> and
@@ -219,7 +219,7 @@ const closeModal = () => {
       <!-- Switch to Login -->
       <div class="switch-auth">
         <span>Already have an account?</span>
-        <a href="#" @click.prevent="switchToLogin" class="switch-link"
+        <a href="#" class="switch-link" @click.prevent="switchToLogin"
           >Log in</a
         >
       </div>

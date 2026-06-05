@@ -4,6 +4,7 @@ import { useRouter } from "vue-router";
 import { useGradientBackground } from "@/composables/useGradientBackground";
 import { useUIStore } from "@/store/ui";
 import { useAuthStore } from "@/store/auth";
+import { useSubscriptionStore } from "@/store";
 import Navbar from "@/components/layout/Navbar/Navbar.vue";
 import {
   User,
@@ -18,10 +19,12 @@ import {
   Bell,
   LogOut,
 } from "lucide-vue-next";
+import { buildCheckoutReturnUrl } from "@/utils/helpers";
 
 const router = useRouter();
 const uiStore = useUIStore();
 const authStore = useAuthStore();
+const subscriptionStore = useSubscriptionStore();
 const { gradientStyle } = useGradientBackground();
 
 // Active section
@@ -32,6 +35,7 @@ const activeSection = ref<"profile" | "password" | "premium" | "notifications">(
 // Form states
 const isEditing = ref(false);
 const isSaving = ref(false);
+const isStartingPremiumCheckout = ref(false);
 
 // Profile form — kept in sync with the store's user on mount / after save
 const profileForm = ref({
@@ -142,8 +146,26 @@ const changePassword = async () => {
   }
 };
 
-const upgradeToPremium = () => {
-  uiStore.showInfo("Redirecting to payment...");
+const upgradeToPremium = async () => {
+  if (isStartingPremiumCheckout.value) return;
+
+  isStartingPremiumCheckout.value = true;
+  try {
+    const successUrl = buildCheckoutReturnUrl("/subscription?success=true");
+    const cancelUrl = buildCheckoutReturnUrl("/subscription?canceled=true");
+
+    const checkoutUrl = await subscriptionStore.createCheckoutSession({
+      planId: "premium",
+      successUrl,
+      cancelUrl,
+    });
+
+    window.location.href = checkoutUrl;
+  } catch {
+    uiStore.showError("Unable to start the payment flow. Please try again.");
+  } finally {
+    isStartingPremiumCheckout.value = false;
+  }
 };
 
 const saveNotifications = async () => {
@@ -203,10 +225,12 @@ const uploadAvatar = () => {
             <h2 class="user-name">
               {{ authStore.displayName || authStore.user?.username }}
             </h2>
-            <p class="user-email">{{ authStore.user?.email }}</p>
+            <p class="user-email">
+              {{ authStore.user?.email }}
+            </p>
             <p
-              class="user-profile-details"
               v-if="authStore.user?.first_name || authStore.user?.last_name"
+              class="user-profile-details"
             >
               {{ authStore.user?.first_name }} {{ authStore.user?.last_name }}
             </p>
@@ -306,15 +330,15 @@ const uploadAvatar = () => {
             <template v-else>
               <button
                 class="btn-secondary"
-                @click="cancelEditing"
                 :disabled="isSaving"
+                @click="cancelEditing"
               >
                 Cancel
               </button>
               <button
                 class="btn-primary"
-                @click="saveProfile"
                 :disabled="isSaving"
+                @click="saveProfile"
               >
                 {{ isSaving ? "Saving..." : "Save Changes" }}
               </button>
@@ -393,8 +417,8 @@ const uploadAvatar = () => {
           <div class="form-actions">
             <button
               class="btn-primary"
-              @click="changePassword"
               :disabled="!isPasswordValid || isSaving"
+              @click="changePassword"
             >
               {{ isSaving ? "Changing..." : "Change Password" }}
             </button>
@@ -458,9 +482,15 @@ const uploadAvatar = () => {
                   <Check :size="16" color="#4CAF50" /> Premium Support
                 </div>
               </div>
-              <button class="btn-premium" @click="upgradeToPremium">
+              <button
+                class="btn-premium"
+                :disabled="isStartingPremiumCheckout"
+                @click="upgradeToPremium"
+              >
                 <CreditCard :size="18" />
-                Upgrade Now
+                {{
+                  isStartingPremiumCheckout ? "Redirecting..." : "Upgrade Now"
+                }}
               </button>
             </div>
           </div>
@@ -478,10 +508,10 @@ const uploadAvatar = () => {
               </div>
               <label class="toggle-switch">
                 <input
-                  type="checkbox"
                   v-model="notificationSettings.emailNotifications"
+                  type="checkbox"
                 />
-                <span class="slider"></span>
+                <span class="slider" />
               </label>
             </div>
 
@@ -494,10 +524,10 @@ const uploadAvatar = () => {
               </div>
               <label class="toggle-switch">
                 <input
-                  type="checkbox"
                   v-model="notificationSettings.projectUpdates"
+                  type="checkbox"
                 />
-                <span class="slider"></span>
+                <span class="slider" />
               </label>
             </div>
 
@@ -510,10 +540,10 @@ const uploadAvatar = () => {
               </div>
               <label class="toggle-switch">
                 <input
-                  type="checkbox"
                   v-model="notificationSettings.marketingEmails"
+                  type="checkbox"
                 />
-                <span class="slider"></span>
+                <span class="slider" />
               </label>
             </div>
 
@@ -526,10 +556,10 @@ const uploadAvatar = () => {
               </div>
               <label class="toggle-switch">
                 <input
-                  type="checkbox"
                   v-model="notificationSettings.securityAlerts"
+                  type="checkbox"
                 />
-                <span class="slider"></span>
+                <span class="slider" />
               </label>
             </div>
           </div>
@@ -537,8 +567,8 @@ const uploadAvatar = () => {
           <div class="form-actions">
             <button
               class="btn-primary"
-              @click="saveNotifications"
               :disabled="isSaving"
+              @click="saveNotifications"
             >
               {{ isSaving ? "Saving..." : "Save Settings" }}
             </button>

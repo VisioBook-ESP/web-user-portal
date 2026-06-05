@@ -153,8 +153,8 @@ const features = [
             @drop="handleDrop"
           >
             <input
-              type="file"
               id="home-file-upload"
+              type="file"
               accept=".pdf"
               class="file-input"
               @click="handleFileInputClick"
@@ -178,8 +178,12 @@ const features = [
             :key="index"
             class="feature-card"
           >
-            <h3 class="feature-title">{{ feature.title }}</h3>
-            <p class="feature-description">{{ feature.description }}</p>
+            <h3 class="feature-title">
+              {{ feature.title }}
+            </h3>
+            <p class="feature-description">
+              {{ feature.description }}
+            </p>
           </div>
         </div>
       </section>

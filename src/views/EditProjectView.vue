@@ -101,7 +101,7 @@ const goBack = () => {
     <div class="edit-container">
       <!-- Loading State -->
       <div v-if="isLoading" class="loading-state">
-        <div class="loading-spinner"></div>
+        <div class="loading-spinner" />
         <p>Loading project...</p>
       </div>
 

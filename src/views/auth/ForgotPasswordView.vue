@@ -89,9 +89,9 @@ const handleSubmit = async () => {
                     type="email"
                     prepend-inner-icon="mdi-email"
                     :error-messages="error"
+                    class="mb-4"
                     @blur="validateEmail"
                     @input="validateEmail"
-                    class="mb-4"
                   />
 
                   <v-btn
@@ -111,7 +111,7 @@ const handleSubmit = async () => {
                       color="primary"
                       @click="router.push('/login')"
                     >
-                      <v-icon start>mdi-arrow-left</v-icon>
+                      <v-icon start> mdi-arrow-left </v-icon>
                       Back to Login
                     </v-btn>
                   </div>
@@ -132,8 +132,8 @@ const handleSubmit = async () => {
                   variant="outlined"
                   color="primary"
                   block
-                  @click="emailSent = false"
                   class="mb-4"
+                  @click="emailSent = false"
                 >
                   Try Another Email
                 </v-btn>
@@ -144,7 +144,7 @@ const handleSubmit = async () => {
                     color="primary"
                     @click="router.push('/login')"
                   >
-                    <v-icon start>mdi-arrow-left</v-icon>
+                    <v-icon start> mdi-arrow-left </v-icon>
                     Back to Login
                   </v-btn>
                 </div>
