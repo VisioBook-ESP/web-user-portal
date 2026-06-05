@@ -6,6 +6,7 @@ export { authApi } from "./authApi";
 export { userApi } from "./userApi";
 export { projectsApi } from "./projectsApi";
 export { adminApi } from "./adminApi";
+export { paymentApi } from "./paymentApi";
 
 // Default export for convenience
 import { api } from "./baseApi";

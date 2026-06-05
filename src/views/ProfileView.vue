@@ -4,6 +4,7 @@ import { useRouter } from "vue-router";
 import { useGradientBackground } from "@/composables/useGradientBackground";
 import { useUIStore } from "@/store/ui";
 import { useAuthStore } from "@/store/auth";
+import { useSubscriptionStore } from "@/store";
 import Navbar from "@/components/layout/Navbar/Navbar.vue";
 import {
   User,
@@ -18,10 +19,12 @@ import {
   Bell,
   LogOut,
 } from "lucide-vue-next";
+import { buildCheckoutReturnUrl } from "@/utils/helpers";
 
 const router = useRouter();
 const uiStore = useUIStore();
 const authStore = useAuthStore();
+const subscriptionStore = useSubscriptionStore();
 const { gradientStyle } = useGradientBackground();
 
 // Active section
@@ -32,6 +35,7 @@ const activeSection = ref<"profile" | "password" | "premium" | "notifications">(
 // Form states
 const isEditing = ref(false);
 const isSaving = ref(false);
+const isStartingPremiumCheckout = ref(false);
 
 // Profile form — kept in sync with the store's user on mount / after save
 const profileForm = ref({
@@ -142,8 +146,27 @@ const changePassword = async () => {
   }
 };
 
-const upgradeToPremium = () => {
-  uiStore.showInfo("Redirecting to payment...");
+const upgradeToPremium = async () => {
+  if (isStartingPremiumCheckout.value) return;
+
+  isStartingPremiumCheckout.value = true;
+  try {
+    const successUrl = buildCheckoutReturnUrl("/subscription?success=true");
+    const cancelUrl = buildCheckoutReturnUrl("/subscription?canceled=true");
+
+    const checkoutUrl = await subscriptionStore.createCheckoutSession({
+      planId: "premium",
+      successUrl,
+      cancelUrl,
+    });
+
+    window.location.href = checkoutUrl;
+  } catch (error) {
+    console.error("Failed to start premium checkout:", error);
+    uiStore.showError("Unable to start the payment flow. Please try again.");
+  } finally {
+    isStartingPremiumCheckout.value = false;
+  }
 };
 
 const saveNotifications = async () => {
@@ -460,9 +483,15 @@ const uploadAvatar = () => {
                   <Check :size="16" color="#4CAF50" /> Premium Support
                 </div>
               </div>
-              <button class="btn-premium" @click="upgradeToPremium">
+              <button
+                class="btn-premium"
+                :disabled="isStartingPremiumCheckout"
+                @click="upgradeToPremium"
+              >
                 <CreditCard :size="18" />
-                Upgrade Now
+                {{
+                  isStartingPremiumCheckout ? "Redirecting..." : "Upgrade Now"
+                }}
               </button>
             </div>
           </div>
