@@ -1,20 +1,10 @@
 <!-- src/components/features/subscription/CancelSubscriptionDialog.vue -->
 <template>
-  <div
-    class="dialog-overlay"
-    @click.self="$emit('close')"
-  >
+  <div class="dialog-overlay" @click.self="$emit('close')">
     <div class="dialog-content">
       <div class="dialog-header">
-        <h2 class="dialog-title">
-          Cancel Subscription
-        </h2>
-        <button
-          class="close-btn"
-          @click="$emit('close')"
-        >
-          ×
-        </button>
+        <h2 class="dialog-title">Cancel Subscription</h2>
+        <button class="close-btn" @click="$emit('close')">×</button>
       </div>
 
       <div class="dialog-body">
@@ -38,10 +28,9 @@
         </div>
 
         <div class="form-group">
-          <label
-            for="reason"
-            class="form-label"
-          >Reason for cancellation (optional):</label>
+          <label for="reason" class="form-label"
+            >Reason for cancellation (optional):</label
+          >
           <textarea
             id="reason"
             v-model="cancellationReason"
@@ -53,10 +42,7 @@
       </div>
 
       <div class="dialog-footer">
-        <button
-          class="btn btn-secondary"
-          @click="$emit('close')"
-        >
+        <button class="btn btn-secondary" @click="$emit('close')">
           Keep Subscription
         </button>
         <button

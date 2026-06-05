@@ -163,52 +163,35 @@ onMounted(() => {
 </script>
 
 <template>
-  <div
-    class="admin-user-detail-view"
-    :style="gradientStyle"
-  >
+  <div class="admin-user-detail-view" :style="gradientStyle">
     <Navbar />
     <main class="admin-content">
       <div class="admin-container">
         <!-- Breadcrumb -->
         <div class="breadcrumb">
-          <button
-            class="back-btn"
-            @click="goBack"
-          >
+          <button class="back-btn" @click="goBack">
             <ArrowLeft :size="18" />
             Back to Users
           </button>
         </div>
 
         <!-- Loading State -->
-        <div
-          v-if="isLoading"
-          class="loading-spinner"
-        >
+        <div v-if="isLoading" class="loading-spinner">
           Loading user information...
         </div>
 
         <!-- Error State -->
-        <div
-          v-else-if="error"
-          class="error-banner"
-        >
+        <div v-else-if="error" class="error-banner">
           <X :size="18" />
           {{ error }}
         </div>
 
         <!-- User Detail -->
-        <div
-          v-else-if="user"
-          class="user-detail"
-        >
+        <div v-else-if="user" class="user-detail">
           <div class="detail-header">
             <div class="header-content">
               <h1>{{ user.username }}</h1>
-              <p class="text-gray-600">
-                User Profile
-              </p>
+              <p class="text-gray-600">User Profile</p>
             </div>
             <div class="header-actions">
               <button
@@ -231,10 +214,7 @@ onMounted(() => {
           </div>
 
           <!-- Edit Form -->
-          <div
-            v-if="isEditMode"
-            class="edit-form-section"
-          >
+          <div v-if="isEditMode" class="edit-form-section">
             <h2>Edit User Information</h2>
             <div class="form-grid">
               <div class="form-group">
@@ -245,7 +225,7 @@ onMounted(() => {
                   type="text"
                   class="form-input"
                   placeholder="Enter username"
-                >
+                />
               </div>
               <div class="form-group">
                 <label for="first_name">First Name</label>
@@ -255,7 +235,7 @@ onMounted(() => {
                   type="text"
                   class="form-input"
                   placeholder="Enter first name"
-                >
+                />
               </div>
               <div class="form-group">
                 <label for="last_name">Last Name</label>
@@ -265,20 +245,14 @@ onMounted(() => {
                   type="text"
                   class="form-input"
                   placeholder="Enter last name"
-                >
+                />
               </div>
             </div>
             <div class="form-actions">
-              <button
-                class="form-btn cancel-btn"
-                @click="cancelEdit"
-              >
+              <button class="form-btn cancel-btn" @click="cancelEdit">
                 Cancel
               </button>
-              <button
-                class="form-btn save-btn"
-                @click="saveEdit"
-              >
+              <button class="form-btn save-btn" @click="saveEdit">
                 <Check :size="18" />
                 Save Changes
               </button>
@@ -286,10 +260,7 @@ onMounted(() => {
           </div>
 
           <!-- User Info Grid -->
-          <div
-            v-else
-            class="info-grid"
-          >
+          <div v-else class="info-grid">
             <div class="info-card">
               <label>Email</label>
               <p>{{ user.email }}</p>
@@ -341,17 +312,11 @@ onMounted(() => {
           <div class="projects-section">
             <h2>User Projects ({{ userProjects.length }})</h2>
 
-            <div
-              v-if="isLoadingProjects"
-              class="loading-spinner"
-            >
+            <div v-if="isLoadingProjects" class="loading-spinner">
               Loading projects...
             </div>
 
-            <div
-              v-else-if="userProjects.length > 0"
-              class="projects-list"
-            >
+            <div v-else-if="userProjects.length > 0" class="projects-list">
               <div
                 v-for="project in userProjects"
                 :key="project.id"
@@ -370,20 +335,14 @@ onMounted(() => {
               </div>
             </div>
 
-            <div
-              v-else
-              class="no-projects"
-            >
+            <div v-else class="no-projects">
               <p>No projects found for this user</p>
             </div>
           </div>
         </div>
 
         <!-- No User Found -->
-        <div
-          v-else
-          class="no-user"
-        >
+        <div v-else class="no-user">
           <p>User not found</p>
         </div>
       </div>
@@ -395,10 +354,7 @@ onMounted(() => {
       class="modal-overlay"
       @click="showDeleteConfirm = false"
     >
-      <div
-        class="modal-content"
-        @click.stop
-      >
+      <div class="modal-content" @click.stop>
         <div class="modal-header">
           <h2>Delete User?</h2>
         </div>
@@ -410,16 +366,10 @@ onMounted(() => {
           </p>
         </div>
         <div class="modal-footer">
-          <button
-            class="cancel-btn"
-            @click="showDeleteConfirm = false"
-          >
+          <button class="cancel-btn" @click="showDeleteConfirm = false">
             Cancel
           </button>
-          <button
-            class="delete-confirm-btn"
-            @click="handleDelete"
-          >
+          <button class="delete-confirm-btn" @click="handleDelete">
             Delete
           </button>
         </div>

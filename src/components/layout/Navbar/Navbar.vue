@@ -39,30 +39,21 @@ const navigateAdmin = (path: string) => {
 <template>
   <header class="navbar">
     <div class="navbar-container">
-      <router-link
-        to="/"
-        class="logo"
-      >
+      <router-link to="/" class="logo">
         <img
           src="/assets/images/short_logo.png"
           alt="VisioBook"
           class="logo-icon"
-        >
+        />
       </router-link>
 
       <nav class="nav-links">
         <!-- Show Login/Register only when NOT authenticated -->
         <template v-if="!authStore.isAuthenticated">
-          <button
-            class="nav-btn"
-            @click="uiStore.openLoginModal()"
-          >
+          <button class="nav-btn" @click="uiStore.openLoginModal()">
             Login
           </button>
-          <button
-            class="nav-btn"
-            @click="uiStore.openRegisterModal()"
-          >
+          <button class="nav-btn" @click="uiStore.openRegisterModal()">
             Register
           </button>
         </template>
@@ -75,10 +66,7 @@ const navigateAdmin = (path: string) => {
             My VisioBooks
           </button>
           <!-- Admin Menu -->
-          <div
-            v-if="authStore.isAdmin"
-            class="admin-menu-container"
-          >
+          <div v-if="authStore.isAdmin" class="admin-menu-container">
             <button
               class="nav-btn admin-btn"
               title="Admin Menu"
@@ -87,10 +75,7 @@ const navigateAdmin = (path: string) => {
               <FileSliders :size="18" />
               <span class="admin-text">Admin menu</span>
             </button>
-            <div
-              v-if="showAdminMenu"
-              class="admin-dropdown"
-            >
+            <div v-if="showAdminMenu" class="admin-dropdown">
               <button
                 class="admin-menu-item"
                 @click="navigateAdmin('/admin/projects')"

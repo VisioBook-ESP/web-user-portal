@@ -202,10 +202,7 @@ const shareProject = (projectId: string) => {
 </script>
 
 <template>
-  <div
-    class="dashboard-view"
-    :style="gradientStyle"
-  >
+  <div class="dashboard-view" :style="gradientStyle">
     <!-- Navigation Bar -->
     <Navbar />
 
@@ -226,7 +223,7 @@ const shareProject = (projectId: string) => {
               accept=".pdf"
               class="file-input"
               @change="handleFileSelect"
-            >
+            />
             <label
               for="file-upload"
               class="sidebar-action-btn"
@@ -242,38 +239,20 @@ const shareProject = (projectId: string) => {
           </div>
 
           <!-- Scanner Action (Disabled) -->
-          <div
-            class="sidebar-action disabled"
-            @click="openScanner"
-          >
+          <div class="sidebar-action disabled" @click="openScanner">
             <div class="sidebar-action-btn">
-              <ScanText
-                :size="48"
-                color="#9E9E9E"
-                :stroke-width="1.5"
-              />
+              <ScanText :size="48" color="#9E9E9E" :stroke-width="1.5" />
               <span class="action-label">Scan Book</span>
             </div>
           </div>
 
           <!-- Uploaded File Info -->
-          <div
-            v-if="hasUploadedFile"
-            class="upload-info"
-          >
+          <div v-if="hasUploadedFile" class="upload-info">
             <div class="file-info">
               <span class="file-name">{{ uploadedFile?.name }}</span>
-              <button
-                class="clear-btn"
-                @click="clearUpload"
-              >
-                ×
-              </button>
+              <button class="clear-btn" @click="clearUpload">×</button>
             </div>
-            <button
-              class="process-btn"
-              @click="openConfigModal"
-            >
+            <button class="process-btn" @click="openConfigModal">
               Process & Configure
             </button>
           </div>
@@ -297,18 +276,14 @@ const shareProject = (projectId: string) => {
                   :src="project.sceneImages[0]"
                   :alt="project.title"
                   class="project-image"
-                >
+                />
                 <!-- Play Button Overlay -->
                 <div class="card-overlay">
                   <div
                     class="play-button"
                     @click.stop="openProject(project.id)"
                   >
-                    <Play
-                      :size="24"
-                      color="#a6c3eb"
-                      fill="#a6c3eb"
-                    />
+                    <Play :size="24" color="#a6c3eb" fill="#a6c3eb" />
                   </div>
                 </div>
               </div>
@@ -323,30 +298,21 @@ const shareProject = (projectId: string) => {
                       title="Edit"
                       @click.stop="editProject(project.id)"
                     >
-                      <Pencil
-                        :size="16"
-                        color="#a6c3eb"
-                      />
+                      <Pencil :size="16" color="#a6c3eb" />
                     </button>
                     <button
                       class="action-icon-btn"
                       title="Delete"
                       @click.stop="deleteProject(project.id)"
                     >
-                      <Trash2
-                        :size="16"
-                        color="#a6c3eb"
-                      />
+                      <Trash2 :size="16" color="#a6c3eb" />
                     </button>
                     <button
                       class="action-icon-btn"
                       title="Share"
                       @click.stop="shareProject(project.id)"
                     >
-                      <Share2
-                        :size="16"
-                        color="#a6c3eb"
-                      />
+                      <Share2 :size="16" color="#a6c3eb" />
                     </button>
                   </div>
                 </div>

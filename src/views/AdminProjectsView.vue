@@ -149,18 +149,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <div
-    class="admin-projects-view"
-    :style="gradientStyle"
-  >
+  <div class="admin-projects-view" :style="gradientStyle">
     <Navbar />
     <main class="admin-content">
       <div class="admin-container">
         <div class="admin-header">
           <h1>Admin - Projects Management</h1>
-          <p class="text-gray-600">
-            Manage all user projects
-          </p>
+          <p class="text-gray-600">Manage all user projects</p>
         </div>
 
         <!-- Search and Filter Section -->
@@ -173,7 +168,7 @@ onMounted(() => {
               placeholder="Search by project name, username, or email..."
               class="search-input"
               @keyup.enter="handleSearch"
-            >
+            />
           </div>
 
           <div class="filter-controls">
@@ -182,59 +177,30 @@ onMounted(() => {
               class="status-filter"
               @change="applyFilters"
             >
-              <option value="all">
-                All Statuses
-              </option>
-              <option value="draft">
-                Draft
-              </option>
-              <option value="processing">
-                Processing
-              </option>
-              <option value="completed">
-                Completed
-              </option>
-              <option value="failed">
-                Failed
-              </option>
+              <option value="all">All Statuses</option>
+              <option value="draft">Draft</option>
+              <option value="processing">Processing</option>
+              <option value="completed">Completed</option>
+              <option value="failed">Failed</option>
             </select>
-            <button
-              class="search-btn"
-              @click="handleSearch"
-            >
-              Search
-            </button>
+            <button class="search-btn" @click="handleSearch">Search</button>
           </div>
         </div>
 
         <!-- Error Message -->
-        <div
-          v-if="error"
-          class="error-banner"
-        >
+        <div v-if="error" class="error-banner">
           <X :size="18" />
           {{ error }}
-          <button
-            class="close-error"
-            @click="error = null"
-          >
+          <button class="close-error" @click="error = null">
             <X :size="16" />
           </button>
         </div>
 
         <!-- Loading State -->
-        <div
-          v-if="isLoading"
-          class="loading-spinner"
-        >
-          Loading projects...
-        </div>
+        <div v-if="isLoading" class="loading-spinner">Loading projects...</div>
 
         <!-- Projects Table -->
-        <div
-          v-else
-          class="projects-table-wrapper"
-        >
+        <div v-else class="projects-table-wrapper">
           <table class="projects-table">
             <thead>
               <tr>
@@ -247,10 +213,7 @@ onMounted(() => {
               </tr>
             </thead>
             <tbody>
-              <tr
-                v-for="project in paginatedProjects"
-                :key="project.id"
-              >
+              <tr v-for="project in paginatedProjects" :key="project.id">
                 <td class="project-title">
                   {{ project.title }}
                 </td>
@@ -300,22 +263,14 @@ onMounted(() => {
                 </td>
               </tr>
               <tr v-if="paginatedProjects.length === 0">
-                <td
-                  colspan="6"
-                  class="no-data"
-                >
-                  No projects found
-                </td>
+                <td colspan="6" class="no-data">No projects found</td>
               </tr>
             </tbody>
           </table>
         </div>
 
         <!-- Pagination -->
-        <div
-          v-if="totalPages > 1"
-          class="pagination"
-        >
+        <div v-if="totalPages > 1" class="pagination">
           <button
             :disabled="currentPage === 1"
             class="pagination-btn"
