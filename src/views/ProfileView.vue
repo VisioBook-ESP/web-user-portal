@@ -161,8 +161,7 @@ const upgradeToPremium = async () => {
     });
 
     window.location.href = checkoutUrl;
-  } catch (error) {
-    console.error("Failed to start premium checkout:", error);
+  } catch {
     uiStore.showError("Unable to start the payment flow. Please try again.");
   } finally {
     isStartingPremiumCheckout.value = false;
@@ -190,14 +189,23 @@ const uploadAvatar = () => {
 </script>
 
 <template>
-  <div class="profile-view" :style="gradientStyle">
+  <div
+    class="profile-view"
+    :style="gradientStyle"
+  >
     <!-- Navigation Bar -->
     <Navbar />
 
     <div class="profile-container">
       <!-- Back Button -->
-      <button class="back-button" @click="goBack">
-        <ChevronLeft :size="24" color="#1a1a1a" />
+      <button
+        class="back-button"
+        @click="goBack"
+      >
+        <ChevronLeft
+          :size="24"
+          color="#1a1a1a"
+        />
         <span>Back</span>
       </button>
 
@@ -209,17 +217,23 @@ const uploadAvatar = () => {
             src="/assets/images/short_logo.png"
             alt="VisioBook"
             class="logo-image"
-          />
+          >
         </div>
 
         <!-- User Avatar & Info -->
         <div class="user-header">
-          <div class="avatar-container" @click="uploadAvatar">
+          <div
+            class="avatar-container"
+            @click="uploadAvatar"
+          >
             <div class="avatar-placeholder">
               {{ userInitials }}
             </div>
             <div class="avatar-overlay">
-              <Camera :size="20" color="#fff" />
+              <Camera
+                :size="20"
+                color="#fff"
+              />
             </div>
           </div>
           <div class="user-info">
@@ -279,7 +293,10 @@ const uploadAvatar = () => {
         </div>
 
         <!-- Profile Section -->
-        <div v-if="activeSection === 'profile'" class="section-content">
+        <div
+          v-if="activeSection === 'profile'"
+          class="section-content"
+        >
           <div class="form-group">
             <label class="form-label">First Name</label>
             <input
@@ -288,7 +305,7 @@ const uploadAvatar = () => {
               class="form-input"
               :disabled="!isEditing"
               placeholder="Enter first name"
-            />
+            >
           </div>
 
           <div class="form-group">
@@ -299,7 +316,7 @@ const uploadAvatar = () => {
               class="form-input"
               :disabled="!isEditing"
               placeholder="Enter last name"
-            />
+            >
           </div>
 
           <div class="form-group">
@@ -310,7 +327,7 @@ const uploadAvatar = () => {
               class="form-input"
               :disabled="!isEditing"
               placeholder="Enter username"
-            />
+            >
           </div>
 
           <div class="form-group">
@@ -321,11 +338,15 @@ const uploadAvatar = () => {
               class="form-input"
               disabled
               placeholder="Email cannot be changed here"
-            />
+            >
           </div>
 
           <div class="form-actions">
-            <button v-if="!isEditing" class="btn-primary" @click="startEditing">
+            <button
+              v-if="!isEditing"
+              class="btn-primary"
+              @click="startEditing"
+            >
               Edit Profile
             </button>
             <template v-else>
@@ -348,7 +369,10 @@ const uploadAvatar = () => {
         </div>
 
         <!-- Password Section -->
-        <div v-if="activeSection === 'password'" class="section-content">
+        <div
+          v-if="activeSection === 'password'"
+          class="section-content"
+        >
           <div class="form-group">
             <label class="form-label">Current Password</label>
             <div class="input-with-icon">
@@ -357,13 +381,21 @@ const uploadAvatar = () => {
                 :type="showCurrentPassword ? 'text' : 'password'"
                 class="form-input"
                 placeholder="Enter current password"
-              />
+              >
               <button
                 class="icon-toggle"
                 @click="showCurrentPassword = !showCurrentPassword"
               >
-                <Eye v-if="!showCurrentPassword" :size="18" color="#888" />
-                <EyeOff v-else :size="18" color="#888" />
+                <Eye
+                  v-if="!showCurrentPassword"
+                  :size="18"
+                  color="#888"
+                />
+                <EyeOff
+                  v-else
+                  :size="18"
+                  color="#888"
+                />
               </button>
             </div>
           </div>
@@ -376,13 +408,21 @@ const uploadAvatar = () => {
                 :type="showNewPassword ? 'text' : 'password'"
                 class="form-input"
                 placeholder="Enter new password (min 8 characters)"
-              />
+              >
               <button
                 class="icon-toggle"
                 @click="showNewPassword = !showNewPassword"
               >
-                <Eye v-if="!showNewPassword" :size="18" color="#888" />
-                <EyeOff v-else :size="18" color="#888" />
+                <Eye
+                  v-if="!showNewPassword"
+                  :size="18"
+                  color="#888"
+                />
+                <EyeOff
+                  v-else
+                  :size="18"
+                  color="#888"
+                />
               </button>
             </div>
           </div>
@@ -395,19 +435,27 @@ const uploadAvatar = () => {
                 :type="showConfirmPassword ? 'text' : 'password'"
                 class="form-input"
                 placeholder="Confirm new password"
-              />
+              >
               <button
                 class="icon-toggle"
                 @click="showConfirmPassword = !showConfirmPassword"
               >
-                <Eye v-if="!showConfirmPassword" :size="18" color="#888" />
-                <EyeOff v-else :size="18" color="#888" />
+                <Eye
+                  v-if="!showConfirmPassword"
+                  :size="18"
+                  color="#888"
+                />
+                <EyeOff
+                  v-else
+                  :size="18"
+                  color="#888"
+                />
               </button>
             </div>
             <span
               v-if="
                 passwordForm.confirmPassword &&
-                passwordForm.newPassword !== passwordForm.confirmPassword
+                  passwordForm.newPassword !== passwordForm.confirmPassword
               "
               class="error-text"
             >
@@ -427,9 +475,18 @@ const uploadAvatar = () => {
         </div>
 
         <!-- Premium Section -->
-        <div v-if="activeSection === 'premium'" class="section-content">
-          <div v-if="false" class="premium-status active">
-            <Crown :size="32" color="#a6c3eb" />
+        <div
+          v-if="activeSection === 'premium'"
+          class="section-content"
+        >
+          <div
+            v-if="false"
+            class="premium-status active"
+          >
+            <Crown
+              :size="32"
+              color="#a6c3eb"
+            />
             <h3>You're a Premium Member!</h3>
             <p>
               Enjoy unlimited VisioBooks, priority processing, and exclusive
@@ -437,26 +494,47 @@ const uploadAvatar = () => {
             </p>
             <div class="premium-features">
               <div class="feature-item">
-                <Check :size="16" color="#4CAF50" /> Unlimited VisioBooks
+                <Check
+                  :size="16"
+                  color="#4CAF50"
+                /> Unlimited VisioBooks
               </div>
               <div class="feature-item">
-                <Check :size="16" color="#4CAF50" /> Priority Processing
+                <Check
+                  :size="16"
+                  color="#4CAF50"
+                /> Priority Processing
               </div>
               <div class="feature-item">
-                <Check :size="16" color="#4CAF50" /> 4K Video Export
+                <Check
+                  :size="16"
+                  color="#4CAF50"
+                /> 4K Video Export
               </div>
               <div class="feature-item">
-                <Check :size="16" color="#4CAF50" /> No Watermarks
+                <Check
+                  :size="16"
+                  color="#4CAF50"
+                /> No Watermarks
               </div>
               <div class="feature-item">
-                <Check :size="16" color="#4CAF50" /> Premium Support
+                <Check
+                  :size="16"
+                  color="#4CAF50"
+                /> Premium Support
               </div>
             </div>
           </div>
 
-          <div v-else class="premium-upgrade">
+          <div
+            v-else
+            class="premium-upgrade"
+          >
             <div class="upgrade-header">
-              <Crown :size="40" color="#a6c3eb" />
+              <Crown
+                :size="40"
+                color="#a6c3eb"
+              />
               <h3>Upgrade to Premium</h3>
               <p>Unlock the full potential of VisioBook</p>
             </div>
@@ -468,19 +546,34 @@ const uploadAvatar = () => {
               </div>
               <div class="features-list">
                 <div class="feature-item">
-                  <Check :size="16" color="#4CAF50" /> Unlimited VisioBooks
+                  <Check
+                    :size="16"
+                    color="#4CAF50"
+                  /> Unlimited VisioBooks
                 </div>
                 <div class="feature-item">
-                  <Check :size="16" color="#4CAF50" /> Priority Processing
+                  <Check
+                    :size="16"
+                    color="#4CAF50"
+                  /> Priority Processing
                 </div>
                 <div class="feature-item">
-                  <Check :size="16" color="#4CAF50" /> 4K Video Export
+                  <Check
+                    :size="16"
+                    color="#4CAF50"
+                  /> 4K Video Export
                 </div>
                 <div class="feature-item">
-                  <Check :size="16" color="#4CAF50" /> No Watermarks
+                  <Check
+                    :size="16"
+                    color="#4CAF50"
+                  /> No Watermarks
                 </div>
                 <div class="feature-item">
-                  <Check :size="16" color="#4CAF50" /> Premium Support
+                  <Check
+                    :size="16"
+                    color="#4CAF50"
+                  /> Premium Support
                 </div>
               </div>
               <button
@@ -498,20 +591,21 @@ const uploadAvatar = () => {
         </div>
 
         <!-- Notifications Section -->
-        <div v-if="activeSection === 'notifications'" class="section-content">
+        <div
+          v-if="activeSection === 'notifications'"
+          class="section-content"
+        >
           <div class="toggle-group">
             <div class="toggle-item">
               <div class="toggle-info">
                 <span class="toggle-label">Email Notifications</span>
-                <span class="toggle-description"
-                  >Receive email updates about your projects</span
-                >
+                <span class="toggle-description">Receive email updates about your projects</span>
               </div>
               <label class="toggle-switch">
                 <input
                   v-model="notificationSettings.emailNotifications"
                   type="checkbox"
-                />
+                >
                 <span class="slider" />
               </label>
             </div>
@@ -519,15 +613,13 @@ const uploadAvatar = () => {
             <div class="toggle-item">
               <div class="toggle-info">
                 <span class="toggle-label">Project Updates</span>
-                <span class="toggle-description"
-                  >Get notified when your VisioBooks are ready</span
-                >
+                <span class="toggle-description">Get notified when your VisioBooks are ready</span>
               </div>
               <label class="toggle-switch">
                 <input
                   v-model="notificationSettings.projectUpdates"
                   type="checkbox"
-                />
+                >
                 <span class="slider" />
               </label>
             </div>
@@ -535,15 +627,13 @@ const uploadAvatar = () => {
             <div class="toggle-item">
               <div class="toggle-info">
                 <span class="toggle-label">Marketing Emails</span>
-                <span class="toggle-description"
-                  >Receive news, tips, and special offers</span
-                >
+                <span class="toggle-description">Receive news, tips, and special offers</span>
               </div>
               <label class="toggle-switch">
                 <input
                   v-model="notificationSettings.marketingEmails"
                   type="checkbox"
-                />
+                >
                 <span class="slider" />
               </label>
             </div>
@@ -551,15 +641,13 @@ const uploadAvatar = () => {
             <div class="toggle-item">
               <div class="toggle-info">
                 <span class="toggle-label">Security Alerts</span>
-                <span class="toggle-description"
-                  >Important security notifications</span
-                >
+                <span class="toggle-description">Important security notifications</span>
               </div>
               <label class="toggle-switch">
                 <input
                   v-model="notificationSettings.securityAlerts"
                   type="checkbox"
-                />
+                >
                 <span class="slider" />
               </label>
             </div>
@@ -578,7 +666,10 @@ const uploadAvatar = () => {
 
         <!-- Logout Button -->
         <div class="logout-section">
-          <button class="btn-logout" @click="logout">
+          <button
+            class="btn-logout"
+            @click="logout"
+          >
             <LogOut :size="18" />
             Log Out
           </button>

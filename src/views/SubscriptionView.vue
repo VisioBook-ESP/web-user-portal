@@ -5,23 +5,39 @@
       <!-- Header -->
       <div class="page-header">
         <h1>Subscription & Billing</h1>
-        <p class="subtitle">Manage your plan, quotas, and billing settings</p>
+        <p class="subtitle">
+          Manage your plan, quotas, and billing settings
+        </p>
       </div>
 
       <!-- Loading State -->
-      <div v-if="isLoading" class="loading-container">
-        <div class="spinner"></div>
+      <div
+        v-if="isLoading"
+        class="loading-container"
+      >
+        <div class="spinner" />
         <p>Loading subscription data...</p>
       </div>
 
       <!-- Error State -->
-      <div v-else-if="error" class="error-message">
+      <div
+        v-else-if="error"
+        class="error-message"
+      >
         <p>{{ error }}</p>
-        <button class="btn btn-primary" @click="loadData">Retry</button>
+        <button
+          class="btn btn-primary"
+          @click="loadData"
+        >
+          Retry
+        </button>
       </div>
 
       <!-- Main Content -->
-      <div v-else class="content">
+      <div
+        v-else
+        class="content"
+      >
         <!-- Current Subscription Status -->
         <section class="section">
           <SubscriptionStatus
@@ -32,15 +48,25 @@
         </section>
 
         <!-- Quotas Display -->
-        <section v-if="subscription" class="section">
-          <h2 class="section-title">Your Quota Usage</h2>
+        <section
+          v-if="subscription"
+          class="section"
+        >
+          <h2 class="section-title">
+            Your Quota Usage
+          </h2>
           <QuotaDisplay />
         </section>
 
         <!-- Available Plans -->
         <section class="section">
-          <h2 class="section-title">Available Plans</h2>
-          <div class="plans-grid" ref="plansRef">
+          <h2 class="section-title">
+            Available Plans
+          </h2>
+          <div
+            ref="plansRef"
+            class="plans-grid"
+          >
             <PlanCard
               v-for="plan in plans"
               :key="plan.id"
@@ -54,7 +80,9 @@
 
         <!-- FAQ Section -->
         <section class="section faq-section">
-          <h2 class="section-title">Frequently Asked Questions</h2>
+          <h2 class="section-title">
+            Frequently Asked Questions
+          </h2>
           <div class="faq-list">
             <details class="faq-item">
               <summary>Can I change my plan anytime?</summary>

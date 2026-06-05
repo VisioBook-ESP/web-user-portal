@@ -3,16 +3,16 @@
   <div class="quota-display">
     <div class="quota-card">
       <div class="quota-header">
-        <h4 class="quota-title">Generations</h4>
-        <span class="quota-counter"
-          >{{ generationsUsed }} / {{ generationsLimit }}</span
-        >
+        <h4 class="quota-title">
+          Generations
+        </h4>
+        <span class="quota-counter">{{ generationsUsed }} / {{ generationsLimit }}</span>
       </div>
       <div class="progress-bar">
         <div
           class="progress-fill"
           :style="{ width: generationsPercentage + '%' }"
-        ></div>
+        />
       </div>
       <p class="quota-info">
         You have {{ generationsLimit - generationsUsed }} generations remaining
@@ -22,16 +22,16 @@
 
     <div class="quota-card">
       <div class="quota-header">
-        <h4 class="quota-title">Storage</h4>
-        <span class="quota-counter"
-          >{{ (storageUsed / 1024).toFixed(1) }} / {{ storageLimit }}GB</span
-        >
+        <h4 class="quota-title">
+          Storage
+        </h4>
+        <span class="quota-counter">{{ (storageUsed / 1024).toFixed(1) }} / {{ storageLimit }}GB</span>
       </div>
       <div class="progress-bar">
         <div
           class="progress-fill"
           :style="{ width: storagePercentage + '%' }"
-        ></div>
+        />
       </div>
       <p class="quota-info">
         You have {{ (storageLimit - storageUsed / 1024).toFixed(1) }}GB storage

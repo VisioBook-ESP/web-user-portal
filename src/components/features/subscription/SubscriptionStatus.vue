@@ -1,13 +1,21 @@
 <!-- src/components/features/subscription/SubscriptionStatus.vue -->
 <template>
   <div class="subscription-status">
-    <div v-if="subscription && currentPlan" class="status-card">
+    <div
+      v-if="subscription && currentPlan"
+      class="status-card"
+    >
       <div class="status-header">
-        <h3 class="status-title">Your Current Subscription</h3>
-        <span class="status-badge" :class="statusBadgeClass">
+        <h3 class="status-title">
+          Your Current Subscription
+        </h3>
+        <span
+          class="status-badge"
+          :class="statusBadgeClass"
+        >
           {{
             subscription.status.charAt(0).toUpperCase() +
-            subscription.status.slice(1)
+              subscription.status.slice(1)
           }}
         </span>
       </div>
@@ -33,7 +41,10 @@
           </span>
         </div>
 
-        <div v-if="subscription.stripeSubscriptionId" class="detail-item">
+        <div
+          v-if="subscription.stripeSubscriptionId"
+          class="detail-item"
+        >
           <span class="detail-label">Stripe ID:</span>
           <span class="detail-value monospace">{{
             subscription.stripeSubscriptionId
@@ -42,18 +53,30 @@
       </div>
 
       <div class="status-actions">
-        <button class="btn btn-secondary" @click="emit('upgrade')">
+        <button
+          class="btn btn-secondary"
+          @click="emit('upgrade')"
+        >
           Upgrade Plan
         </button>
-        <button class="btn btn-danger" @click="emit('cancel')">
+        <button
+          class="btn btn-danger"
+          @click="emit('cancel')"
+        >
           Cancel Subscription
         </button>
       </div>
     </div>
 
-    <div v-else class="no-subscription">
+    <div
+      v-else
+      class="no-subscription"
+    >
       <p>You don't have an active subscription yet.</p>
-      <button class="btn btn-primary" @click="emit('subscribe')">
+      <button
+        class="btn btn-primary"
+        @click="emit('subscribe')"
+      >
         Choose a Plan
       </button>
     </div>

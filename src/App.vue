@@ -19,7 +19,10 @@ onMounted(() => {
 <template>
   <v-app :theme="uiStore.theme">
     <router-view v-slot="{ Component }">
-      <transition name="fade" mode="out-in">
+      <transition
+        name="fade"
+        mode="out-in"
+      >
         <component :is="Component" />
       </transition>
     </router-view>
@@ -36,7 +39,11 @@ onMounted(() => {
       class="align-center justify-center"
       persistent
     >
-      <v-progress-circular color="primary" indeterminate size="64" />
+      <v-progress-circular
+        color="primary"
+        indeterminate
+        size="64"
+      />
     </v-overlay>
   </v-app>
 </template>

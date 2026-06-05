@@ -38,7 +38,10 @@ const toastColor = computed(() => (type: string) => {
 
 <template>
   <div class="toast-container">
-    <transition-group name="toast" tag="div">
+    <transition-group
+      name="toast"
+      tag="div"
+    >
       <v-alert
         v-for="toast in uiStore.toasts"
         :key="toast.id"

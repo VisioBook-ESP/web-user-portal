@@ -139,13 +139,18 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="admin-users-view" :style="gradientStyle">
+  <div
+    class="admin-users-view"
+    :style="gradientStyle"
+  >
     <Navbar />
     <main class="admin-content">
       <div class="admin-container">
         <div class="admin-header">
           <h1>Admin - Users Management</h1>
-          <p class="text-gray-600">Manage all platform users</p>
+          <p class="text-gray-600">
+            Manage all platform users
+          </p>
         </div>
 
         <!-- Search and Filter Section -->
@@ -158,7 +163,7 @@ onMounted(() => {
               placeholder="Search by username, email, or full name..."
               class="search-input"
               @keyup.enter="handleSearch"
-            />
+            >
           </div>
 
           <div class="filter-controls">
@@ -167,28 +172,53 @@ onMounted(() => {
               class="role-filter"
               @change="applyFilters"
             >
-              <option value="all">All Roles</option>
-              <option value="user">User</option>
-              <option value="admin">Admin</option>
+              <option value="all">
+                All Roles
+              </option>
+              <option value="user">
+                User
+              </option>
+              <option value="admin">
+                Admin
+              </option>
             </select>
-            <button class="search-btn" @click="handleSearch">Search</button>
+            <button
+              class="search-btn"
+              @click="handleSearch"
+            >
+              Search
+            </button>
           </div>
         </div>
 
         <!-- Error Message -->
-        <div v-if="error" class="error-banner">
+        <div
+          v-if="error"
+          class="error-banner"
+        >
           <X :size="18" />
           {{ error }}
-          <button class="close-error" @click="error = null">
+          <button
+            class="close-error"
+            @click="error = null"
+          >
             <X :size="16" />
           </button>
         </div>
 
         <!-- Loading State -->
-        <div v-if="isLoading" class="loading-spinner">Loading users...</div>
+        <div
+          v-if="isLoading"
+          class="loading-spinner"
+        >
+          Loading users...
+        </div>
 
         <!-- Users Table -->
-        <div v-else class="users-table-wrapper">
+        <div
+          v-else
+          class="users-table-wrapper"
+        >
           <table class="users-table">
             <thead>
               <tr>
@@ -201,7 +231,10 @@ onMounted(() => {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="user in paginatedUsers" :key="user.id">
+              <tr
+                v-for="user in paginatedUsers"
+                :key="user.id"
+              >
                 <td class="username">
                   {{ user.username }}
                 </td>
@@ -242,14 +275,22 @@ onMounted(() => {
                 </td>
               </tr>
               <tr v-if="paginatedUsers.length === 0">
-                <td colspan="6" class="no-data">No users found</td>
+                <td
+                  colspan="6"
+                  class="no-data"
+                >
+                  No users found
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
 
         <!-- Pagination -->
-        <div v-if="totalPages > 1" class="pagination">
+        <div
+          v-if="totalPages > 1"
+          class="pagination"
+        >
           <button
             :disabled="currentPage === 1"
             class="pagination-btn"

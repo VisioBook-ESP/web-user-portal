@@ -141,7 +141,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="admin-monitor-view" :style="gradientStyle">
+  <div
+    class="admin-monitor-view"
+    :style="gradientStyle"
+  >
     <Navbar />
     <main class="admin-content">
       <div class="admin-container">
@@ -181,18 +184,27 @@ onMounted(() => {
         </div>
 
         <!-- Error Message -->
-        <div v-if="error" class="error-banner">
+        <div
+          v-if="error"
+          class="error-banner"
+        >
           <AlertCircle :size="18" />
           {{ error }}
         </div>
 
         <!-- Loading State -->
-        <div v-if="isLoading" class="loading-spinner">
+        <div
+          v-if="isLoading"
+          class="loading-spinner"
+        >
           Loading monitoring data...
         </div>
 
         <!-- Main Content -->
-        <div v-else class="monitor-content">
+        <div
+          v-else
+          class="monitor-content"
+        >
           <!-- Stats Cards -->
           <div class="stats-grid">
             <div class="stat-card">
@@ -226,7 +238,9 @@ onMounted(() => {
                 <Activity :size="24" />
                 <span class="stat-label">Response Time</span>
               </div>
-              <div class="stat-value">{{ avgResponseTime }}ms</div>
+              <div class="stat-value">
+                {{ avgResponseTime }}ms
+              </div>
               <div class="stat-subtext">
                 {{ minResponseTime }}ms - {{ maxResponseTime }}ms
               </div>
@@ -237,21 +251,38 @@ onMounted(() => {
                 <TrendingUp :size="24" />
                 <span class="stat-label">Error Rate</span>
               </div>
-              <div class="stat-value">{{ avgErrorRate }}%</div>
-              <div class="stat-subtext">last {{ timeRange }}</div>
+              <div class="stat-value">
+                {{ avgErrorRate }}%
+              </div>
+              <div class="stat-subtext">
+                last {{ timeRange }}
+              </div>
             </div>
           </div>
 
           <!-- Metrics Chart -->
           <div class="metrics-section">
             <h2>Performance Metrics</h2>
-            <div v-if="metrics.length > 0" class="metrics-table">
+            <div
+              v-if="metrics.length > 0"
+              class="metrics-table"
+            >
               <div class="metrics-header">
-                <div class="metric-col">Timestamp</div>
-                <div class="metric-col">Response Time</div>
-                <div class="metric-col">Error Rate</div>
-                <div class="metric-col">Requests/s</div>
-                <div class="metric-col">Uptime</div>
+                <div class="metric-col">
+                  Timestamp
+                </div>
+                <div class="metric-col">
+                  Response Time
+                </div>
+                <div class="metric-col">
+                  Error Rate
+                </div>
+                <div class="metric-col">
+                  Requests/s
+                </div>
+                <div class="metric-col">
+                  Uptime
+                </div>
               </div>
 
               <div
@@ -276,9 +307,7 @@ onMounted(() => {
                         ),
                       }"
                     />
-                    <span class="metric-value"
-                      >{{ metric.averageResponseTime }}ms</span
-                    >
+                    <span class="metric-value">{{ metric.averageResponseTime }}ms</span>
                   </div>
                 </div>
                 <div class="metric-col">
@@ -293,24 +322,30 @@ onMounted(() => {
                         ),
                       }"
                     />
-                    <span class="metric-value"
-                      >{{ metric.errorRate.toFixed(2) }}%</span
-                    >
+                    <span class="metric-value">{{ metric.errorRate.toFixed(2) }}%</span>
                   </div>
                 </div>
                 <div class="metric-col">
                   {{ metric.requestsPerSecond.toFixed(2) }}
                 </div>
-                <div class="metric-col">{{ metric.uptime.toFixed(2) }}%</div>
+                <div class="metric-col">
+                  {{ metric.uptime.toFixed(2) }}%
+                </div>
               </div>
             </div>
-            <div v-else class="no-metrics">
+            <div
+              v-else
+              class="no-metrics"
+            >
               No metrics available for this time range
             </div>
           </div>
 
           <!-- Storage Stats -->
-          <div v-if="stats" class="storage-section">
+          <div
+            v-if="stats"
+            class="storage-section"
+          >
             <h2>Storage Usage</h2>
             <div class="storage-info">
               <div class="storage-stat">

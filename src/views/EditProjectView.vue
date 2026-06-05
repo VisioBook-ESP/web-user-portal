@@ -94,13 +94,19 @@ const goBack = () => {
 </script>
 
 <template>
-  <div class="edit-view" :style="gradientStyle">
+  <div
+    class="edit-view"
+    :style="gradientStyle"
+  >
     <!-- Navigation Bar -->
     <Navbar />
 
     <div class="edit-container">
       <!-- Loading State -->
-      <div v-if="isLoading" class="loading-state">
+      <div
+        v-if="isLoading"
+        class="loading-state"
+      >
         <div class="loading-spinner" />
         <p>Loading project...</p>
       </div>

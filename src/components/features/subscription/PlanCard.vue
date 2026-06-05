@@ -5,20 +5,34 @@
     :class="{ 'is-current': isCurrent, 'is-popular': isPopular }"
   >
     <div class="plan-header">
-      <h3 class="plan-name">{{ plan.name }}</h3>
-      <div v-if="isCurrent" class="badge badge-current">Current Plan</div>
-      <div v-if="isPopular" class="badge badge-popular">Most Popular</div>
+      <h3 class="plan-name">
+        {{ plan.name }}
+      </h3>
+      <div
+        v-if="isCurrent"
+        class="badge badge-current"
+      >
+        Current Plan
+      </div>
+      <div
+        v-if="isPopular"
+        class="badge badge-popular"
+      >
+        Most Popular
+      </div>
     </div>
 
     <div class="plan-price">
       <span class="price">${{ plan.price }}</span>
-      <span class="period"
-        >/{{ plan.interval === "month" ? "month" : "year" }}</span
-      >
+      <span class="period">/{{ plan.interval === "month" ? "month" : "year" }}</span>
     </div>
 
     <ul class="features-list">
-      <li v-for="feature in plan.features" :key="feature" class="feature-item">
+      <li
+        v-for="feature in plan.features"
+        :key="feature"
+        class="feature-item"
+      >
         <span class="feature-check">✓</span>
         {{ feature }}
       </li>

@@ -3,17 +3,22 @@
   <div class="quota-guard">
     <!-- Content when quota is available -->
     <template v-if="hasQuota">
-      <slot></slot>
+      <slot />
     </template>
 
     <!-- Content when quota is not available -->
     <template v-else>
       <div class="quota-warning">
-        <div class="warning-icon">⚠️</div>
+        <div class="warning-icon">
+          ⚠️
+        </div>
         <div class="warning-content">
           <h4>{{ warningTitle }}</h4>
           <p>{{ warningMessage }}</p>
-          <button class="btn btn-primary" @click="navigateToSubscription">
+          <button
+            class="btn btn-primary"
+            @click="navigateToSubscription"
+          >
             Upgrade Plan
           </button>
         </div>
